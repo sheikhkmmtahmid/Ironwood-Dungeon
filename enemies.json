@@ -1,0 +1,192 @@
+{
+  "floors": {
+    "1": [
+      {
+        "enemy_id": "cave_rat_swarm",
+        "name": "Cave Rat Swarm",
+        "hp": 8,
+        "max_hp": 8,
+        "ac": 10,
+        "attack_bonus": 2,
+        "damage_dice": "1d4",
+        "damage_bonus": 0,
+        "initiative_bonus": 2,
+        "damage_type": "piercing",
+        "xp_reward": 25,
+        "special_abilities": ["pack_tactics"],
+        "description": "A writhing mass of sharp-toothed rodents surging from the dungeon's dark crevices."
+      },
+      {
+        "enemy_id": "goblin_scout",
+        "name": "Goblin Scout",
+        "hp": 7,
+        "max_hp": 7,
+        "ac": 13,
+        "attack_bonus": 4,
+        "damage_dice": "1d6",
+        "damage_bonus": 2,
+        "initiative_bonus": 2,
+        "damage_type": "piercing",
+        "xp_reward": 50,
+        "special_abilities": ["nimble_escape"],
+        "description": "A quick, cunning goblin with a short bow and survival instincts honed in the dungeon's depths."
+      },
+      {
+        "enemy_id": "skeleton_warrior",
+        "name": "Skeleton Warrior",
+        "hp": 13,
+        "max_hp": 13,
+        "ac": 13,
+        "attack_bonus": 3,
+        "damage_dice": "1d6",
+        "damage_bonus": 1,
+        "initiative_bonus": 2,
+        "damage_type": "piercing",
+        "xp_reward": 50,
+        "special_abilities": ["undead_fortitude"],
+        "description": "An animated skeleton clad in rusted armour, its empty eye sockets burning with pale fire."
+      }
+    ],
+    "2": [
+      {
+        "enemy_id": "shadow_creeper",
+        "name": "Shadow Creeper",
+        "hp": 16,
+        "max_hp": 16,
+        "ac": 13,
+        "attack_bonus": 4,
+        "damage_dice": "1d6",
+        "damage_bonus": 2,
+        "initiative_bonus": 3,
+        "damage_type": "necrotic",
+        "xp_reward": 100,
+        "special_abilities": ["shadow_step"],
+        "description": "A creature of living shadow that slips between darkness and form, striking from unexpected angles."
+      },
+      {
+        "enemy_id": "zombie_brute",
+        "name": "Zombie Brute",
+        "hp": 22,
+        "max_hp": 22,
+        "ac": 11,
+        "attack_bonus": 3,
+        "damage_dice": "1d8",
+        "damage_bonus": 2,
+        "initiative_bonus": -1,
+        "damage_type": "bludgeoning",
+        "xp_reward": 75,
+        "special_abilities": ["undead_fortitude"],
+        "description": "A hulking undead monstrosity, its decaying flesh barely containing the unnatural force animating it."
+      },
+      {
+        "enemy_id": "mimic_chest",
+        "name": "Mimic",
+        "hp": 18,
+        "max_hp": 18,
+        "ac": 12,
+        "attack_bonus": 4,
+        "damage_dice": "1d8",
+        "damage_bonus": 2,
+        "initiative_bonus": 1,
+        "damage_type": "piercing",
+        "xp_reward": 100,
+        "special_abilities": ["false_appearance"],
+        "description": "A shapeshifting predator that disguises itself as a treasure chest, waiting for the unwary."
+      }
+    ],
+    "3": [
+      {
+        "enemy_id": "stone_sentinel",
+        "name": "Stone Sentinel",
+        "hp": 18,
+        "max_hp": 18,
+        "ac": 14,
+        "attack_bonus": 4,
+        "damage_dice": "1d8",
+        "damage_bonus": 2,
+        "initiative_bonus": 0,
+        "damage_type": "bludgeoning",
+        "xp_reward": 75,
+        "special_abilities": [],
+        "description": "A crude stone construct animated by ancient magic, guarding the dungeon's deeper passages."
+      },
+      {
+        "enemy_id": "berserker_cultist",
+        "name": "Berserker Cultist",
+        "hp": 24,
+        "max_hp": 24,
+        "ac": 12,
+        "attack_bonus": 5,
+        "damage_dice": "1d8",
+        "damage_bonus": 3,
+        "initiative_bonus": 1,
+        "damage_type": "slashing",
+        "xp_reward": 150,
+        "special_abilities": ["berserk", "martial_advantage"],
+        "description": "A fanatical warrior who fights with reckless abandon, growing more dangerous as blood is spilled."
+      },
+      {
+        "enemy_id": "wight_soldier",
+        "name": "Wight Soldier",
+        "hp": 26,
+        "max_hp": 26,
+        "ac": 14,
+        "attack_bonus": 4,
+        "damage_dice": "1d6",
+        "damage_bonus": 2,
+        "initiative_bonus": 2,
+        "damage_type": "necrotic",
+        "xp_reward": 200,
+        "special_abilities": ["life_drain", "undead_fortitude"],
+        "description": "A once-proud warrior returned from death, its necrotic touch draining the life from the living."
+      }
+    ],
+    "4": [
+      {
+        "enemy_id": "vampire_spawn",
+        "name": "Vampire Spawn",
+        "hp": 30,
+        "max_hp": 30,
+        "ac": 15,
+        "attack_bonus": 5,
+        "damage_dice": "1d6",
+        "damage_bonus": 3,
+        "initiative_bonus": 3,
+        "damage_type": "piercing",
+        "xp_reward": 250,
+        "special_abilities": ["blood_drain", "life_drain"],
+        "description": "A half-formed vampiric creature, its hunger overwhelming its remaining shreds of humanity."
+      },
+      {
+        "enemy_id": "bone_wyvern",
+        "name": "Bone Wyvern",
+        "hp": 22,
+        "max_hp": 22,
+        "ac": 14,
+        "attack_bonus": 5,
+        "damage_dice": "1d8",
+        "damage_bonus": 2,
+        "initiative_bonus": 2,
+        "damage_type": "piercing",
+        "xp_reward": 75,
+        "special_abilities": [],
+        "description": "The animated skeleton of a wyvern, its bones held together by necrotic energy and ancient dread."
+      },
+      {
+        "enemy_id": "hell_cultist",
+        "name": "Hell Cultist",
+        "hp": 28,
+        "max_hp": 28,
+        "ac": 13,
+        "attack_bonus": 5,
+        "damage_dice": "1d8",
+        "damage_bonus": 3,
+        "initiative_bonus": 1,
+        "damage_type": "fire",
+        "xp_reward": 200,
+        "special_abilities": ["hellfire_orb"],
+        "description": "A devoted servant of infernal powers, wielding hellfire with terrifying proficiency."
+      }
+    ]
+  }
+}

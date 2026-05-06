@@ -1,0 +1,32 @@
+# Local secrets — never commit
+.env
+
+# Runtime game state written during play
+game_state_*.json
+history_*.json
+character.json
+character_*.json
+dungeon_map_*.json
+party.json
+party_inventory_*.json
+active_quests.json
+inventory.json
+npc_registry.json
+saves/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,4926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ironwood Dungeon</title>
+<link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"><!-- PHASE 6 -->
+<style>
+:root {
+  --bg:        #0b0b10;
+  --panel:     #10101a;
+  --border:    #3d2f10;
+  --border-lt: #6a4f1a;
+  --gold:      #c9a84c;
+  --gold-lt:   #e8c87a;
+  --gold-dim:  #7a6030;
+  --text:      #d0bc9e;
+  --dim:       #6a5a46;
+  --red:       #8b1a1a;
+  --red-lt:    #d93333;
+  --purple:    #4e1a80;
+  --purple-lt: #9944cc;
+  --green-dim: #1a4420;
+  --blue-dim:  #182040;
+  /* PHASE 6 — Design system */
+  --color-bg:             #0d0a07;
+  --color-parchment:      #f4e4c1;
+  --color-parchment-dark: #c9a96e;
+  --color-ink:            #1a1008;
+  --color-blood:          #8b0000;
+  --color-gold:           #c9a227;
+  --color-gold-light:     #f0c040;
+  --color-stone:          #4a4035;
+  --color-stone-light:    #6b5d4f;
+  --color-ember:          #e8632a;
+  --color-shadow:         rgba(0,0,0,0.7);
+  --color-magic:          #7b4fa6;
+  --font-heading:    'Cinzel', serif;
+  --font-display:    'Cinzel Decorative', serif;
+  --font-narrative:  'IM Fell English', serif;
+  --font-body:       'Crimson Text', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Crimson Text', Georgia, serif;
+  font-size: 17px;
+}
+body {
+  background-image:
+    radial-gradient(ellipse 120% 40% at 50% 0%, #6b320e55, transparent),
+    radial-gradient(ellipse 80% 30% at 50% 100%, #1e0d0444, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.wrap {
+  width: 100%;
+  max-width: 1060px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.8rem;
+}
+
+/* Header */
+header {
+  padding: 1.8rem 0 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+.logo-row {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+.logo-img { width: 58px; height: 58px; flex-shrink: 0; }
+.title-block { text-align: left; }
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.5rem, 4.5vw, 2.4rem);
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-shadow: 0 0 32px #c9a84c55;
+  line-height: 1.1;
+}
+.title-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  color: var(--dim);
+  letter-spacing: 0.22em;
+  margin-top: 0.25rem;
+}
+hr.divider {
+  width: 100%;
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0.5rem 0;
+}
+
+/* Status bar */
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem 0;
+  width: 100%;
+}
+.hp-group {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex: 1;
+  min-width: 180px;
+}
+.hp-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  color: var(--red-lt);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.bar-track {
+  flex: 1;
+  height: 10px;
+  background: #180808;
+  border: 1px solid #3a0a0a;
+  border-radius: 1px;
+  overflow: hidden;
+}
+.bar-fill { height: 100%; transition: width 0.7s ease; }
+.hp-fill  { background: linear-gradient(90deg, var(--red), var(--red-lt)); }
+.hp-val {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  color: var(--text);
+  white-space: nowrap;
+  min-width: 58px;
+}
+.badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  padding: 0.22rem 0.7rem;
+  border: 1px solid var(--border);
+  color: var(--gold);
+  background: #c9a84c08;
+  white-space: nowrap;
+  letter-spacing: 0.07em;
+}
+
+/* Enemy row */
+.enemy-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 30px;
+  padding: 0.3rem 0;
+  transition: opacity 0.5s;
+  width: 100%;
+}
+.enemy-row.hidden { opacity: 0; pointer-events: none; }
+.enemy-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  color: var(--purple-lt);
+  min-width: 140px;
+  white-space: nowrap;
+}
+.enemy-fill { background: linear-gradient(90deg, var(--purple), var(--purple-lt)); }
+.enemy-val {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: var(--dim);
+  white-space: nowrap;
+  min-width: 55px;
+}
+
+.initiative-strip {
+  display: none;
+  gap: 0.45rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0.6rem 0 0.2rem;
+  padding: 0.45rem;
+  border-top: 1px solid #1e1a12;
+  border-bottom: 1px solid #1e1a12;
+}
+
+.initiative-strip.active {
+  display: flex;
+}
+
+.init-card {
+  font-family: 'Cinzel', serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  padding: 0.25rem 0.6rem;
+  background: #ffffff04;
+}
+
+.init-card.current {
+  color: var(--gold-lt);
+  border-color: var(--gold);
+  box-shadow: 0 0 14px #c9a84c33;
+}
+
+.init-card.enemy {
+  color: var(--purple-lt);
+}
+
+.init-card.player {
+  color: var(--gold-lt);
+}
+
+/* Narrative box */
+.narrative-wrap {
+  position: relative;
+  margin: 0.8rem 0 0.4rem;
+}
+.narrative-corner {
+  position: absolute;
+  font-size: 0.7rem;
+  color: var(--gold-dim);
+  line-height: 1;
+}
+.narrative-corner.tl { top: -0.35rem; left: -0.35rem; }
+.narrative-corner.tr { top: -0.35rem; right: -0.35rem; }
+.narrative-corner.bl { bottom: -0.35rem; left: -0.35rem; }
+.narrative-corner.br { bottom: -0.35rem; right: -0.35rem; }
+.narrative-box {
+  border: 1px solid var(--border);
+  padding: 1.4rem 1.6rem;
+  min-height: 160px;
+  background: linear-gradient(135deg, #c9a84c06 0%, transparent 50%), #ffffff03;
+  position: relative;
+}
+#narrative-text {
+  font-size: clamp(1rem, 2.2vw, 1.18rem);
+  line-height: 1.9;
+  color: var(--text);
+  min-height: 96px;
+  font-style: italic;
+}
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  background: var(--gold);
+  vertical-align: middle;
+  animation: blink 0.8s infinite;
+  margin-left: 1px;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Suggested actions (chips), only shown when no structured choices */
+.action-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem 0 0.25rem;
+  min-height: 0;
+}
+.chip {
+  font-family: 'Crimson Text', serif;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--dim);
+  border: 1px solid #2a2218;
+  background: transparent;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  border-radius: 1px;
+}
+.chip:hover { color: var(--gold-lt); border-color: var(--gold-dim); }
+
+/* History log */
+.history-section { margin-bottom: 0.3rem; }
+.history-header {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--dim);
+  padding: 0.3rem 0;
+  border-top: 1px solid #1e1a12;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  user-select: none;
+}
+.history-toggle { font-size: 0.52rem; transition: transform 0.2s; }
+.history-toggle.open { transform: rotate(90deg); }
+.history-log { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.history-log.open { max-height: 360px; overflow-y: auto; }
+.h-entry {
+  font-size: 0.88rem;
+  color: var(--dim);
+  padding: 0.35rem 0.55rem;
+  border-bottom: 1px solid #181420;
+  line-height: 1.6;
+  display: flex;
+  gap: 0.55rem;
+}
+.h-turn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  color: var(--gold-dim);
+  white-space: nowrap;
+  padding-top: 0.1rem;
+  flex-shrink: 0;
+}
+.h-text { font-style: italic; }
+
+/* Choice buttons */
+.choice-section { padding: 0.8rem 0 0.35rem; }
+.choice-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-align: center;
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+}
+.choice-btns { display: grid; gap: 0.65rem; }
+.choice-btns.cols3 { grid-template-columns: repeat(3, 1fr); }
+.choice-btns.cols2 { grid-template-columns: repeat(2, 1fr); }
+.choice-btns.cols1 { grid-template-columns: 1fr; }
+.cbtn {
+  padding: 1.1rem 0.6rem;
+  border: 1px solid;
+  background: transparent;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: inherit;
+  line-height: 1.2;
+}
+.cbtn .ico { font-size: 1.4rem; }
+.cbtn small { font-size: 0.6rem; opacity: 0.7; font-family: 'Crimson Text', serif; }
+.cbtn:disabled { opacity: 0.3; cursor: not-allowed; }
+.cbtn-fight, .cbtn-sneak, .cbtn-talk,
+.cbtn-dodge, .cbtn-dash,  .cbtn-help,
+.cbtn-search, .cbtn-down, .cbtn-death, .cbtn-item {
+  border-color: #4a3a10; color: var(--gold); background: #4a3a1008;
+}
+.cbtn-fight:not(:disabled):hover, .cbtn-sneak:not(:disabled):hover,
+.cbtn-talk:not(:disabled):hover,  .cbtn-dodge:not(:disabled):hover,
+.cbtn-dash:not(:disabled):hover,  .cbtn-help:not(:disabled):hover,
+.cbtn-search:not(:disabled):hover,.cbtn-down:not(:disabled):hover,
+.cbtn-death:not(:disabled):hover, .cbtn-item:not(:disabled):hover {
+  background: #4a3a1025; border-color: var(--gold-dim); box-shadow: 0 0 18px #c9a84c22;
+}
+/* Mini-map */
+.minimap-wrap { margin: 0.4rem 0; padding: 0.4rem 0; border-top: 1px solid #222; }
+.minimap-label { font-family:'Cinzel',serif; font-size:0.6rem; color:var(--dim); letter-spacing:0.08em; margin-bottom:0.35rem; }
+.minimap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 68px);
+  grid-template-rows: repeat(3, 52px);
+  gap: 5px;
+}
+.room-tile {
+  width: 68px; height: 52px;
+  border: 1px solid #2a2a2a;
+  border-radius: 3px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-size: 0.52rem; text-align: center; line-height: 1.2;
+  padding: 2px; box-sizing: border-box;
+  cursor: default; color: #555;
+  background: #0d0d0d;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.room-tile.visited { color: #888; background: #141414; }
+.room-tile.current { border-color: var(--gold); color: var(--gold); background: #1a1500;
+  box-shadow: 0 0 10px #c9a84c33; animation: pulse 1.8s infinite; }
+.room-tile.cleared { opacity: 0.45; }
+.room-tile.adjacent { cursor: pointer; border-color: #3a3a3a; }
+.room-tile.adjacent:hover { border-color: #777; background: #1a1a1a; color: #bbb; }
+.room-tile .room-ico { font-size: 0.85rem; }
+.room-tile .room-name { font-family:'Cinzel',serif; font-size:0.46rem; margin-top:1px; }
+.room-tile .room-type { font-size:0.42rem; opacity:0.6; }
+.room-empty { width:68px; height:52px; }
+/* Room type colour coding (unvisited tiles stay dark; these apply once visited/current) */
+.room-tile.type-Entrance { border-color:#1a3a80; }
+.room-tile.type-Combat   { border-color:#7a1010; background:#150808; }
+.room-tile.type-Trap     { border-color:#7a4a00; background:#150f00; }
+.room-tile.type-Treasure { border-color:#6a5000; background:#141000; }
+.room-tile.type-Rest     { border-color:#1a5a20; background:#081208; }
+.room-tile.type-Puzzle   { border-color:#5a1a80; background:#100810; }
+.room-tile.type-Boss     { border-color:#8a0015; background:#180808; }
+.room-tile.visited.type-Combat   { border-color:#4a0808; }
+.room-tile.visited.type-Trap     { border-color:#4a2a00; }
+.room-tile.visited.type-Treasure { border-color:#4a3a00; }
+.room-tile.visited.type-Rest     { border-color:#0a3a12; }
+.room-tile.visited.type-Puzzle   { border-color:#3a0a55; }
+.room-tile.visited.type-Boss     { border-color:#5a0010; }
+.room-tile.adjacent.type-Combat   { border-color:#8a1515; }
+.room-tile.adjacent.type-Trap     { border-color:#8a5200; }
+.room-tile.adjacent.type-Treasure { border-color:#7a5f00; }
+.room-tile.adjacent.type-Rest     { border-color:#1a6a24; }
+.room-tile.adjacent.type-Puzzle   { border-color:#6a2090; }
+.room-tile.adjacent.type-Boss     { border-color:#aa0018; }
+/* Move button style */
+.cbtn-move { border-color: #1a3a3a; color: #5aacac; background: #0a1a1a08; }
+.cbtn-move:not(:disabled):hover { background: #0a2a2a25; border-color: #3a8a8a; box-shadow: 0 0 14px #3a8a8a22; }
+.cbtn-npc  { border-color: #3a2a4a; color: #c48bff; background: #1a0a2a08; }
+.cbtn-npc:not(:disabled):hover  { background: #2a1a3a25; border-color: #8a5abf; box-shadow: 0 0 14px #8a5abf22; }
+
+.item-picker-btn {
+  display: block; width: 100%; padding: 0.7rem 1rem; margin-bottom: 0.5rem;
+  background: #1a1510; border: 1px solid #4a3a10; color: var(--gold);
+  font-family: 'Cinzel', serif; font-size: 0.8rem; cursor: pointer; text-align: left;
+  border-radius: 3px;
+}
+.item-picker-btn:hover { background: #2a2010; border-color: var(--gold-dim); }
+.item-picker-empty { color: var(--dim); font-size: 0.85rem; padding: 0.5rem 0; }
+.cbtn-spell { border-color: #1a2a4a; color: #7aacf0; background: #1a2a4a08; }
+.cbtn-spell:not(:disabled):hover { background: #1a2a4a25; border-color: #4a80c8; box-shadow: 0 0 18px #4a80c822; }
+.slot-tracker { display:flex; gap:0.9rem; flex-wrap:wrap; padding:0.3rem 0 0.5rem; font-family:'Cinzel',serif; font-size:0.62rem; color:var(--dim); letter-spacing:0.06em; }
+.slot-group { display:flex; align-items:center; gap:0.25rem; }
+.slot-bubble { font-size:0.7rem; color:#333; }
+.slot-bubble.slot-full { color:#7aacf0; }
+
+/* Input row */
+.input-row {
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--border);
+  margin-top: 0.25rem;
+}
+#player-input {
+  flex: 1;
+  background: #0c0c18;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.65rem 0.9rem;
+  font-family: 'Crimson Text', serif;
+  font-size: 1.05rem;
+  outline: none;
+  border-radius: 1px;
+  font-style: italic;
+}
+#player-input:focus { border-color: var(--gold-dim); }
+#player-input::placeholder { color: var(--dim); }
+#player-input:disabled { opacity: 0.45; }
+.send-btn {
+  padding: 0.65rem 1.3rem;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.send-btn:hover:not(:disabled) { background: #c9a84c18; }
+.send-btn:disabled { opacity: 0.3; cursor: wait; }
+
+/* Thinking indicator */
+.thinking {
+  text-align: center;
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--dim);
+  padding: 0.35rem 0;
+  display: none;
+}
+.thinking.show { display: block; animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.9; } }
+
+/* XP row */
+.xp-row { display:flex; align-items:center; gap:0.5rem; margin-top:0.3rem; }
+.xp-label { font-family:'Cinzel',serif; font-size:0.62rem; color:var(--dim); min-width:1.5rem; }
+.xp-track { flex:1; height:5px; }
+.xp-fill { background: linear-gradient(90deg, #4a7a4a, #7acc7a); transition: width 0.6s ease; }
+.xp-val { font-size:0.62rem; color:var(--dim); min-width:4rem; text-align:right; }
+
+/* Level-up banner */
+.levelup-bar {
+  display: none;
+  background: #1a2a0a;
+  border: 1px solid #4a7a1a;
+  color: #9adc4a;
+  padding: 0.5rem 1rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  text-align: center;
+  margin: 0.35rem 0;
+  letter-spacing: 0.08em;
+}
+.levelup-bar.show { display: block; }
+
+/* Level-up broadcast toast (multiplayer) */
+.levelup-toast {
+  position: fixed; top: 4.5rem; left: 50%; transform: translateX(-50%);
+  z-index: 9100; background: #101e06; border: 1px solid #5a9a1a; border-radius: 6px;
+  padding: .55rem 1.2rem; font-family:'Cinzel',serif; font-size:.82rem; color:#b8ef60;
+  text-align:center; letter-spacing:.07em; pointer-events:none;
+  opacity:0; transition:opacity .3s;
+}
+.levelup-toast.show { opacity:1; }
+/* Party shared chest */
+.party-chest-wrap { margin-top:.7rem; }
+.party-chest-label { font-family:'Cinzel',serif; font-size:.6rem; color:var(--dim); letter-spacing:.1em; margin-bottom:.25rem; }
+.party-chest-empty { font-size:.72rem; color:var(--dim); padding:.2rem 0; }
+.chest-item { display:flex; align-items:center; justify-content:space-between; gap:.3rem;
+  padding:.2rem 0; border-bottom:1px solid #1a1a20; font-size:.75rem; }
+.chest-item-name { flex:1; color:var(--text); }
+.chest-item-qty  { color:var(--dim); font-size:.7rem; min-width:2.5rem; text-align:right; }
+.chest-take-btn  { font-size:.65rem; padding:2px 7px; background:#0a1a0a; border:1px solid #2a5a1a;
+  color:#7acf7a; border-radius:3px; cursor:pointer; }
+.chest-take-btn:hover { background:#0e240e; border-color:#4a8a4a; }
+.share-btn { font-size:.65rem; padding:2px 6px; background:#0a0a1a; border:1px solid #2a2a5a;
+  color:#7a7adf; border-radius:3px; cursor:pointer; margin-left:4px; }
+.share-btn:hover { background:#10103a; border-color:#4a4a9a; }
+/* Loot toast */
+.loot-toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9000;
+  background: #0e1a0e; border: 1px solid #3a6a1a; border-radius: 6px;
+  padding: 0.6rem 1rem; font-size: 0.82rem; color: #9ad870;
+  max-width: 260px; pointer-events: none;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.loot-toast.show { opacity: 1; transform: translateY(0); }
+
+/* Error bar */
+.error-bar {
+  display: none;
+  background: #2a0808;
+  border: 1px solid #5a1515;
+  color: #dd5555;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.9rem;
+  margin: 0.35rem 0;
+  font-style: italic;
+}
+.error-bar.show { display: block; }
+
+/* Util bar */
+.util-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0.9rem;
+  padding: 0.5rem 0 1.4rem;
+}
+.util-btn {
+  background: transparent;
+  border: 1px solid var(--dim);
+  color: var(--dim);
+  padding: 0.3rem 0.9rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.util-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Dice overlay */
+.dice-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000cc;
+  z-index: 150;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+}
+.dice-overlay.active { display: flex; }
+
+.dice-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 2.8rem 3.5rem;
+  border: 1px solid var(--border-lt);
+  background: radial-gradient(ellipse at 50% 30%, #1a1040, #0b0b10);
+}
+
+.dice-type-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* d20 shape using clip-path octagon */
+.dice-d20 {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+  background: linear-gradient(160deg, #1e1050 0%, #0d0828 60%, #1a0040 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.4s;
+  animation: diceSpin 0.4s ease-in-out infinite alternate;
+}
+.dice-d20.success { background: linear-gradient(160deg, #0a3020 0%, #061a10 60%, #0d4028 100%); animation: none; }
+.dice-d20.fail    { background: linear-gradient(160deg, #300a0a 0%, #1a0606 60%, #400d0d 100%); animation: none; }
+
+@keyframes diceSpin {
+  from { transform: scale(0.97) rotate(-1deg); filter: brightness(0.9); }
+  to   { transform: scale(1.03) rotate(1deg);  filter: brightness(1.1); }
+}
+
+/* Glow border via drop-shadow since clip-path removes borders */
+.dice-d20-wrap {
+  filter: drop-shadow(0 0 8px #6644aaaa);
+  transition: filter 0.4s;
+}
+.dice-d20-wrap.success { filter: drop-shadow(0 0 14px #44cc7788); }
+.dice-d20-wrap.fail    { filter: drop-shadow(0 0 14px #cc334488); }
+
+.dice-num {
+  font-family: 'Cinzel', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #9977ee;
+  transition: color 0.3s;
+  user-select: none;
+  line-height: 1;
+}
+.dice-num.success { color: #44cc77; }
+.dice-num.fail    { color: #cc4444; }
+
+.dice-dc-row {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+.dice-dc-row span { color: var(--text); }
+
+.dice-verdict {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  min-height: 1.6rem;
+}
+.dice-verdict.success { color: #44cc77; text-shadow: 0 0 20px #44cc7766; animation: fadeIn 0.3s ease; }
+.dice-verdict.fail    { color: #cc4444; text-shadow: 0 0 20px #cc444466; animation: fadeIn 0.3s ease; }
+
+/* Inventory modal */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000cc;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.overlay.active { display: flex; }
+.modal {
+  background: var(--panel);
+  border: 1px solid var(--gold-dim);
+  padding: 1.6rem;
+  width: 90%;
+  max-width: 520px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.modal-title {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 0.95rem;
+  letter-spacing: 0.18em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.9rem;
+}
+.inv-item { padding: 0.55rem 0; border-bottom: 1px solid #1a1520; display:flex; align-items:flex-start; justify-content:space-between; gap:0.5rem; }
+.inv-info  { flex: 1; min-width: 0; }
+.inv-name  { font-family: 'Cinzel', serif; color: var(--gold-lt); font-size: 0.88rem; }
+.inv-qty   { color: var(--dim); font-size: 0.85rem; }
+.inv-desc  { font-size: 0.82rem; color: var(--dim); margin-top: 0.15rem; font-style: italic; }
+.inv-empty { font-style: italic; color: var(--dim); font-size: 0.9rem; }
+.inv-badge { font-size:0.72rem; padding:1px 5px; border-radius:3px; display:inline-block; margin-left:5px; vertical-align:middle; }
+.inv-badge.equipped { background:#1a2a10; color:#6fbf6f; border:1px solid #2a4a1a; }
+.inv-badge.type     { background:#1a1a2a; color:#7a8aaa; border:1px solid #2a2a4a; }
+.inv-equip-btn { font-size:0.75rem; padding:2px 8px; border-radius:3px; cursor:pointer; white-space:nowrap; flex-shrink:0;
+  background:#10101a; border:1px solid #3d2f10; color:var(--gold); font-family:inherit; }
+.inv-equip-btn:hover { background:#1a1510; border-color:var(--gold-dim); }
+.inv-equip-btn.unequip { border-color:#4a2a2a; color:#c06060; }
+.inv-equip-btn.unequip:hover { background:#1a1010; }
+.inv-section-label { font-family:'Cinzel',serif; font-size:0.78rem; color:var(--dim); text-transform:uppercase; letter-spacing:.08em; padding:0.5rem 0 0.3rem; }
+.shop-item { padding:0.55rem 0; border-bottom:1px solid #1a1520; display:flex; align-items:flex-start; justify-content:space-between; gap:0.5rem; }
+.shop-info  { flex:1; min-width:0; }
+.shop-name  { font-family:'Cinzel',serif; color:var(--gold-lt); font-size:0.88rem; }
+.shop-cost  { color:var(--gold); font-size:0.82rem; margin-top:0.1rem; }
+.shop-desc  { font-size:0.82rem; color:var(--dim); margin-top:0.1rem; font-style:italic; }
+.shop-buy-btn { font-size:0.75rem; padding:2px 10px; border-radius:3px; cursor:pointer; white-space:nowrap; flex-shrink:0;
+  background:#10101a; border:1px solid #4a3a10; color:var(--gold); font-family:inherit; }
+.shop-buy-btn:hover { background:#1a1510; border-color:var(--gold); }
+.shop-buy-btn:disabled { opacity:0.4; cursor:not-allowed; }
+.modal-close {
+  margin-top: 1.1rem;
+  width: 100%;
+  padding: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--dim);
+  color: var(--dim);
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.modal-close:hover { border-color: var(--gold); color: var(--gold); }
+
+/* Ending screen */
+.ending {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000000f0;
+  z-index: 200;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+.ending.active { display: flex; }
+.ending-ornament { font-size: 1.5rem; color: var(--gold-dim); margin-bottom: 1rem; animation: fadeIn 1s ease; }
+.ending-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: clamp(1.5rem, 5.5vw, 2.8rem);
+  color: var(--gold);
+  letter-spacing: 0.2em;
+  text-shadow: 0 0 50px #c9a84c66;
+  animation: fadeDown 1s ease;
+}
+.ending-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.28em;
+  color: var(--dim);
+  margin: 0.7rem 0 2rem;
+  animation: fadeIn 1.3s ease 0.4s both;
+}
+.ending-text {
+  max-width: 540px;
+  font-size: clamp(0.95rem, 2.2vw, 1.12rem);
+  line-height: 2;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 2.5rem;
+  animation: fadeIn 1.6s ease 0.8s both;
+}
+.ending-ornament2 { font-size: 1rem; color: var(--gold-dim); margin-bottom: 1.5rem; animation: fadeIn 1.6s ease 0.8s both; }
+.restart-btn {
+  padding: 0.8rem 2.5rem;
+  background: transparent;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: fadeIn 1.6s ease 1.2s both;
+}
+.restart-btn:hover { background: #c9a84c18; box-shadow: 0 0 24px #c9a84c33; }
+
+/* Landing + Lobby */
+.landing-btn {
+  font-family:'Cinzel',serif; font-size:.95rem; letter-spacing:.06em;
+  padding:.7rem 2.2rem; border-radius:4px; cursor:pointer;
+  background:var(--panel); border:1px solid var(--border); color:var(--gold);
+  transition:background .2s,border-color .2s,box-shadow .2s;
+}
+.landing-btn:hover { background:#1a1510; border-color:var(--gold-dim); box-shadow:0 0 18px #c9a84c22; }
+.landing-btn.primary { background:#1a2010; border-color:#3a6a1a; color:#9ad870; }
+.landing-btn.primary:hover { background:#1e2814; border-color:#5a9a2a; box-shadow:0 0 18px #5a9a2a22; }
+.mp-input { font-family:inherit; font-size:.9rem; padding:.5rem .7rem; width:100%;
+  background:#10101a; border:1px solid #3d2f10; color:var(--text); border-radius:3px; }
+.mp-input:focus { outline:none; border-color:var(--gold-dim); }
+.lobby-player { display:flex; align-items:center; gap:.6rem; padding:.5rem .4rem;
+  border-bottom:1px solid #1a1520; }
+.lobby-name  { flex:1; font-family:'Cinzel',serif; font-size:.85rem; color:var(--gold-lt); }
+.lobby-badge { font-size:.72rem; padding:1px 6px; border-radius:3px; }
+.lobby-badge.ready   { background:#1a2a10; color:#6fbf6f; border:1px solid #2a4a1a; }
+.lobby-badge.waiting { background:#2a1a10; color:#bf8f6f; border:1px solid #4a2a1a; }
+.lobby-badge.host    { background:#2a1a2a; color:#9a60c0; border:1px solid #4a2a4a; }
+.room-code-display { font-family:'Cinzel',serif; font-size:2rem; letter-spacing:.3em;
+  color:var(--gold); text-align:center; padding:.6rem; background:#1a1510;
+  border:1px solid var(--border); border-radius:4px; margin:.6rem 0; }
+.party-bar { display:flex; gap:.6rem; flex-wrap:wrap; padding:.4rem 0; }
+.party-card { background:var(--panel); border:1px solid var(--border); border-radius:4px;
+  padding:.35rem .6rem; min-width:100px; }
+.party-card.active-turn { border-color:#5a9a2a; box-shadow:0 0 10px #5a9a2a33; }
+.party-card.disconnected { opacity:.45; }
+.party-card-name { font-family:'Cinzel',serif; font-size:.75rem; color:var(--gold-lt); }
+.party-card-hp   { font-size:.72rem; color:var(--dim); margin-top:.15rem; }
+.party-card-turn { font-size:.7rem; color:#9ad870; margin-top:.1rem; }
+.chat-box { border-top:1px solid var(--border); padding:.5rem 0 0; margin-top:.5rem; }
+.chat-log  { max-height:80px; overflow-y:auto; font-size:.78rem; color:var(--dim); margin-bottom:.4rem; }
+.chat-entry { padding:.1rem 0; }
+.chat-entry .cn { color:var(--gold); }
+.chat-input-row { display:flex; gap:.4rem; }
+.chat-input { flex:1; font-family:inherit; font-size:.8rem; padding:.35rem .5rem;
+  background:#10101a; border:1px solid #3d2f10; color:var(--text); border-radius:3px; }
+.chat-input:focus { outline:none; border-color:var(--gold-dim); }
+.chat-send { font-size:.78rem; padding:.35rem .7rem; background:var(--panel);
+  border:1px solid var(--border); color:var(--gold); border-radius:3px; cursor:pointer; }
+.turn-banner { text-align:center; font-family:'Cinzel',serif; font-size:.8rem;
+  padding:.3rem; border-radius:3px; margin-bottom:.4rem; }
+.turn-banner.your-turn  { background:#1a2a10; color:#9ad870; border:1px solid #3a6a1a; }
+.turn-banner.their-turn { background:#2a1a10; color:#c08060; border:1px solid #5a3a1a; }
+
+/* Reset button */
+.reset-btn { cursor: pointer; }
+.reset-btn:hover { background: #c9a84c22; }
+
+/* Reset confirmation modal */
+.reset-modal-bg {
+  position: fixed;
+  inset: 0;
+  background: #000000cc;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reset-modal-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.8rem 2.2rem;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+}
+.reset-modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  margin-bottom: 0.7rem;
+}
+.reset-modal-msg {
+  font-size: 0.85rem;
+  color: var(--dim);
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+.reset-modal-btns {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+}
+.reset-modal-confirm {
+  background: #3a0a0a;
+  border: 1px solid #aa3333;
+  color: #cc6666;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.reset-modal-confirm:hover { background: #550f0f; }
+.reset-modal-cancel {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--dim);
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  padding: 0.4rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.reset-modal-cancel:hover { color: var(--text); }
+
+/* Loading screen */
+.load-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.3rem;
+}
+.load-screen.gone { display: none; }
+.load-logo  { width: 80px; height: 80px; animation: fadeIn 0.6s ease; }
+.cc-sub {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--gold-dim);
+  margin-bottom: 0.2rem;
+  text-align: center;
+}
+.character-logo { margin-top: 1.8rem; margin-bottom: 0.5rem; ; animation: fadeIn 0.6s ease;}
+.load-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  color: var(--gold);
+  font-size: 1.6rem;
+  letter-spacing: 0.25em;
+  text-shadow: 0 0 30px #c9a84c44;
+}
+.load-msg {
+  font-family: 'Crimson Text', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--dim);
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+
+/* PHASE 4 — Victory screen */
+#victory-screen {
+  position: fixed; inset: 0; background: #080600;
+  z-index: 250; display: none; flex-direction: column;
+  align-items: center; justify-content: center; overflow: hidden;
+}
+#victory-screen.active { display: flex; }
+.victory-confetti-wrap { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.conf-piece {
+  position: absolute; top: -20px; width: 8px; height: 16px;
+  opacity: 0; animation: confetti-fall linear infinite;
+}
+@keyframes confetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.victory-crown { font-size: 4rem; margin-bottom: 0.6rem; animation: pulse 2.2s infinite; }
+.victory-title { font-family: 'Cinzel', serif; font-size: 2.2rem; color: var(--gold); letter-spacing: 0.3em; text-shadow: 0 0 40px #c9a84c88; margin-bottom: 0.3rem; }
+.victory-sub { font-family: 'Crimson Text', serif; font-size: 1rem; color: var(--gold-dim); font-style: italic; margin-bottom: 2rem; }
+.victory-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; max-width: 500px; width: 90%; }
+.victory-stat { text-align: center; background: #c9a84c10; border: 1px solid var(--border); padding: 0.8rem 0.5rem; border-radius: 4px; }
+.victory-stat-val { font-family: 'Cinzel', serif; font-size: 1.4rem; color: var(--gold); }
+.victory-stat-lbl { font-size: 0.68rem; color: var(--dim); margin-top: 0.2rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* PHASE 4 — Death screen */
+#death-screen {
+  position: fixed; inset: 0; background: #060000;
+  z-index: 250; display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+#death-screen.active { display: flex; }
+.death-skull { font-size: 3.5rem; margin-bottom: 0.6rem; animation: pulse 3s infinite; }
+.death-title { font-family: 'Cinzel', serif; font-size: 2rem; color: #cc4444; letter-spacing: 0.25em; margin-bottom: 0.3rem; }
+.death-sub { font-family: 'Cinzel', serif; font-size: 0.8rem; color: #884444; letter-spacing: 0.15em; margin-bottom: 1.2rem; }
+.death-flavour { font-family: 'Crimson Text', serif; font-size: 0.9rem; color: #aa6666; font-style: italic; text-align: center; max-width: 460px; line-height: 1.8; margin-bottom: 2rem; padding: 0 1rem; }
+
+/* PHASE 4 — Floor transition overlay */
+#floor-transition {
+  position: fixed; inset: 0; background: #000000;
+  z-index: 240; display: none; flex-direction: column;
+  align-items: center; justify-content: center; gap: 0.8rem;
+  animation: fadeIn 0.4s ease;
+}
+#floor-transition.active { display: flex; }
+.ft-floor-num { font-family: 'Cinzel', serif; font-size: 9rem; color: #ffffff06; font-weight: 900; position: absolute; letter-spacing: 0.3em; pointer-events: none; }
+.ft-label { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold-dim); letter-spacing: 0.3em; position: relative; z-index: 1; }
+.ft-text { font-family: 'Crimson Text', serif; font-size: 1rem; color: var(--dim); font-style: italic; text-align: center; max-width: 380px; line-height: 1.9; position: relative; z-index: 1; padding: 0 1rem; }
+
+.cc-input {
+  background:#0c0c18;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:.55rem .7rem;
+  font-family:'Crimson Text',serif;
+  font-size:.95rem;
+  outline:none;
+}
+
+.cc-textarea {
+  width:100%;
+  min-height:70px;
+  margin-top:.6rem;
+  background:#0c0c18;
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:.55rem .7rem;
+  font-family:'Crimson Text',serif;
+  font-size:.95rem;
+  outline:none;
+  resize:vertical;
+}
+
+.cc-title {
+  font-family:'Cinzel',serif;
+  color:var(--gold);
+  font-size:.8rem;
+  letter-spacing:.12em;
+  margin:1rem 0 .5rem;
+}
+
+.cc-check-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.45rem;
+}
+
+.cc-check {
+  border:1px solid var(--border);
+  padding:.35rem .55rem;
+  color:var(--text);
+  font-size:.9rem;
+}
+
+.cc-check input {
+  margin-right:.3rem;
+}
+
+/* NPC / Quest */
+.npc-greeting { font-style:italic; color:var(--text); font-size:.95rem; line-height:1.7; margin-bottom:.8rem; padding:.6rem; background:#ffffff04; border-left:2px solid var(--gold-dim); }
+.npc-section-label { font-family:'Cinzel',serif; font-size:.72rem; color:var(--dim); letter-spacing:.1em; text-transform:uppercase; margin:.7rem 0 .3rem; }
+.npc-shop-item { display:flex; align-items:center; justify-content:space-between; padding:.4rem 0; border-bottom:1px solid #1a1520; gap:.5rem; }
+.npc-item-info { flex:1; }
+.npc-item-name { font-family:'Cinzel',serif; font-size:.82rem; color:var(--gold-lt); }
+.npc-item-cost { font-size:.78rem; color:var(--gold); margin-top:.1rem; }
+.persuade-result { padding:.45rem .7rem; border-radius:3px; font-size:.82rem; margin:.5rem 0; }
+.persuade-result.success { background:#1a2a10; color:#9ad870; border:1px solid #3a6a1a; }
+.persuade-result.fail    { background:#2a1010; color:#c07070; border:1px solid #5a2a2a; }
+.quest-row { padding:.55rem 0; border-bottom:1px solid #1a1520; }
+.quest-name { font-family:'Cinzel',serif; font-size:.85rem; color:var(--gold-lt); }
+.quest-desc { font-size:.8rem; color:var(--dim); margin-top:.15rem; font-style:italic; }
+.quest-status { font-size:.72rem; padding:1px 7px; border-radius:3px; display:inline-block; margin-top:.25rem; }
+.quest-status.available  { background:#1a1a2a; color:#7a8aaa; border:1px solid #2a2a4a; }
+.quest-status.accepted   { background:#2a1a10; color:#c09050; border:1px solid #5a3a1a; }
+.quest-status.completed  { background:#1a2a10; color:#6fbf6f; border:1px solid #2a4a1a; }
+.quest-reward { font-size:.75rem; color:var(--dim); margin-top:.2rem; }
+
+/* Save/Load modal */
+.save-slot { display:flex; align-items:center; gap:.7rem; padding:.6rem 0; border-bottom:1px solid #1a1520; }
+.save-info  { flex:1; min-width:0; }
+.save-name  { font-family:'Cinzel',serif; color:var(--gold-lt); font-size:.88rem; }
+.save-meta  { font-size:.78rem; color:var(--dim); margin-top:.1rem; }
+.save-btn   { font-size:.72rem; padding:2px 9px; border-radius:3px; cursor:pointer; white-space:nowrap;
+  background:#10101a; border:1px solid #3d2f10; color:var(--gold); font-family:inherit; }
+.save-btn:hover { background:#1a1510; border-color:var(--gold-dim); }
+.save-btn.del  { border-color:#4a2a2a; color:#c06060; }
+.save-btn.del:hover { background:#1a1010; }
+.save-input-row { display:flex; gap:.5rem; margin-bottom:.8rem; }
+.save-input-row input { flex:1; }
+
+/* Responsive, small phones */
+@media (max-width: 520px) {
+  .cbtn { padding: 0.85rem 0.3rem; font-size: 0.72rem; }
+  .cbtn .ico { font-size: 1.1rem; }
+  .badge { font-size: 0.65rem; }
+  .logo-img { width: 44px; height: 44px; }
+  .dice-stage { padding: 2rem 2rem; }
+  .dice-d20 { width: 110px; height: 110px; }
+  .dice-num { font-size: 2rem; }
+}
+
+.gone { display: none !important; }
+
+.game-outer {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.game-outer > header { padding: 1.2rem 0 0.5rem; }
+
+.game-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 0.8rem;
+  align-items: start;
+  flex: 1;
+  padding-bottom: 1.5rem;
+}
+
+.panel-left, .panel-right {
+  position: sticky;
+  top: 0.4rem;
+  max-height: calc(100vh - 0.8rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+}
+.panel-left::-webkit-scrollbar, .panel-right::-webkit-scrollbar { width: 3px; }
+.panel-center { min-width: 0; }
+
+.panel-left {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 0.65rem;
+  border-radius: 2px;
+}
+.panel-right {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+}
+.left-label {
+  font-family: 'Cinzel', serif;
+  font-size: .58rem;
+  color: var(--dim);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .35rem;
+}
+/* Minimap inside left panel */
+.panel-left .minimap-wrap { margin: 0; padding: 0; border-top: none; }
+.panel-left .minimap-label { display: none; }
+
+/* Right panel tabs */
+.r-tabs { display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.r-tab {
+  flex: 1;
+  padding: .42rem .2rem;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border);
+  color: var(--dim);
+  font-family: 'Cinzel', serif;
+  font-size: .58rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: all .18s;
+}
+.r-tab:last-child { border-right: none; }
+.r-tab:hover { color: var(--gold); }
+.r-tab.active { color: var(--gold-lt); background: #c9a84c08; border-bottom: 2px solid var(--gold); margin-bottom: -1px; }
+.r-tab-pane {
+  padding: .65rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 4rem);
+}
+
+/* Character sheet */
+.cs-empty  { font-style: italic; color: var(--dim); font-size: .85rem; }
+.cs-identity { margin-bottom: .55rem; }
+.cs-char-name { font-family:'Cinzel',serif; color:var(--gold); font-size:.9rem; font-weight:600; line-height:1.2; }
+.cs-char-sub  { font-size:.68rem; color:var(--dim); margin-top:.1rem; }
+.cs-section-label {
+  font-family:'Cinzel',serif; font-size:.58rem; letter-spacing:.16em; color:var(--dim);
+  text-transform:uppercase; margin:.65rem 0 .28rem; border-bottom:1px solid #1e1a12; padding-bottom:.15rem;
+}
+.cs-sub-label { font-size:.68rem; color:var(--dim); margin-top:.18rem; font-style:italic; line-height:1.4; }
+
+/* Ability boxes 3 per row */
+.cs-ab-row { display:grid; grid-template-columns:repeat(3,1fr); gap:.32rem; }
+.cs-ab { border:1px solid var(--border); padding:.32rem .18rem; text-align:center; background:#ffffff04; }
+.cs-ab-key   { font-family:'Cinzel',serif; font-size:.52rem; color:var(--dim); letter-spacing:.04em; }
+.cs-ab-mod   { font-family:'Cinzel',serif; font-size:1.05rem; color:var(--gold-lt); font-weight:600; line-height:1.1; }
+.cs-ab-score { font-size:.62rem; color:var(--dim); }
+
+/* Combat stats */
+.cs-combat-row { display:flex; flex-wrap:wrap; gap:.3rem; }
+.cs-stat { text-align:center; background:#ffffff04; border:1px solid var(--border); padding:.26rem .35rem; flex:1; min-width:32px; }
+.cs-stat-val { font-family:'Cinzel',serif; font-size:.78rem; color:var(--gold-lt); }
+.cs-stat-lbl { font-size:.48rem; color:var(--dim); margin-top:.06rem; white-space:nowrap; }
+#cs-hp-display { color: var(--gold-lt); }
+
+/* Saving throws */
+.cs-saves { font-size:.7rem; }
+.cs-save-row { display:flex; align-items:center; gap:.25rem; padding:.06rem 0; border-bottom:1px solid #181420; }
+.cs-save-key { font-family:'Cinzel',serif; font-size:.6rem; color:var(--text); flex:1; }
+.cs-save-mod { color:var(--gold); font-size:.65rem; min-width:1.7rem; text-align:right; }
+
+/* Skills */
+.cs-skills { font-size:.68rem; }
+.cs-skill-row { display:flex; align-items:center; gap:.22rem; padding:.05rem 0; border-bottom:1px solid #181420; }
+.cs-skill-name { font-size:.66rem; color:var(--text); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cs-skill-ab { font-size:.56rem; color:var(--dim); flex-shrink:0; }
+.cs-skill-mod { color:var(--gold); font-size:.65rem; min-width:1.7rem; text-align:right; }
+.cs-dot { font-size:.6rem; color:var(--dim); flex-shrink:0; width:.85rem; }
+.cs-dot.proficient { color:var(--gold-lt); }
+.cs-dot.expertise  { color:#7aacf0; }
+
+/* Attacks table */
+.cs-atk-table { width:100%; border-collapse:collapse; font-size:.66rem; }
+.cs-atk-table th { font-family:'Cinzel',serif; font-size:.55rem; color:var(--dim); text-align:left; padding:.16rem .22rem; border-bottom:1px solid var(--border); }
+.cs-atk-table td { padding:.2rem .22rem; border-bottom:1px solid #181420; color:var(--text); }
+
+/* Features / Traits */
+.cs-feature { padding:.28rem 0; border-bottom:1px solid #181420; }
+.cs-feature-name { font-family:'Cinzel',serif; font-size:.65rem; color:var(--gold-lt); display:flex; align-items:center; gap:.3rem; }
+.cs-feature-desc { font-size:.65rem; color:var(--dim); margin-top:.1rem; font-style:italic; line-height:1.4; }
+
+/* Proficiencies */
+.cs-profs { font-size:.68rem; color:var(--dim); }
+.cs-profs > div { padding:.1rem 0; border-bottom:1px solid #181420; line-height:1.4; }
+.cs-prof-type { color:var(--text); }
+
+/* Personality */
+.cs-personality { font-size:.68rem; }
+.cs-pers-row { padding:.12rem 0; border-bottom:1px solid #181420; line-height:1.4; }
+.cs-pers-key { color:var(--text); }
+.cs-backstory { font-size:.68rem; font-style:italic; color:var(--dim); line-height:1.5; }
+
+/* Inline badges */
+.cs-badge { font-size:.6rem; padding:1px 5px; border-radius:3px; background:#1a1a2a; color:#7a8aaa; border:1px solid #2a2a4a; display:inline-block; }
+.cs-badge.gold { background:#1a1510; color:var(--gold); border-color:var(--border); }
+.cs-row-insp, .cs-spell-row { display:flex; gap:.32rem; flex-wrap:wrap; margin:.32rem 0; }
+
+/* Currency */
+.cs-currency { display:flex; flex-wrap:wrap; gap:.28rem; margin:.28rem 0; }
+.cu-badge { font-size:.66rem; padding:1px 6px; border-radius:3px; display:inline-block; }
+.cu-badge.pp { background:#1a1a2a; color:#c8b0e8; border:1px solid #3a2a5a; }
+.cu-badge.gp { background:#1a1510; color:var(--gold); border:1px solid var(--border); }
+.cu-badge.sp { background:#181818; color:#aaa; border:1px solid #3a3a3a; }
+.cu-badge.cp { background:#1a1008; color:#c0884a; border:1px solid #3a2a18; }
+
+/* Panel history */
+.panel-history-log .h-entry { padding:.32rem .28rem; border-bottom:1px solid #181420; line-height:1.6; display:flex; gap:.42rem; }
+.panel-history-log .h-turn  { font-family:'Cinzel',serif; font-size:.6rem; color:var(--gold-dim); white-space:nowrap; padding-top:.06rem; flex-shrink:0; }
+.panel-history-log .h-text  { font-style:italic; color:var(--dim); font-size:.8rem; }
+
+/* Dice roll strip */
+#dice-roll-strip {
+  display: flex; gap: .32rem; flex-wrap: wrap; align-items: center;
+  padding: .28rem .45rem; background: #0d0d1a;
+  border: 1px solid #1e1840; border-radius: 3px; margin: .28rem 0;
+  font-family: 'Cinzel', serif; font-size: .6rem;
+}
+.dice-chip { padding:.1rem .42rem; border-radius:2px; border:1px solid #2a2040; color:var(--text); background:#10101a; }
+.dc-die { color:var(--dim); }
+.dc-val { color:var(--gold-lt); font-weight:600; }
+.dc-nat20 { color:#44cc77; }
+.dc-nat1  { color:#cc4444; }
+
+/* responsive */
+@media (max-width: 768px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .panel-left  { position:static; max-height:none; order:3; }
+  .panel-right { position:static; max-height:none; order:2; }
+  .panel-center{ order:1; }
+  .r-tab-pane  { max-height:360px; }
+  .game-outer  { padding:0 .6rem; }
+}
+@media (max-width: 520px) {
+  .r-tab { font-size:.5rem; padding:.36rem .12rem; }
+  .cs-ab-mod { font-size:.88rem; }
+}
+
+/* Enhanced initiative order pills */
+.init-pill {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--border);
+  padding: 0.22rem 0.48rem;
+  background: #ffffff04;
+  min-width: 76px;
+}
+.init-pill.player-type { border-color: #1a5a8a; background: #00121e; color: #5aaace; }
+.init-pill.enemy-type  { border-color: #6a1a1a; background: #1e0808; color: #ce5a5a; }
+.init-pill.pill-active { box-shadow: 0 0 14px #c9a84c55; border-color: var(--gold); }
+.init-pill-top { display: flex; justify-content: space-between; align-items: center; gap: 0.3rem; }
+.init-pill-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.init-pill-hp { color: var(--dim); white-space: nowrap; font-size: 0.54rem; flex-shrink: 0; }
+.init-pill-bar { height: 3px; background: #ffffff10; overflow: hidden; }
+.init-pill.player-type .init-pill-bar-fill { background: #2a7aaa; height: 100%; }
+.init-pill.enemy-type  .init-pill-bar-fill { background: #aa2a2a; height: 100%; }
+
+/* flash-damage animation */
+@keyframes flash-damage {
+  0%   { filter: brightness(1); }
+  18%  { filter: brightness(2.4) saturate(2.5); }
+  100% { filter: brightness(1); }
+}
+.flash-damage { animation: flash-damage 0.55s ease-out; }
+
+/* condition badge strip */
+.condition-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.22rem;
+  padding: 0.1rem 0;
+  min-height: 0;
+}
+.cond-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.54rem;
+  padding: 0.08rem 0.32rem;
+  border: 1px solid;
+  white-space: nowrap;
+  letter-spacing: 0.03em;
+}
+.cond-badge.poisoned   { background: #081608; border-color: #256620; color: #7acf7a; }
+.cond-badge.frightened { background: #16081a; border-color: #552880; color: #c07ace; }
+.cond-badge.prone      { background: #180d00; border-color: #755800; color: #cf9a40; }
+.cond-badge.slowed     { background: #000818; border-color: #005080; color: #40a0ce; }
+.cond-badge.stunned    { background: #181800; border-color: #808000; color: #cece40; }
+.cond-badge.dead       { background: #180808; border-color: #580000; color: #aa3333; }
+.cond-badge.cond-other { background: #181818; border-color: #585858; color: #aaaaaa; }
+
+/* inspiration header badge */
+.inspiration-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  padding: 0.22rem 0.7rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: #c9a84c15;
+  white-space: nowrap;
+  letter-spacing: 0.07em;
+  display: none;
+  cursor: default;
+}
+.inspiration-badge.active { display: inline-block; }
+
+/* PHASE 5: Use Inspiration combat button */
+.cbtn-inspo { border-color: #c9a84c80; color: var(--gold-lt); background: #c9a84c0a; }
+.cbtn-inspo:not(:disabled):hover { background: #c9a84c20; box-shadow: 0 0 14px #c9a84c33; border-color: var(--gold); }
+
+/* PHASE 5: Mobile layout enhancements */
+@media (max-width: 768px) {
+  .game-outer { padding: 0 0.35rem; }
+  .send-btn, .cbtn, .util-btn, .landing-btn { min-height: 44px; }
+  #narrative-text { font-size: 1rem; line-height: 1.75; }
+  .room-tile { width: 52px; height: 40px; }
+  #history-log { max-height: 130px; overflow-y: auto; }
+  .status { flex-wrap: wrap; row-gap: 0.3rem; }
+  .r-tab-pane { max-height: 300px; }
+}
+
+/* PHASE 6 — Full UI Retheme with Procedural Textures*/
+
+/* Stone background on body */
+html, body { background-color: var(--color-bg); }
+body {
+  background-image:
+    url('/static/textures/stone_bg.jpg'),
+    radial-gradient(ellipse 120% 40% at 50% 0%, #6b320e55, transparent),
+    radial-gradient(ellipse 80% 30% at 50% 100%, #1e0d0444, transparent);
+  background-size: cover, auto, auto;
+  background-position: center, center, center;
+  background-attachment: fixed, fixed, fixed;
+  background-blend-mode: multiply, normal, normal;
+}
+
+/* Landing / lobby screens */
+@keyframes p6-flicker {
+  0%, 94%, 100% { opacity: 1; text-shadow: 0 0 30px #c9a22788; }
+  95%   { opacity: 0.78; text-shadow: none; }
+  97%   { opacity: 1;    text-shadow: 0 0 30px #c9a22755; }
+  98.5% { opacity: 0.88; }
+}
+.load-screen { background: rgba(13, 10, 7, 0.95); }
+.load-title {
+  font-family: var(--font-display);
+  color: var(--color-gold);
+  text-shadow: 0 0 30px #c9a22788;
+  animation: p6-flicker 9s infinite;
+}
+.landing-btn {
+  font-family: var(--font-heading);
+  background: rgba(50, 38, 20, 0.78);
+  border-color: var(--color-stone-light);
+  color: var(--color-parchment);
+}
+.landing-btn:hover {
+  background: rgba(74, 58, 28, 0.9);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+  box-shadow: 0 0 18px #c9a22744;
+}
+.landing-btn.primary {
+  background: rgba(80, 55, 12, 0.82);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+}
+.landing-btn.primary:hover {
+  background: rgba(110, 78, 18, 0.92);
+  border-color: var(--color-gold-light);
+  box-shadow: 0 0 24px #c9a22766;
+}
+
+/* Panel headers dark wood */
+.left-label {
+  font-family: var(--font-heading);
+  color: var(--color-parchment-dark);
+  letter-spacing: 0.14em;
+  background-image: url('/static/textures/dark_wood.jpg');
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-blend-mode: multiply;
+  background-color: var(--color-stone);
+  padding: 0.45rem 0.65rem;
+  border-bottom: 1px solid #5a4520;
+  margin-bottom: 0.5rem;
+}
+.r-tabs {
+  background-image: url('/static/textures/dark_wood.jpg');
+  background-size: auto 100%;
+  background-repeat: repeat-x;
+  background-blend-mode: multiply;
+  background-color: var(--color-stone);
+  border-bottom: 1px solid #5a4520;
+}
+.r-tab { font-family: var(--font-heading); color: var(--color-stone-light); letter-spacing: 0.08em; }
+.r-tab:hover { color: var(--color-gold); }
+.r-tab.active { color: var(--color-gold-light); background: rgba(201,162,39,0.08); border-bottom-color: var(--color-gold); }
+
+/* Narrative box parchment texture */
+.narrative-box {
+  background-image: url('/static/textures/parchment_panel.jpg');
+  background-size: cover;
+  background-blend-mode: multiply;
+  background-color: rgba(20, 15, 10, 0.82);
+  border-color: var(--color-stone);
+}
+#narrative-text {
+  font-family: var(--font-narrative);
+  font-style: italic;
+  color: var(--color-parchment);
+  line-height: 2;
+}
+
+/* Right panel leather */
+.panel-right {
+  background-image: url('/static/textures/leather_panel.jpg');
+  background-size: cover;
+  background-blend-mode: multiply;
+  background-color: rgba(20, 14, 9, 0.9);
+  border-color: var(--color-stone);
+}
+
+/* Dungeon map stone flagstone */
+#minimap-wrap {
+  background-image: url('/static/textures/map_bg.jpg');
+  background-size: cover;
+  background-blend-mode: multiply;
+  background-color: rgba(12, 10, 6, 0.9);
+  border-radius: 2px;
+  padding: 0.4rem;
+}
+.room-tile.current {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 12px #c9a22766;
+  background: rgba(201, 162, 39, 0.12);
+}
+.room-tile.boss { border-color: var(--color-blood); color: var(--color-blood); }
+.room-tile.boss.current {
+  border-color: var(--color-blood);
+  box-shadow: 0 0 12px #8b000066;
+  background: rgba(139, 0, 0, 0.12);
+}
+
+/* HP/XP bars dungeon-themed */
+.bar-track { height: 12px; border-radius: 2px; }
+.hp-fill    { background: linear-gradient(90deg, #5c0a0a, var(--color-blood)); }
+.xp-fill    { background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light)); }
+.enemy-fill { background: linear-gradient(90deg, #6b0000, #aa1a1a); }
+
+/* Combat action buttons stone texture, rethemed */
+.cbtn { font-family: var(--font-heading); }
+.cbtn-fight, .cbtn-sneak, .cbtn-talk,
+.cbtn-dodge, .cbtn-dash,  .cbtn-help,
+.cbtn-search, .cbtn-down, .cbtn-death, .cbtn-item {
+  background-color: rgba(50, 38, 18, 0.6);
+  border-color: var(--color-stone-light);
+  color: var(--color-parchment-dark);
+}
+.cbtn-fight:not(:disabled):hover, .cbtn-sneak:not(:disabled):hover,
+.cbtn-talk:not(:disabled):hover,  .cbtn-dodge:not(:disabled):hover,
+.cbtn-dash:not(:disabled):hover,  .cbtn-help:not(:disabled):hover,
+.cbtn-search:not(:disabled):hover,.cbtn-down:not(:disabled):hover,
+.cbtn-death:not(:disabled):hover, .cbtn-item:not(:disabled):hover {
+  background-color: rgba(80, 62, 25, 0.75);
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+  box-shadow: 0 0 16px #c9a22733;
+}
+.cbtn-spell {
+  background-color: rgba(40, 20, 60, 0.6) !important;
+  border-color: var(--color-magic) !important;
+  color: #c090e8 !important;
+}
+.cbtn-spell:not(:disabled):hover {
+  background-color: rgba(80, 40, 110, 0.75) !important;
+  border-color: #9060cc !important;
+  box-shadow: 0 0 16px #7b4fa633 !important;
+}
+
+/* Dice animation */
+.dice-d20-face {
+  background: rgba(30, 22, 14, 0.92);
+  border: 2px solid var(--color-stone-light);
+  color: var(--color-parchment);
+}
+.dice-d20-face.critical { border-color: var(--color-gold);  color: var(--color-gold-light); box-shadow: 0 0 20px #c9a22766; }
+.dice-d20-face.fumble   { border-color: var(--color-blood); color: #dd4444;                  box-shadow: 0 0 20px #8b000055; }
+
+/* Overlays victory / death / floor transition */
+#victory-screen { background: radial-gradient(ellipse at center, #0d0900 40%, #000); }
+.victory-title  { font-family: var(--font-display); color: var(--color-gold); text-shadow: 0 0 48px #c9a22799, 0 0 80px #c9a22744; }
+#death-screen   { background: radial-gradient(ellipse at center, #0a0000 40%, #000); }
+.death-title    { font-family: var(--font-display); color: var(--color-blood); text-shadow: 0 0 40px #8b000099; }
+.ft-label { font-family: var(--font-display); color: var(--color-gold-light); letter-spacing: 0.35em; }
+.ft-text  { font-family: var(--font-narrative); font-style: italic; color: var(--color-parchment-dark); line-height: 2; }
+
+/* Initiative tracker */
+.init-pill { background: rgba(26, 20, 12, 0.9); border: 1px solid var(--color-stone); }
+.init-pill.pill-active   { border-color: var(--color-gold); box-shadow: 0 0 10px #c9a22744; }
+.init-pill.player-type   { border-color: #2a6a8a; }
+.init-pill.enemy-type    { border-color: #8a2a2a; }
+
+/* Condition badges */
+.cond-badge { font-family: var(--font-body); font-style: italic; }
+
+/* Input / send / badges */
+.send-btn { font-family: var(--font-heading); border-color: var(--color-gold); color: var(--color-gold); letter-spacing: 0.15em; }
+.send-btn:hover:not(:disabled) { background: rgba(201,162,39,0.14); box-shadow: 0 0 18px #c9a22733; }
+#user-input { font-family: var(--font-narrative); font-style: italic; color: var(--color-parchment); border-color: var(--color-stone); }
+#user-input:focus { border-color: var(--color-gold); }
+.badge { font-family: var(--font-heading); border-color: var(--color-stone-light); color: var(--color-gold); }
+.action-chip { font-family: var(--font-body); font-style: italic; border-radius: 12px; }
+
+/* Floating music volume widget */
+.music-widget {
+  position: fixed; bottom: 1.2rem; right: 1.2rem; z-index: 500;
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+}
+.music-vol-panel {
+  background: rgba(13, 10, 7, 0.92);
+  border: 1px solid var(--color-stone-light);
+  border-radius: 20px;
+  padding: 0.8rem 0.55rem 0.6rem;
+  display: flex; flex-direction: column; align-items: center; gap: 0.45rem;
+  opacity: 0; pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 0.18s, transform 0.18s;
+}
+.music-widget:hover .music-vol-panel {
+  opacity: 1; pointer-events: auto; transform: translateY(0);
+}
+.music-vol-pct {
+  font-family: 'Courier New', monospace; font-size: 0.68rem; color: var(--color-stone-light);
+}
+#music-vol {
+  -webkit-appearance: none; appearance: none;
+  writing-mode: vertical-lr; direction: rtl;
+  width: 4px; height: 76px;
+  background: var(--color-stone); border-radius: 2px; outline: none; cursor: pointer;
+}
+#music-vol::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--color-gold); cursor: pointer; border: none;
+}
+#music-vol::-moz-range-thumb {
+  width: 14px; height: 14px;
+  border-radius: 50%; background: var(--color-gold); cursor: pointer; border: none;
+}
+#p6-mute-btn {
+  background: rgba(13, 10, 7, 0.88);
+  border: 1px solid var(--color-stone-light);
+  color: var(--color-parchment-dark);
+  width: 40px; height: 40px; border-radius: 50%;
+  cursor: pointer; font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#p6-mute-btn:hover { border-color: var(--color-gold); box-shadow: 0 0 10px #c9a22733; }
+
+
+/* Mobile disable fixed attachment for iOS */
+@media (max-width: 768px) {
+  body { background-attachment: scroll, scroll, scroll; }
+}
+
+/* Character portraits */
+.p7a-portrait-lg {
+  width: 120px;
+  border: 1px solid #c9a227;
+  border-radius: 3px;
+  display: block;
+  margin: 0 auto 12px;
+  object-fit: cover;
+}
+.p7a-portrait-sm {
+  width: 60px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--color-stone-light);
+  flex-shrink: 0;
+}
+/* Enemy portrait in the header, mirrors the player portrait on the left */
+.enemy-portrait-sm {
+  width: 60px;
+  height: 84px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 2px;
+  border: 1px solid #6a1a1a;
+  flex-shrink: 0;
+}
+
+/* Floor theme label below map header */
+.floor-theme-label {
+  font-family: var(--font-narrative, 'IM Fell English', serif);
+  font-style: italic;
+  font-size: 0.62rem;
+  color: var(--floor-accent, #c9a227);
+  text-align: center;
+  margin: -0.1rem 0 0.25rem;
+  opacity: 0.85;
+  letter-spacing: 0.02em;
+}
+
+/* minimap border reacts to floor theme */
+#minimap-wrap {
+  border: 1px solid var(--floor-accent, #c9a227);
+  border-radius: 3px;
+}
+
+/* Surface hub view */
+.hub-header {
+  font-family: var(--font-display, 'Cinzel Decorative', cursive);
+  color: #c9a227;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  margin: 0.25rem 0 0.4rem;
+}
+.hub-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  padding: 0.1rem 0.1rem 0.3rem;
+}
+.hub-card {
+  width: 80px;
+  height: 100px;
+  background: rgba(42,31,20,0.75);
+  border: 1px solid var(--color-stone-light, #5a4a35);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.3rem 0.2rem;
+  text-align: center;
+  transition: border-color 0.18s, background 0.18s;
+  margin: 0 auto;
+  user-select: none;
+}
+.hub-card:hover {
+  border-color: #c9a227;
+  background: rgba(60,45,25,0.85);
+}
+.hub-card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+  line-height: 1;
+}
+.hub-card-name {
+  font-family: var(--font-ui, 'Cinzel', serif);
+  font-size: 0.52rem;
+  color: #c9a227;
+  line-height: 1.25;
+}
+</style>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+
+<!-- Background music player — single element, src swapped by MusicManager -->
+<audio id="music-player" preload="auto"></audio>
+<div class="music-widget">
+  <div class="music-vol-panel">
+    <span class="music-vol-pct" id="music-vol-pct">30%</span>
+    <input id="music-vol" type="range" min="0" max="100" value="30">
+  </div>
+  <button id="p6-mute-btn" title="Mute music" aria-label="Toggle music">&#128266;</button>
+</div>
+
+<!-- Landing screen -->
+<div class="load-screen" id="landing-screen">
+  <img src="/static/logo.svg" class="load-logo" alt="Ironwood Dungeon">
+  <div class="load-title">IRONWOOD DUNGEON</div>
+  <div class="load-msg">Choose your path.</div>
+  <div style="display:flex;flex-direction:column;gap:.7rem;width:260px;margin-top:.5rem">
+    <button class="landing-btn primary" id="solo-btn">&#9876; Play Solo</button>
+    <hr style="border:none;border-top:1px solid var(--border);">
+    <input id="mp-name-input" class="mp-input" placeholder="Your name..." maxlength="24">
+    <button class="landing-btn" id="create-room-btn">&#9670; Create Room</button>
+    <div style="display:flex;gap:.4rem">
+      <input id="mp-code-input" class="mp-input" placeholder="Room code..." maxlength="4"
+             style="text-transform:uppercase;letter-spacing:.15em;width:120px">
+      <button class="landing-btn" id="join-room-btn" style="flex:1">Join</button>
+    </div>
+    <div id="landing-error" style="display:none;color:#dd5555;font-size:.82rem;text-align:center;padding:.3rem 0"></div>
+  </div>
+</div>
+
+<!-- Lobby screen -->
+<div class="load-screen gone" id="lobby-screen">
+  <img src="/static/logo.svg" class="load-logo" alt="Ironwood Dungeon">
+  <div class="load-title">WAITING FOR PARTY</div>
+  <div class="room-code-display" id="lobby-code">----</div>
+  <div style="font-size:.75rem;color:var(--dim);margin-bottom:.6rem">Share this code with your party.</div>
+  <div style="width:280px;background:var(--panel);border:1px solid var(--border);padding:.7rem;border-radius:4px">
+    <div id="lobby-player-list"></div>
+  </div>
+  <div id="lobby-status" style="font-size:.8rem;color:var(--dim);margin-top:.6rem"></div>
+  <button class="landing-btn" id="lobby-char-btn" style="margin-top:.8rem">&#9670; Choose Character</button>
+  <button class="landing-btn primary gone" id="start-game-btn" style="margin-top:.5rem">
+    &#9658; Start Game
+  </button>
+  <button class="landing-btn" id="lobby-back-btn" style="margin-top:.4rem;font-size:.8rem">
+    &#8592; Leave
+  </button>
+</div>
+
+<!-- Character creation screen -->
+<div class="load-screen" id="character-screen">
+  <img src="/static/logo.svg" class="load-logo character-logo" alt="Ironwood Dungeon Logo">
+  <div class="load-title">CREATE YOUR HERO</div>
+  <div class="load-msg">Forge the soul that enters Ironwood Dungeon.</div>
+
+  <div style="width:90%;max-width:860px;background:var(--panel);border:1px solid var(--border);padding:1.2rem;max-height:80vh;overflow-y:auto">
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem">
+      <input id="cc-character-name" placeholder="Character Name" class="cc-input">
+      <input id="cc-player-name" placeholder="Player Name" class="cc-input">
+
+      <select id="cc-class" class="cc-input"></select>
+      <select id="cc-race" class="cc-input"></select>
+      <select id="cc-background" class="cc-input"></select>
+      <select id="cc-alignment" class="cc-input"></select>
+    </div>
+
+    <h3 class="cc-title">Ability Scores</h3>
+    <!-- <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem">
+      <select id="cc-STR" class="cc-input"></select>
+      <select id="cc-DEX" class="cc-input"></select>
+      <select id="cc-CON" class="cc-input"></select>
+      <select id="cc-INT" class="cc-input"></select>
+      <select id="cc-WIS" class="cc-input"></select>
+      <select id="cc-CHA" class="cc-input"></select>
+    </div> -->
+    <!--Fix-->
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem">
+
+      <div>
+        <div class="cc-sub">Strength</div>
+        <select id="cc-STR" class="cc-input"></select>
+      </div>
+
+      <div>
+        <div class="cc-sub">Dexterity</div>
+        <select id="cc-DEX" class="cc-input"></select>
+      </div>
+
+      <div>
+        <div class="cc-sub">Constitution</div>
+        <select id="cc-CON" class="cc-input"></select>
+      </div>
+
+      <div>
+        <div class="cc-sub">Intelligence</div>
+        <select id="cc-INT" class="cc-input"></select>
+      </div>
+
+      <div>
+        <div class="cc-sub">Wisdom</div>
+        <select id="cc-WIS" class="cc-input"></select>
+      </div>
+
+      <div>
+        <div class="cc-sub">Charisma</div>
+        <select id="cc-CHA" class="cc-input"></select>
+      </div>
+
+    </div>
+    <!--Fix End-->
+
+    <h3 class="cc-title">Class Choices</h3>
+    <div id="cc-class-skills"></div>
+    <div id="cc-extra-choices"></div>
+    <div id="cc-race-choices"></div>
+
+    <h3 class="cc-title">Character Flavour</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem">
+      <input id="cc-age" placeholder="Age" class="cc-input">
+      <input id="cc-height" placeholder="Height" class="cc-input">
+      <input id="cc-weight" placeholder="Weight" class="cc-input">
+      <input id="cc-eyes" placeholder="Eyes" class="cc-input">
+      <input id="cc-skin" placeholder="Skin" class="cc-input">
+      <input id="cc-hair" placeholder="Hair" class="cc-input">
+    </div>
+
+    <textarea id="cc-personality" placeholder="Personality Trait" class="cc-textarea"></textarea>
+    <textarea id="cc-ideal" placeholder="Ideal" class="cc-textarea"></textarea>
+    <textarea id="cc-bond" placeholder="Bond" class="cc-textarea"></textarea>
+    <textarea id="cc-flaw" placeholder="Flaw" class="cc-textarea"></textarea>
+    <textarea id="cc-backstory" placeholder="Backstory" class="cc-textarea"></textarea>
+    <textarea id="cc-allies" placeholder="Allies / Organisations" class="cc-textarea"></textarea>
+
+    <div id="cc-error" class="error-bar"></div>
+
+    <button class="restart-btn" id="cc-create-btn" style="margin-top:1rem">Create Character</button>
+  </div>
+</div>
+
+<!-- Loading screen -->
+<div class="load-screen" id="load-screen">
+  <img src="/static/logo.svg" class="load-logo" alt="Ironwood Dungeon">
+  <div class="load-title">IRONWOOD DUNGEON</div>
+  <div class="load-msg" id="load-msg">The dungeon stirs...</div>
+</div>
+
+<!-- Ending screen -->
+<div class="ending" id="ending-screen">
+  <div class="ending-ornament">&#9670; &#9670; &#9670;</div>
+  <div class="ending-title" id="ending-title"></div>
+  <div class="ending-sub" id="ending-sub"></div>
+  <div class="ending-text" id="ending-text"></div>
+  <div class="ending-ornament2">&#9670;</div>
+  <button class="restart-btn" id="restart-btn">Begin Again</button>
+</div>
+
+<!--  Victory screen -->
+<div id="victory-screen">
+  <div class="victory-confetti-wrap" id="confetti-wrap"></div>
+  <div class="victory-crown">&#9819;</div>
+  <div class="victory-title">IRONWOOD CONQUERED</div>
+  <div class="victory-sub">The Bone Dragon falls. The dungeon is yours.</div>
+  <div class="victory-stats" id="victory-stats"></div>
+  <button class="restart-btn" id="victory-new-btn">Begin New Adventure</button>
+</div>
+
+<!-- Death screen -->
+<div id="death-screen">
+  <div class="death-skull">&#9760;</div>
+  <div class="death-title">YOUR JOURNEY ENDS HERE</div>
+  <div class="death-sub" id="death-sub">FLOOR 1</div>
+  <div class="death-flavour" id="death-flavour"></div>
+  <button class="restart-btn" id="death-rise-btn">Rise Again</button>
+</div>
+
+<!-- Floor transition overlay -->
+<div id="floor-transition">
+  <div class="ft-floor-num" id="ft-floor-num">2</div>
+  <div class="ft-label" id="ft-label">FLOOR 2</div>
+  <div class="ft-text" id="ft-text"></div>
+</div>
+
+<!-- Reset confirmation modal -->
+<div class="reset-modal-bg" id="reset-modal" style="display:none">
+  <div class="reset-modal-box">
+    <div class="reset-modal-title">&#9670; Abandon This Run?</div>
+    <div class="reset-modal-msg">All progress and dungeon state will be wiped.<br>Your character sheet will be kept.</div>
+    <div class="reset-modal-btns">
+      <button class="reset-modal-confirm" onclick="confirmReset()">Yes, Reset</button>
+      <button class="reset-modal-cancel"  onclick="closeResetModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Dice overlay -->
+<div class="dice-overlay" id="dice-overlay">
+  <div class="dice-stage">
+    <div class="dice-type-label" id="dice-type-label">Stealth Check</div>
+    <div class="dice-d20-wrap" id="dice-wrap">
+      <div class="dice-d20" id="dice-d20">
+        <span class="dice-num" id="dice-num">?</span>
+      </div>
+    </div>
+    <div class="dice-dc-row" id="dice-dc-row">&nbsp;</div>
+    <div class="dice-verdict" id="dice-verdict">&nbsp;</div>
+  </div>
+</div>
+
+<!-- Item picker (combat use) -->
+<div class="overlay" id="item-picker-overlay">
+  <div class="modal">
+    <div class="modal-title">&#9670; Use Item</div>
+    <div id="item-picker-list"></div>
+    <button class="modal-close" id="close-item-picker">Cancel</button>
+  </div>
+</div>
+
+<!-- Inventory modal -->
+<div class="overlay" id="inv-overlay">
+  <div class="modal">
+    <div class="modal-title">&#9670; Your Pack</div>
+    <div id="inv-list"></div>
+    <button class="modal-close" id="close-inv">Close</button>
+  </div>
+</div>
+
+<!-- Shop modal -->
+<div class="overlay" id="shop-overlay">
+  <div class="modal">
+    <div class="modal-title">&#9670; Dungeon Shop</div>
+    <div id="shop-gold-display" style="text-align:center;margin-bottom:10px;color:var(--gold);font-size:.9em;"></div>
+    <div id="shop-list"></div>
+    <button class="modal-close" id="close-shop">Close</button>
+  </div>
+</div>
+
+<!-- NPC modal -->
+<div class="overlay" id="npc-overlay">
+  <div class="modal">
+    <div class="modal-title" id="npc-modal-title">&#9670; Speak with NPC</div>
+    <div id="npc-greeting" class="npc-greeting"></div>
+    <div id="npc-persuade-result"></div>
+    <div id="npc-shop-section"></div>
+    <div id="npc-quest-section"></div>
+    <div style="display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap" id="npc-action-btns"></div>
+    <button class="modal-close" id="close-npc">Close</button>
+  </div>
+</div>
+
+<!-- Quest log modal -->
+<div class="overlay" id="quest-overlay">
+  <div class="modal">
+    <div class="modal-title">&#9670; Quest Log</div>
+    <div id="quest-list"></div>
+    <button class="modal-close" id="close-quest">Close</button>
+  </div>
+</div>
+
+<!-- Save/Load modal -->
+<div class="overlay" id="save-overlay">
+  <div class="modal">
+    <div class="modal-title">&#9670; Save &amp; Load</div>
+    <div class="save-input-row">
+      <input id="save-name-input" class="mp-input" placeholder="Save name..." maxlength="40">
+      <button class="save-btn" id="do-save-btn">Save</button>
+    </div>
+    <div id="save-list"></div>
+    <button class="modal-close" id="close-save">Close</button>
+  </div>
+</div>
+
+<!-- Main game -->
+<div class="game-outer">
+  <header>
+    <div class="logo-row">
+      <img src="/static/logo.svg" class="logo-img" alt="">
+      <div class="title-block">
+        <div class="title">Ironwood Dungeon</div>
+        <div class="title-sub">Four Floors &nbsp;&#183;&nbsp; Real Choices &nbsp;&#183;&nbsp; Your Path Decides the End</div>
+      </div>
+    </div>
+    <hr class="divider">
+    <div class="status">
+      <!-- PHASE 7A: small portrait in status bar -->
+      <img id="status-portrait" class="p7a-portrait-sm" src="" alt="" style="display:none">
+      <div class="hp-group">
+        <span class="hp-label">HP</span>
+        <div class="bar-track"><div class="bar-fill hp-fill" id="hp-fill" style="width:80%"></div></div>
+        <span class="hp-val" id="hp-val">80 / 100</span>
+      </div>
+      <div class="badge" id="floor-badge">Floor 1 / 4</div>
+      <div class="badge" id="gold-badge">15 Gold</div>
+      <div class="badge" id="level-badge">Level 1</div>
+      <span class="inspiration-badge" id="inspiration-badge" title="You hold Inspiration — spend it for advantage">&#9733; Inspired</span>
+      <button class="badge reset-btn" id="reset-btn" title="Wipe all game state and start a fresh run (keeps character)">&#8635; Reset</button>
+    </div>
+    <div class="condition-badges" id="player-condition-badges"></div>
+    <div class="xp-row">
+      <span class="xp-label">XP</span>
+      <div class="bar-track xp-track"><div class="bar-fill xp-fill" id="xp-fill" style="width:0%"></div></div>
+      <span class="xp-val" id="xp-val">0 / 300</span>
+    </div>
+    <div class="enemy-row hidden" id="enemy-row">
+      <img id="enemy-portrait" class="enemy-portrait-sm" src="" alt="" style="display:none">
+      <span class="enemy-name" id="enemy-name">Dungeon Troll</span>
+      <div class="bar-track" style="flex:1"><div class="bar-fill enemy-fill" id="enemy-fill" style="width:100%"></div></div>
+      <span class="enemy-val" id="enemy-val">60 / 60</span>
+    </div>
+    <div class="condition-badges" id="enemy-condition-badges"></div>
+  </header>
+
+  <div class="game-layout">
+
+    <!--Left Panel: Map + Party -->
+    <aside class="panel-left">
+      <div class="left-label">&#9670; Floor Map</div>
+      <div id="floor-theme-name" class="floor-theme-label"></div>
+      <div id="minimap-placeholder" class="cs-empty" style="font-size:.7rem;padding:.3rem 0">
+        Enter the dungeon to reveal the map.
+      </div>
+      <div class="minimap-wrap" id="minimap-wrap" style="display:none">
+        <div class="minimap-grid" id="minimap-grid"></div>
+      </div>
+      <div id="hub-view" style="display:none">
+        <div class="hub-header">&#10022; Ironwood Village &#10022;</div>
+        <div class="hub-grid" id="hub-grid"></div>
+      </div>
+
+      <div id="party-section" style="display:none;margin-top:.85rem">
+        <div class="left-label">&#9670; Party</div>
+        <div id="party-bar" class="party-bar" style="flex-direction:column;gap:.4rem"></div>
+        <div id="party-chest-section" class="party-chest-wrap" style="display:none">
+          <div class="party-chest-label">&#128722; Party Chest (Shared)</div>
+          <div id="party-chest-list"><span class="party-chest-empty">Empty.</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center Panel Narrative + Actions -->
+    <main class="panel-center">
+      <div class="initiative-strip" id="initiative-strip"></div>
+      <div id="turn-banner" class="turn-banner" style="display:none"></div>
+
+      <div class="narrative-wrap">
+        <span class="narrative-corner tl">&#9670;</span>
+        <span class="narrative-corner tr">&#9670;</span>
+        <span class="narrative-corner bl">&#9670;</span>
+        <span class="narrative-corner br">&#9670;</span>
+        <div class="narrative-box">
+          <div id="narrative-text">The dungeon awaits your fate...</div>
+        </div>
+      </div>
+
+      <!-- Dice roll summary strip -->
+      <div id="dice-roll-strip" style="display:none"></div>
+
+      <div class="action-chips" id="action-chips"></div>
+      <div class="thinking" id="thinking">The dungeon master weighs your fate...</div>
+      <div class="error-bar" id="error-bar"></div>
+      <div class="levelup-bar" id="levelup-bar"></div>
+
+      <div class="choice-section" id="choice-section"></div>
+      <div class="choice-section" id="spell-section"></div>
+
+      <div class="input-row">
+        <input type="text" id="player-input" placeholder="Describe your action, or choose above...">
+        <button class="send-btn" id="send-btn">Act</button>
+      </div>
+
+      <div id="chat-box" class="chat-box" style="display:none">
+        <div id="chat-log" class="chat-log"></div>
+        <div class="chat-input-row">
+          <input id="chat-input" class="chat-input" placeholder="Party chat..." maxlength="200">
+          <button id="chat-send" class="chat-send">Send</button>
+        </div>
+      </div>
+
+      <div class="util-bar">
+        <button class="util-btn" id="inv-btn">Inventory</button>
+        <button class="util-btn" id="quest-btn">Quests</button>
+        <button class="util-btn" id="save-btn">Save / Load</button>
+        <button class="util-btn" id="new-btn">New Game</button>
+        <a href="/about" class="util-btn" style="text-decoration:none">About</a>
+      </div>
+    </main>
+
+    <!-- Right Panel Character / Inventory / History -->
+    <aside class="panel-right">
+      <div class="r-tabs">
+        <button class="r-tab active" data-tab="sheet">Character</button>
+        <button class="r-tab" data-tab="inv">Inventory</button>
+        <button class="r-tab" data-tab="hist">History</button>
+      </div>
+      <div class="r-tab-pane" id="tab-sheet">
+        <!-- large portrait above character name -->
+        <img id="cs-portrait" class="p7a-portrait-lg" src="" alt="" style="display:none">
+        <div id="char-sheet-content">
+          <p class="cs-empty">Start a game to view your character sheet.</p>
+        </div>
+      </div>
+      <div class="r-tab-pane gone" id="tab-inv">
+        <div id="panel-inv-list">
+          <p class="cs-empty">No inventory loaded.</p>
+        </div>
+      </div>
+      <div class="r-tab-pane gone" id="tab-hist">
+        <div id="history-log" class="panel-history-log"></div>
+      </div>
+    </aside>
+
+  </div><!-- .game-layout -->
+  <div class="levelup-toast" id="levelup-toast"></div>
+
+  <div class="loot-toast" id="loot-toast"></div>
+</div><!-- .game-outer -->
+
+<script>
+const $ = id => document.getElementById(id);
+let busy        = false;
+let twTimer     = null;
+let turnCount   = 0;
+let historyOpen = false;
+let diceTimer   = null;
+let inCombat    = false;
+let _lastBroadcastNarrative = "";
+var _lastAvailableSpells = [];
+var _lastSpellSlots      = {};
+var _prevPlayerHp    = null;   // PHASE 5 — HP flash tracking
+var _prevEnemyHp     = null;   // PHASE 5
+var _lastCombatState = {};     // PHASE 5 — for inspiration button visibility
+var _wasCombatActive = false;  // track combat start/stop for music
+var _lastChoiceType  = null;   // track player action type for hit/miss audio
+
+//const api = {
+//  resume: ()  => fetch("/api/resume").then(r => r.json()),
+//  new:    ()  => fetch("/api/new", {method:"POST"}).then(r => r.json()),
+//  action: (d) => fetch("/api/action", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(d)}).then(r => r.json()),
+//  inv:    ()  => fetch("/api/inventory").then(r => r.json()),
+//};
+// Fix
+const api = {
+  resume: ()  => fetch("/api/resume").then(r => r.json()),
+  new:    ()  => fetch("/api/new", {method:"POST"}).then(r => r.json()),
+  action: (d) => fetch("/api/action", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(d)}).then(r => r.json()),
+  enemyTurn: () => fetch("/api/combat/enemy-turn", {method:"POST"}).then(r => r.json()),
+  inv:    ()  => fetch("/api/inventory").then(r => r.json()),
+
+  character: () => fetch("/api/character").then(r => r.json()),
+  characterOptions: () => fetch("/api/character/options").then(r => r.json()),
+  createCharacter: (d) => fetch("/api/character/create", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(d)
+  }).then(async r => {
+    const data = await r.json();
+    if (!r.ok) throw data;
+    return data;
+  }),
+};
+
+let characterOptions = null;
+
+function fillSelect(id, values, labelPrefix) {
+  const sel = $(id);
+  sel.innerHTML = "";
+
+  values.forEach(function(v) {
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = labelPrefix ? labelPrefix + " " + v : v;
+    sel.appendChild(opt);
+  });
+}
+
+function getCheckedValues(containerId) {
+  const container = $(containerId);
+  if (!container) return [];
+
+  return Array.from(container.querySelectorAll("input[type=checkbox]:checked"))
+    .map(function(x) {
+      return x.value;
+    });
+}
+
+function renderSpellChecks(values, id) {
+  const row = $(id);
+  if (!row) return;
+
+  row.innerHTML = "";
+
+  values.forEach(function(value) {
+    const label = document.createElement("label");
+    label.className = "cc-check";
+    label.innerHTML = '<input type="checkbox" value="' + value + '"> ' + value;
+    row.appendChild(label);
+  });
+}
+
+function renderClassChoices() {
+  if (!characterOptions) return;
+
+  const cls = $("cc-class").value;
+  const skillsBox = $("cc-class-skills");
+  const extraBox = $("cc-extra-choices");
+
+  skillsBox.innerHTML = "";
+  extraBox.innerHTML = "";
+
+  const skillInfo = characterOptions.class_skill_options[cls];
+
+  if (skillInfo) {
+    skillsBox.innerHTML =
+      '<div class="load-msg">Choose ' + skillInfo.pick + ' class skill(s)</div>' +
+      '<div class="cc-check-row" id="cc-skill-checks"></div>';
+
+    const row = $("cc-skill-checks");
+
+    skillInfo.options.forEach(function(skill) {
+      const label = document.createElement("label");
+      label.className = "cc-check";
+      label.innerHTML = '<input type="checkbox" value="' + skill + '"> ' + skill;
+      row.appendChild(label);
+    });
+  }
+
+  if (cls === "Rogue") {
+    extraBox.innerHTML +=
+      '<h3 class="cc-title">Expertise</h3>' +
+      '<div class="load-msg">Choose 2 skills from your selected proficiencies.</div>' +
+      '<div class="cc-check-row" id="cc-expertise-checks"></div>';
+
+    const row = $("cc-expertise-checks");
+
+    characterOptions.class_skill_options.Rogue.options.forEach(function(skill) {
+      const label = document.createElement("label");
+      label.className = "cc-check";
+      label.innerHTML = '<input type="checkbox" value="' + skill + '"> ' + skill;
+      row.appendChild(label);
+    });
+  }
+
+  if (cls === "Fighter") {
+    extraBox.innerHTML += '<select id="cc-fighting-style" class="cc-input"></select>';
+    fillSelect("cc-fighting-style", characterOptions.fighting_styles, "Fighting Style:");
+  }
+
+  if (cls === "Cleric") {
+    extraBox.innerHTML +=
+      '<select id="cc-domain" class="cc-input"></select>' +
+      '<h3 class="cc-title">Cantrips</h3><div class="cc-check-row" id="cc-cantrips"></div>' +
+      '<h3 class="cc-title">Prepared Spells</h3><div class="cc-check-row" id="cc-spells"></div>';
+
+    fillSelect("cc-domain", characterOptions.cleric_domains, "Domain:");
+    renderSpellChecks(characterOptions.cleric_cantrips, "cc-cantrips");
+    renderSpellChecks(characterOptions.cleric_spells, "cc-spells");
+  }
+
+  if (cls === "Wizard") {
+    extraBox.innerHTML +=
+      '<h3 class="cc-title">Cantrips</h3><div class="cc-check-row" id="cc-cantrips"></div>' +
+      '<h3 class="cc-title">Prepared Spells</h3><div class="cc-check-row" id="cc-spells"></div>';
+
+    renderSpellChecks(characterOptions.wizard_cantrips, "cc-cantrips");
+    renderSpellChecks(characterOptions.wizard_spells, "cc-spells");
+  }
+
+  if (cls === "Ranger") {
+    extraBox.innerHTML +=
+      '<select id="cc-favored-enemy" class="cc-input"></select>' +
+      '<select id="cc-favored-terrain" class="cc-input" style="margin-left:.5rem"></select>';
+
+    fillSelect("cc-favored-enemy", characterOptions.ranger_favored_enemies, "Favored Enemy:");
+    fillSelect("cc-favored-terrain", characterOptions.ranger_favored_terrains, "Favored Terrain:");
+  }
+}
+
+function showCharacterError(msg) {
+  const box = $("cc-error");
+  box.textContent = Array.isArray(msg) ? msg.join(" | ") : msg;
+  box.classList.add("show");
+}
+
+function hideCharacterError() {
+  $("cc-error").classList.remove("show");
+}
+
+function renderRaceChoices() {
+  if (!characterOptions) return;
+  var race = $("cc-race").value;
+  var box = $("cc-race-choices");
+  box.innerHTML = "";
+
+  if (race === "Human") {
+    box.innerHTML =
+      '<h3 class="cc-title">Extra Skill Proficiency</h3>' +
+      '<div class="load-msg">Humans gain one bonus skill proficiency.</div>' +
+      '<select id="cc-human-extra-skill" class="cc-input"></select>';
+    fillSelect("cc-human-extra-skill", characterOptions.all_skills, "Choose a skill:");
+  }
+
+  if (race === "Dwarf") {
+    box.innerHTML =
+      '<h3 class="cc-title">Tool Proficiency</h3>' +
+      '<div class="load-msg">Dwarves are trained with one artisan tool.</div>' +
+      '<select id="cc-dwarf-tool" class="cc-input"></select>';
+    fillSelect("cc-dwarf-tool", characterOptions.dwarf_tools, "Choose a tool:");
+  }
+}
+
+async function showCharacterCreator() {
+  characterOptions = await api.characterOptions();
+
+  fillSelect("cc-class", characterOptions.classes);
+  fillSelect("cc-race", characterOptions.races);
+  fillSelect("cc-background", characterOptions.backgrounds);
+  fillSelect("cc-alignment", characterOptions.alignments);
+
+  ["STR", "DEX", "CON", "INT", "WIS", "CHA"].forEach(function(ab, index) {
+    fillSelect("cc-" + ab, characterOptions.standard_array, ab + ":");
+    $("cc-" + ab).value = characterOptions.standard_array[index];
+  });
+
+  $("cc-class").addEventListener("change", renderClassChoices);
+  $("cc-race").addEventListener("change", renderRaceChoices);
+  renderClassChoices();
+  renderRaceChoices();
+
+  $("character-screen").classList.remove("gone");
+  $("load-screen").classList.add("gone");
+}
+
+async function createCharacterFromForm() {
+  hideCharacterError();
+
+  const abilityScores = {};
+
+  ["STR", "DEX", "CON", "INT", "WIS", "CHA"].forEach(function(ab) {
+    abilityScores[ab] = parseInt($("cc-" + ab).value, 10);
+  });
+
+  const cls = $("cc-class").value;
+
+  const payload = {
+    character_name: $("cc-character-name").value.trim(),
+    player_name: $("cc-player-name").value.trim(),
+    class: cls,
+    race: $("cc-race").value,
+    background: $("cc-background").value,
+    alignment: $("cc-alignment").value,
+    ability_scores: abilityScores,
+    chosen_class_skills: getCheckedValues("cc-skill-checks"),
+    expertise: getCheckedValues("cc-expertise-checks"),
+
+    age: $("cc-age").value.trim(),
+    height: $("cc-height").value.trim(),
+    weight: $("cc-weight").value.trim(),
+    eyes: $("cc-eyes").value.trim(),
+    skin: $("cc-skin").value.trim(),
+    hair: $("cc-hair").value.trim(),
+    personality_trait: $("cc-personality").value.trim(),
+    ideal: $("cc-ideal").value.trim(),
+    bond: $("cc-bond").value.trim(),
+    flaw: $("cc-flaw").value.trim(),
+    backstory: $("cc-backstory").value.trim(),
+    allies_organisations: $("cc-allies").value.trim()
+  };
+
+  var race = $("cc-race").value;
+  if (race === "Human" && $("cc-human-extra-skill")) {
+    payload.human_extra_skill = $("cc-human-extra-skill").value;
+  }
+  if (race === "Dwarf" && $("cc-dwarf-tool")) {
+    payload.dwarf_tool = $("cc-dwarf-tool").value;
+  }
+
+  if (cls === "Fighter") {
+    payload.fighting_style = $("cc-fighting-style").value;
+  }
+
+  if (cls === "Cleric") {
+    payload.domain = $("cc-domain").value;
+    payload.cantrips_known = getCheckedValues("cc-cantrips");
+    payload.spells_known = getCheckedValues("cc-spells");
+  }
+
+  if (cls === "Wizard") {
+    payload.cantrips_known = getCheckedValues("cc-cantrips");
+    payload.spells_known = getCheckedValues("cc-spells");
+  }
+
+  if (cls === "Ranger") {
+    payload.favored_enemy = $("cc-favored-enemy").value;
+    payload.favored_terrain = $("cc-favored-terrain").value;
+  }
+
+  try {
+    await api.createCharacter(payload);
+    $("character-screen").classList.add("gone");
+    if (window.isMultiplayer && window.myRoomCode && socket) {
+      var charResp = await api.character();
+      socket.emit("player_ready", {
+        room_code:   window.myRoomCode,
+        player_name: window.myPlayerName || payload.player_name,
+        character:   charResp.character
+      });
+      $("lobby-screen").classList.remove("gone");
+    } else {
+      await startFresh();
+    }
+  } catch(err) {
+    showCharacterError(err.errors || err.error || "Could not create character.");
+  }
+}
+// Fix end
+
+// Typewriter
+function typewrite(text, speed) {
+  speed = speed || 22;
+  const el = $("narrative-text");
+  if (twTimer) clearInterval(twTimer);
+  el.innerHTML = "";
+  let i = 0;
+  const cur = document.createElement("span");
+  cur.className = "cursor";
+  el.appendChild(cur);
+  twTimer = setInterval(function() {
+    if (i < text.length) {
+      el.insertBefore(document.createTextNode(text[i++]), cur);
+    } else {
+      clearInterval(twTimer);
+      twTimer = null;
+      cur.remove();
+    }
+  }, speed);
+}
+
+// History
+var _narrativeHistory = [];
+
+function _renderHistoryEntry(turnNum, text) {
+  const log   = $("history-log");
+  const e     = document.createElement("div");
+  e.className = "h-entry";
+  e.style.cursor = "pointer";
+  e.title = "Click to collapse/expand";
+
+  var turnSpan = document.createElement("span");
+  turnSpan.className = "h-turn";
+  var arrow = document.createElement("span");
+  arrow.style.cssText = "font-size:.5rem;margin-right:.18rem;transition:transform .15s;display:inline-block";
+  arrow.textContent = "▾";
+  turnSpan.appendChild(arrow);
+  turnSpan.appendChild(document.createTextNode("T" + turnNum));
+
+  var textSpan = document.createElement("span");
+  textSpan.className = "h-text";
+  textSpan.textContent = text;
+
+  e.appendChild(turnSpan);
+  e.appendChild(textSpan);
+
+  e.addEventListener("click", function() {
+    var collapsed = textSpan.style.display === "none";
+    textSpan.style.display = collapsed ? "" : "none";
+    arrow.style.transform  = collapsed ? "" : "rotate(-90deg)";
+  });
+
+  log.appendChild(e);
+  if (log.scrollHeight > 0) log.scrollTop = log.scrollHeight;
+}
+
+function addHistory(turnNum, text) {
+  _narrativeHistory.push({t: turnNum, s: text});
+  if (_narrativeHistory.length > 100) _narrativeHistory.shift();
+  try { localStorage.setItem('iw_hist', JSON.stringify(_narrativeHistory)); } catch(e) {}
+  _renderHistoryEntry(turnNum, text);
+}
+
+function restoreHistory() {
+  try {
+    var saved = localStorage.getItem('iw_hist');
+    if (!saved) return;
+    var entries = JSON.parse(saved);
+    if (!Array.isArray(entries)) return;
+    _narrativeHistory = entries;
+    $("history-log").innerHTML = "";
+    entries.forEach(function(e) { _renderHistoryEntry(e.t, e.s); });
+  } catch(e) {}
+}
+
+var _lootToastTimer = null;
+function showLootToast(lootList) {
+  if (!lootList || !lootList.length) return;
+  var lines = lootList.map(function(l) {
+    return (l.qty > 1 ? l.qty + "x " : "") + (l.name || l.item_id);
+  });
+  var toast = $("loot-toast");
+  toast.textContent = "Loot: " + lines.join(", ");
+  toast.classList.add("show");
+  if (_lootToastTimer) clearTimeout(_lootToastTimer);
+  _lootToastTimer = setTimeout(function() { toast.classList.remove("show"); }, 5000);
+}
+
+// XP bar + level badge + level-up notification
+function updateXP(state, data) {
+  var xp      = state.xp || 0;
+  var level   = state.level || 1;
+  var toNext  = state.xp_to_next;
+  var thresholds = {1:0, 2:300, 3:900, 4:2700};
+  var currentFloor = thresholds[level] || 0;
+  var pct = toNext ? Math.min(100, (xp - currentFloor) / (toNext - currentFloor) * 100) : 100;
+
+  $("level-badge").textContent = "Level " + level;
+  $("xp-fill").style.width     = pct + "%";
+  $("xp-val").textContent      = xp + " / " + (toNext || "MAX");
+
+  var bar = $("levelup-bar");
+  if (data && data.level_up) {
+    var feats = (data.new_features || []).join(" | ");
+    bar.textContent = "LEVEL UP! You are now Level " + (data.new_level || level) + (feats ? " — " + feats : "");
+    bar.classList.add("show");
+    setTimeout(function() { bar.classList.remove("show"); }, 7000);
+  } else {
+    bar.classList.remove("show");
+  }
+}
+
+// Surface hub
+function renderHub(locations) {
+  var grid = $('hub-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  (locations || []).forEach(function(loc) {
+    var card = document.createElement('div');
+    card.className = 'hub-card';
+    card.innerHTML = '<div class="hub-card-icon">' + (loc.icon || '?') + '</div>'
+                   + '<div class="hub-card-name">' + loc.name + '</div>';
+    card.addEventListener('click', function() {
+      SoundManager.play('door_open', 0.5);
+      doAction('Visit ' + loc.name, null);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function setHubMode(onSurface) {
+  var hubView     = $('hub-view');
+  var mapWrap     = $('minimap-wrap');
+  var placeholder = $('minimap-placeholder');
+  if (onSurface) {
+    if (hubView)     hubView.style.display     = 'block';
+    if (mapWrap)     mapWrap.style.display      = 'none';
+    if (placeholder) placeholder.style.display  = 'none';
+  } else {
+    if (hubView) hubView.style.display = 'none';
+  }
+}
+
+// Mini-map
+var _lastDungeonMap = [];
+var _lastCurrentRoomId = null;
+
+function renderMiniMap(rooms, currentRoomId) {
+  _lastDungeonMap    = rooms || [];
+  _lastCurrentRoomId = currentRoomId || null;
+  var wrap        = $("minimap-wrap");
+  var grid        = $("minimap-grid");
+  var placeholder = $("minimap-placeholder");
+  if (!rooms || !rooms.length) {
+    wrap.style.display = "none";
+    if (placeholder) placeholder.style.display = "block";
+    return;
+  }
+  wrap.style.display = "block";
+  if (placeholder) placeholder.style.display = "none";
+  grid.innerHTML = "";
+
+  var currentRoom = rooms.find(function(r) { return r.is_current || r.id === currentRoomId; });
+  var adjacentIds = currentRoom ? (currentRoom.exits || []) : [];
+
+  rooms.forEach(function(room) {
+    var col = (room.grid_col || 0) + 1;
+    var row = (room.grid_row || 0) + 1;
+    var isCurrent  = room.is_current || room.id === currentRoomId;
+    var isAdjacent = adjacentIds.indexOf(room.id) !== -1;
+    var cls = "room-tile";
+    if (isCurrent)  cls += " current";
+    else if (isAdjacent) cls += " adjacent" + (room.visited ? " visited" : "");
+    else if (room.visited) cls += " visited";
+    if (room.cleared && !isCurrent) cls += " cleared";
+    if (room.type) cls += " type-" + room.type;
+
+    var tile = document.createElement("div");
+    tile.className = cls;
+    tile.style.gridColumn = col;
+    tile.style.gridRow    = row;
+
+    if (!room.visited && !isCurrent) {
+      tile.innerHTML = '<span class="room-ico">?</span>';
+    } else {
+      var typeLabel = room.cleared ? room.type + " ✓" : room.type;
+      tile.innerHTML =
+        '<span class="room-ico">' + (room.icon || "?") + '</span>' +
+        '<span class="room-name">' + room.name + '</span>' +
+        '<span class="room-type">' + typeLabel + '</span>';
+    }
+
+    if (isAdjacent && !busy) {
+      (function(rid) {
+        tile.addEventListener("click", function() { moveToRoom(rid); });
+      })(room.id);
+    }
+    grid.appendChild(tile);
+  });
+}
+
+async function moveToRoom(roomId) {
+  if (busy) return;
+  setBusy(true);
+  SoundManager.play('door_open', 0.5);
+  var prevTurn = turnCount;
+  try {
+    var resp = await fetch("/api/dungeon/move", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({room_id: roomId})
+    });
+    var data = await resp.json();
+    if (data.error) { showError(data.error); setBusy(false); return; }
+    if (data.gold_gained && data.gold_gained > 0) SoundManager.play('treasure');
+    turnCount = (data.state && data.state.turn) ? data.state.turn - 1 : turnCount + 1;
+    applyData(data, prevTurn);
+  } catch(e) {
+    showError("Could not move to room.");
+  }
+  setBusy(false);
+}
+
+async function submitPuzzle(roomId) {
+  var input  = $("puzzle-input");
+  var answer = input ? input.value.trim() : "";
+  if (!answer) return;
+  if (busy) return;
+  setBusy(true);
+  var prevTurn = turnCount;
+  try {
+    var resp = await fetch("/api/dungeon/puzzle", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({room_id: roomId, answer: answer})
+    });
+    var data = await resp.json();
+    if (data.error) { showError(data.error); setBusy(false); return; }
+    turnCount = (data.state && data.state.turn) ? data.state.turn - 1 : turnCount + 1;
+    applyData(data, prevTurn);
+  } catch(e) {
+    showError("Puzzle submission failed.");
+  }
+  setBusy(false);
+}
+
+function renderExploreButtons(state, sec) {
+  var currentRoom = null;
+  for (var i = 0; i < _lastDungeonMap.length; i++) {
+    if (_lastDungeonMap[i].id === _lastCurrentRoomId) { currentRoom = _lastDungeonMap[i]; break; }
+  }
+
+  var html = '<div class="choice-btns cols2">';
+
+  if (currentRoom && currentRoom.exits && currentRoom.exits.length) {
+    currentRoom.exits.forEach(function(exitId) {
+      var dest = null;
+      for (var j = 0; j < _lastDungeonMap.length; j++) {
+        if (_lastDungeonMap[j].id === exitId) { dest = _lastDungeonMap[j]; break; }
+      }
+      if (!dest) return;
+      var label = dest.cleared
+        ? dest.name + " <span style='font-size:.75em;opacity:.6'>(cleared)</span>"
+        : "Move to " + dest.name;
+      html += '<button class="cbtn cbtn-move" onclick="moveToRoom(\'' + dest.id + '\')">' + label + '</button>';
+    });
+  }
+
+  if (currentRoom && currentRoom.type === "Rest") {
+    html += '<button class="cbtn" onclick="doChoice(\'short_rest\')">Short Rest</button>';
+    html += '<button class="cbtn" onclick="doChoice(\'long_rest\')">Long Rest</button>';
+    html += '<button class="cbtn cbtn-item" onclick="showShop()" style="grid-column:span 2;">&#128722; Visit Shop</button>';
+  }
+
+  if (currentRoom && currentRoom.npcs && currentRoom.npcs.length) {
+    currentRoom.npcs.forEach(function(npcId) {
+      var label = npcId.replace(/_/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+      html += '<button class="cbtn cbtn-npc" style="grid-column:span 2;" onclick="openNpc(\'' + npcId + '\')">&#128172; Talk to ' + label + '</button>';
+    });
+  }
+
+  html += '</div>';
+
+  // Utility shortcuts (Inventory + Character Sheet)
+  html += '<div class="choice-btns cols2" style="margin-top:.4rem">';
+  html += '<button class="cbtn cbtn-search" onclick="switchRightTab(\'inv\')">' +
+    '<span class="ico">&#127869;</span>Inventory<small>pack &amp; currency</small>' +
+  '</button>';
+  html += '<button class="cbtn cbtn-search" onclick="switchRightTab(\'sheet\')">' +
+    '<span class="ico">&#128196;</span>Character Sheet<small>stats &amp; features</small>' +
+  '</button>';
+  html += '</div>';
+
+  if (currentRoom && currentRoom.type === "Puzzle" && !currentRoom.cleared) {
+    var puzzle = currentRoom.puzzle || {};
+    html += '<div class="puzzle-box" style="margin-top:10px;padding:10px;background:rgba(255,255,255,.05);border-radius:6px;">';
+    html += '<p style="margin:0 0 8px;font-size:.9em;color:#e2c97e;">' + (puzzle.prompt || "Solve the puzzle:") + '</p>';
+    html += '<input id="puzzle-input" type="text" placeholder="Your answer..." style="width:100%;box-sizing:border-box;padding:6px 8px;background:#1a1a2e;color:#e0e0ff;border:1px solid #444;border-radius:4px;font-size:.9em;" />';
+    html += '<button class="cbtn" style="margin-top:6px;width:100%;" onclick="submitPuzzle(\'' + currentRoom.id + '\')">Submit Answer</button>';
+    html += '</div>';
+  }
+
+  sec.innerHTML = html;
+}
+
+// HP bars shared scale during combat so bars reflect the real HP disparity
+function updateHPBars(playerHp, playerMaxHp, enemy) {
+  const enemyAlive = enemy && enemy.hp > 0;
+  const sharedMax  = enemyAlive ? Math.max(playerMaxHp, enemy.max_hp) : playerMaxHp;
+
+  const playerPct = Math.max(0, Math.min(100, playerHp / sharedMax * 100));
+  $("hp-fill").style.width = playerPct + "%";
+  $("hp-val").textContent  = playerHp + " / " + playerMaxHp;
+
+  setEnemyBar(enemy, sharedMax);
+}
+
+function setHP(hp, maxHp) {
+  const pct = Math.max(0, Math.min(100, hp / maxHp * 100));
+  $("hp-fill").style.width = pct + "%";
+  $("hp-val").textContent  = hp + " / " + maxHp;
+}
+
+// portrait filenames match the enemy names exactly (spaces included)
+var ENEMY_PORTRAIT_NAMES = {
+  "Cave Rat Swarm":    1, "Goblin Scout":      1, "Skeleton Warrior": 1,
+  "Shadow Creeper":    1, "Zombie Brute":      1, "Mimic":            1,
+  "Stone Sentinel":    1, "Berserker Cultist": 1, "Wight Soldier":    1,
+  "Vampire Spawn":     1, "Bone Wyvern":       1, "Hell Cultist":     1,
+  "Dungeon Troll":     1, "Shadow Wraith":     1, "Stone Golem":      1,
+  "Bone Dragon":       1,
+};
+
+function updateEnemyPortrait(name) {
+  var el = $("enemy-portrait");
+  if (!el) return;
+  if (name && ENEMY_PORTRAIT_NAMES[name]) {
+    el.src           = "/static/portraits/" + encodeURIComponent(name) + ".png";
+    el.alt           = name;
+    el.style.display = "inline-block";
+  } else {
+    el.src           = "";
+    el.style.display = "none";
+  }
+}
+
+function setEnemyBar(enemy, sharedMax) {
+  const row = $("enemy-row");
+  if (enemy && enemy.hp > 0) {
+    row.classList.remove("hidden");
+    const scale = sharedMax || enemy.max_hp;
+    const pct   = Math.max(0, enemy.hp / scale * 100);
+    $("enemy-fill").style.width = pct + "%";
+    $("enemy-name").textContent = enemy.name;
+    $("enemy-val").textContent  = enemy.hp + " / " + enemy.max_hp;
+    inCombat = true;
+    updateEnemyPortrait(enemy.name);
+  } else {
+    row.classList.add("hidden");
+    inCombat = false;
+    updateEnemyPortrait(null);
+  }
+}
+
+//  condition badge renderer
+var COND_EMOJI = {
+  "Poisoned": "🤢", "Frightened": "😨",
+  "Prone": "⬇", "Slowed": "🐢", "Stunned": "⭐", "Dead": "☠"
+};
+var COND_CSS = {
+  "Poisoned":"poisoned","Frightened":"frightened","Prone":"prone",
+  "Slowed":"slowed","Stunned":"stunned","Dead":"dead"
+};
+function renderConditionBadges(containerId, conditions) {
+  var el = $(containerId);
+  if (!el) return;
+  if (!conditions || !conditions.length) { el.innerHTML = ""; return; }
+  var h = "";
+  conditions.forEach(function(c) {
+    var name  = typeof c === "string" ? c : (c.name || "");
+    if (!name) return;
+    var css   = COND_CSS[name] || "cond-other";
+    var emoji = COND_EMOJI[name] ? COND_EMOJI[name] + " " : "";
+    h += '<span class="cond-badge ' + css + '">' + emoji + name + '</span>';
+  });
+  el.innerHTML = h;
+}
+
+//  update inspiration header badge
+function updateInspirationBadge() {
+  var badge = $("inspiration-badge");
+  if (!badge) return;
+  var hasInspo = window._lastCharacter && window._lastCharacter.identity &&
+                 window._lastCharacter.identity.inspiration;
+  badge.classList.toggle("active", !!hasInspo);
+}
+
+function renderInitiative(combat) {  // PHASE 5 enhanced — HP pills with bar
+  const strip = $("initiative-strip");
+  strip.innerHTML = "";
+
+  // Prefer initiative_order (PHASE 5) over legacy turn_order
+  const order = (combat && combat.initiative_order && combat.initiative_order.length)
+    ? combat.initiative_order
+    : null;
+
+  if (!combat || !combat.active || !order || !order.length) {
+    strip.classList.remove("active");
+    return;
+  }
+
+  strip.classList.add("active");
+
+  order.forEach(function(actor) {
+    const pill = document.createElement("div");
+    const typeClass = actor.is_player ? "player-type" : "enemy-type";
+    const activeClass = actor.is_active ? " pill-active" : "";
+    pill.className = "init-pill " + typeClass + activeClass;
+
+    const hpPct = actor.max_hp > 0 ? Math.max(0, Math.min(100, actor.hp / actor.max_hp * 100)) : 0;
+    pill.innerHTML =
+      '<div class="init-pill-top">' +
+        '<span class="init-pill-name">' + actor.name + '</span>' +
+        '<span class="init-pill-hp">' + (actor.hp || 0) + '/' + (actor.max_hp || 0) + '</span>' +
+      '</div>' +
+      '<div class="init-pill-bar"><div class="init-pill-bar-fill" style="width:' + hpPct + '%"></div></div>';
+
+    strip.appendChild(pill);
+  });
+}
+
+function isEnemyTurn(combat) {
+  return !!(
+    combat &&
+    combat.active &&
+    combat.current_actor &&
+    combat.current_actor.type === "enemy"
+  );
+}
+
+// Action chips only shown when NOT in combat (avoids duplicating Fight/Sneak/Parley)
+function renderChips(actions, enemyAlive) {
+  const box = $("action-chips");
+  box.innerHTML = "";
+  if (enemyAlive || !actions || !actions.length) return;
+  actions.forEach(function(a) {
+    const btn     = document.createElement("button");
+    btn.className = "chip";
+    btn.textContent = a;
+    btn.onclick   = function() {
+      $("player-input").value = a;
+      $("player-input").focus();
+    };
+    box.appendChild(btn);
+  });
+}
+
+// Spell buttons
+function renderSpells(availableSpells, spellSlots) {
+  var sec = $("spell-section");
+  if (!sec) return;
+  if (!availableSpells || availableSpells.length === 0) {
+    sec.innerHTML = "";
+    return;
+  }
+
+  var slotHtml = "";
+  var slotKeys = ["1st", "2nd", "3rd"];
+  slotKeys.forEach(function(sk) {
+    var slot = spellSlots[sk];
+    if (!slot) return;
+    var bubbles = "";
+    for (var i = 0; i < slot.total; i++) {
+      bubbles += '<span class="slot-bubble' + (i < slot.remaining ? " slot-full" : "") + '">&#9679;</span>';
+    }
+    slotHtml += '<span class="slot-group">' + sk + ': ' + bubbles + '</span>';
+  });
+
+  var cols = Math.min(availableSpells.length, 3);
+  var btns = availableSpells.map(function(name) {
+    return '<button class="cbtn cbtn-spell" onclick="castSpell(\'' + name.replace(/'/g, "\\'") + '\')">' +
+      '<span class="ico">&#10024;</span>' + name +
+    '</button>';
+  }).join("");
+
+  sec.innerHTML =
+    (slotHtml ? '<div class="slot-tracker">' + slotHtml + '</div>' : '') +
+    '<div class="choice-label">Spells</div>' +
+    '<div class="choice-btns cols' + cols + '">' + btns + '</div>';
+}
+
+async function castSpell(spellName) {
+  setBusy(true);
+  prevTurn = spellName;
+  try {
+    const resp = await fetch("/api/action", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({choice: "cast_spell", spell_name: spellName})
+    });
+    const data = await resp.json();
+    applyData(data);
+  } catch(e) {
+    showError("Spell casting failed.");
+  } finally {
+    setBusy(false);
+  }
+}
+
+// Choice buttons
+function renderChoices(state) {
+  const sec   = $("choice-section");
+
+  // Hub handles everything on the surface — no dungeon buttons needed
+  if (state.on_surface) { sec.innerHTML = ""; return; }
+
+  const enemy = state.enemy;
+  const alive = enemy && enemy.hp > 0;
+  const playerDown = state.hp <= 0;
+  if (playerDown) {
+    sec.innerHTML =
+      '<div class="choice-label">You Are Down</div>' +
+      '<div class="choice-btns cols1">' +
+        '<button class="cbtn cbtn-death" onclick="doChoice(\'death_save\')">' +
+          '<span class="ico">&#9760;</span>Death Save' +
+          '<small>d20: 10+ success, 1-9 failure</small>' +
+        '</button>' +
+      '</div>';
+    return;
+  }
+
+    if (alive) {
+    const combat = window._lastCombatState || {};
+    const combatIsPlayerTurn = !combat.active || (combat.current_actor && combat.current_actor.type === "player");
+    const isPlayerTurn = combatIsPlayerTurn && (!window.isMultiplayer || window.myTurn);
+    var dis = !isPlayerTurn ? 'disabled' : '';
+    var hasSpells = _lastAvailableSpells.length > 0;
+    var hasSlots  = hasSpells && Object.values(_lastSpellSlots).some(function(s){ return s.remaining > 0; });
+    sec.innerHTML =
+  '<div class="choice-label">Choose Your Action</div>' +
+  '<div class="choice-btns cols3">' +
+
+    '<button class="cbtn cbtn-fight" onclick="doChoice(\'fight\')" ' + dis + '>' +
+      '<span class="ico">&#9876;</span>Strike' +
+      '<small>d20 + bonus vs AC</small>' +
+    '</button>' +
+
+    '<button class="cbtn cbtn-spell" onclick="scrollToCast()" ' + (!isPlayerTurn || !hasSlots ? 'disabled' : '') + '>' +
+      '<span class="ico">&#10024;</span>Invoke Magic' +
+      '<small>' + (hasSpells ? _lastAvailableSpells.length + ' spell(s)' : 'no spells') + '</small>' +
+    '</button>' +
+
+    '<button class="cbtn cbtn-dodge" onclick="doChoice(\'dodge\')" ' + dis + '>' +
+      '<span class="ico">&#128737;</span>Take Cover' +
+      '<small>attacks with disadvantage</small>' +
+    '</button>' +
+
+    '<button class="cbtn cbtn-dash" onclick="doChoice(\'disengage\')" ' + dis + '>' +
+      '<span class="ico">&#8617;</span>Retreat' +
+      '<small>no opportunity attacks</small>' +
+    '</button>' +
+
+    '<button class="cbtn cbtn-dash" onclick="doChoice(\'dash\')" ' + dis + '>' +
+      '<span class="ico">&#10140;</span>Dash' +
+      '<small>double movement</small>' +
+    '</button>' +
+
+    '<button class="cbtn cbtn-item" onclick="openItemPicker()" ' + dis + '>' +
+      '<span class="ico">&#127864;</span>Use Item' +
+      '<small>potion or consumable</small>' +
+    '</button>' +
+
+    '<button class="cbtn cbtn-help" onclick="doChoice(\'bonus_action\')" ' + dis + ' style="grid-column:span 3">' +
+      '<span class="ico">&#10022;</span>Bonus Action' +
+      '<small>class ability or off-hand attack</small>' +
+    '</button>' +
+
+    // PHASE 5: Use Inspiration button — only shown when player holds inspiration and it's their turn
+    (isPlayerTurn && window._lastCharacter && window._lastCharacter.identity &&
+     window._lastCharacter.identity.inspiration ?
+      '<button class="cbtn cbtn-inspo" onclick="doChoice(\'use_inspiration\')" style="grid-column:span 3">' +
+        '<span class="ico">&#9733;</span>Spend Inspiration ★' +
+        '<small>spend for advantage on your next roll</small>' +
+      '</button>'
+    : '') +
+
+  '</div>';
+    } else if (!state.boss_cleared) {
+    renderExploreButtons(state, sec);
+  } else if (!state.room_searched) {
+    sec.innerHTML =
+      '<div class="choice-btns cols2">' +
+        '<button class="cbtn cbtn-search" onclick="doFree(\'I search the room carefully for anything useful.\')">' +
+          '<span class="ico">&#128269;</span>Search Room' +
+        '</button>' +
+        (state.floor < 4
+          ? '<button class="cbtn cbtn-down" onclick="doFree(\'I descend to the next floor.\')">' +
+              '<span class="ico">&#8595;</span>Descend</button>'
+          : '') +
+      '</div>';
+  } else if (state.floor < 4) {
+    sec.innerHTML =
+      '<div class="choice-btns cols1">' +
+        '<button class="cbtn cbtn-down" onclick="doFree(\'I descend to the next floor.\')">' +
+          '<span class="ico">&#8595;</span>Descend to Floor ' + (state.floor + 1) +
+        '</button>' +
+      '</div>';
+  } else {
+    sec.innerHTML = "";
+  }
+}
+
+// Dice overlay
+function startDiceAnimation(type) {
+  SoundManager.play('dice_roll');
+  const labels = { sneak: "Stealth Check", talk: "Persuasion Check", death_save: "Death Saving Throw", fight: "Attack Roll", enemy_turn: "Enemy Attack" };
+  $("dice-type-label").textContent = labels[type] || "Ability Check";
+  $("dice-dc-row").innerHTML = "&nbsp;";
+  $("dice-verdict").textContent = "";
+  $("dice-verdict").className = "dice-verdict";
+  $("dice-num").textContent = "?";
+  $("dice-num").className = "dice-num";
+  $("dice-d20").className = "dice-d20";
+  $("dice-wrap").className = "dice-d20-wrap";
+  $("dice-overlay").classList.add("active");
+
+  // Roll random numbers rapidly while waiting
+  diceTimer = setInterval(function() {
+    $("dice-num").textContent = Math.floor(Math.random() * 20) + 1;
+  }, 60);
+}
+
+function resolveDice(dice) {
+  if (diceTimer) { clearInterval(diceTimer); diceTimer = null; }
+  if (!dice) { hideDice(); return Promise.resolve(); }
+
+  return new Promise(function(resolve) {
+    const cls = dice.success ? "success" : "fail";
+    $("dice-num").textContent = dice.roll;
+    $("dice-num").className   = "dice-num " + cls;
+    $("dice-d20").className   = "dice-d20 " + cls;
+    $("dice-wrap").className  = "dice-d20-wrap " + cls;
+    var isAttack = dice.type === "fight" || dice.type === "enemy_turn";
+    var dcLabel  = isAttack ? "vs AC" : "DC";
+    $("dice-dc-row").innerHTML = dice.dc != null
+      ? "Roll: <span>" + dice.roll + "</span> &nbsp;|&nbsp; " + dcLabel + ": <span>" + dice.dc + "</span>"
+      : "Roll: <span>" + dice.roll + "</span>";
+    const vrd = $("dice-verdict");
+    vrd.textContent = dice.success ? "Success!" : "Failed!";
+    vrd.className   = "dice-verdict " + cls;
+
+    setTimeout(function() {
+      hideDice();
+      resolve();
+    }, 2200);
+  });
+}
+
+function hideDice() {
+  if (diceTimer) { clearInterval(diceTimer); diceTimer = null; }
+  $("dice-overlay").classList.remove("active");
+}
+
+// UI update
+function applyData(data, prevTurn) {
+  if (data.error) { showError(data.error); return; }
+  hideError();
+  window._lastCombatState = data.combat || {};
+  const prev = $("narrative-text").innerText.replace(/\s+/g, " ").trim();
+  if (prev && prev !== "The dungeon awaits your fate..." && prevTurn) {
+    addHistory(prevTurn, prev);
+  }
+
+  const narrative = data.narrative || data.narrative_text || "";
+  _lastBroadcastNarrative = narrative;
+  typewrite(narrative);
+  const maxHp = data.state.max_hp || 100;
+
+  // PHASE 5: HP flash animation when HP drops
+  var newPlayerHp = data.hp;
+  var newEnemyHp  = data.state.enemy ? data.state.enemy.hp : null;
+  if (_prevPlayerHp !== null && newPlayerHp < _prevPlayerHp) {
+    var hpFillEl = $("hp-fill");
+    hpFillEl.classList.remove("flash-damage");
+    void hpFillEl.offsetWidth;
+    hpFillEl.classList.add("flash-damage");
+    setTimeout(function() { hpFillEl.classList.remove("flash-damage"); }, 600);
+  }
+  if (_prevEnemyHp !== null && newEnemyHp !== null && newEnemyHp < _prevEnemyHp) {
+    var enemyFillEl = $("enemy-fill");
+    enemyFillEl.classList.remove("flash-damage");
+    void enemyFillEl.offsetWidth;
+    enemyFillEl.classList.add("flash-damage");
+    setTimeout(function() { enemyFillEl.classList.remove("flash-damage"); }, 600);
+    SoundManager.play('combat_hit');
+  } else if (_lastChoiceType === 'fight' && data.combat && data.combat.active
+             && _prevEnemyHp !== null && newEnemyHp === _prevEnemyHp) {
+    SoundManager.play('combat_miss', 0.4);
+  }
+  _lastChoiceType = null;
+  _prevPlayerHp = newPlayerHp;
+  _prevEnemyHp  = newEnemyHp;
+
+  var nowCombatActive = !!(data.combat && data.combat.active);
+  if (nowCombatActive && !_wasCombatActive) {
+    var BOSSES = ['Dungeon Troll','Shadow Wraith','Stone Golem','Bone Dragon'];
+    var _isBoss = !!(data.state && data.state.enemy &&
+                     BOSSES.indexOf(data.state.enemy.name) !== -1);
+    SoundManager.startCombatMusic(_isBoss);
+  } else if (!nowCombatActive && _wasCombatActive) {
+    SoundManager.stopCombatMusic();
+  }
+  _wasCombatActive = nowCombatActive;
+
+  updateHPBars(data.hp, maxHp, data.state.enemy);
+  $("floor-badge").textContent = "Floor " + data.state.floor + " / 4";
+  $("gold-badge").textContent  = (data.state.gold || 0) + " Gold";
+  updateXP(data.state, data);
+
+  // Floor theme accent colour + theme name
+  if (data.floor_theme) {
+    var accent = data.floor_theme.color_accent || '#c9a227';
+    document.documentElement.style.setProperty('--floor-accent', accent);
+    var ftLabel = $('floor-theme-name');
+    if (ftLabel) ftLabel.textContent = data.floor_theme.name || '';
+  }
+
+  // Hub vs dungeon map toggle
+  var onSurface = !!(data.state && data.state.on_surface);
+  setHubMode(onSurface);
+  if (!nowCombatActive) MusicManager.setState(onSurface ? 'village' : 'dungeon');
+  if (data.hub_locations && data.hub_locations.length) renderHub(data.hub_locations);
+  if (data.dungeon_map && !onSurface) { renderMiniMap(data.dungeon_map, data.state.current_room_id); }
+  _lastAvailableSpells = data.available_spells || [];
+  _lastSpellSlots      = data.spell_slots      || {};
+  renderChoices(data.state);
+  if (data.loot_dropped && data.loot_dropped.length) { showLootToast(data.loot_dropped); SoundManager.play('treasure'); }
+  renderSpells(_lastAvailableSpells, _lastSpellSlots);
+  renderInitiative(data.combat);
+
+  // PHASE 5: condition badges
+  var combatConds = (data.combat && data.combat.conditions) ? data.combat.conditions : [];
+  renderConditionBadges("player-condition-badges", combatConds);
+  renderConditionBadges("enemy-condition-badges", []);  // enemy conditions reserved for future
+
+  const enemyAlive = !!(data.state.enemy && data.state.enemy.hp > 0);
+  renderChips(data.actions || [], enemyAlive);
+
+  if (data.floor_transition) {  // PHASE 4 added — floor descent overlay
+    showFloorTransition(data.floor_number);
+  }
+  if (data.ending) {
+    setTimeout(function() { showEnding(data.ending); }, 2600);
+  }
+  if (isEnemyTurn(data.combat) && (!window.isMultiplayer || window.isHost)) {
+    const textToRead = narrative;
+    const readingDelay = Math.max(4500, Math.min(12000, textToRead.length * 35));
+    setTimeout(resolveEnemyTurnFromServer, readingDelay);
+  }
+
+  //  dice roll strip (API sends "dice_rolls"; accept either key)
+  var diceRolls = data.dice_rolls || data.dice_rolls_this_turn;
+  if (diceRolls && diceRolls.length) showDiceStrip(diceRolls);
+  else if (data.dice) {
+    // Single d20 from sneak/talk/death_save — also show in strip
+    showDiceStrip([{ die: "d20", result: data.dice.roll, purpose: data.dice.type || "" }]);
+  } else {
+    showDiceStrip([]);
+  }
+
+  //  update HP in character sheet panel (fast path)
+  updateSheetHP(data.hp, data.state && data.state.max_hp);
+
+  //  full sheet reload on level-up (or first render)
+  if (data.level_up || !window._lastCharacter) {
+    if (data.level_up) SoundManager.play('level_up');
+    loadAndRenderCharSheet();
+  }
+  updateInspirationBadge();  // PHASE 5 — keep header badge in sync
+
+  // refresh inventory panel if it's currently visible
+  if (!$("tab-inv").classList.contains("gone")) {
+    refreshPanelInventory();
+  }
+}
+
+// Busy state
+function setBusy(val) {
+  busy = val;
+  $("send-btn").disabled     = val;
+  $("player-input").disabled = val;
+  $("thinking").className    = "thinking" + (val ? " show" : "");
+  document.querySelectorAll(".cbtn").forEach(function(b) { b.disabled = val; });
+  document.querySelectorAll(".chip").forEach(function(b) { b.disabled = val; });
+}
+
+// Error
+function showError(msg) {
+  const bar = $("error-bar");
+  bar.textContent = msg;
+  bar.classList.add("show");
+}
+function hideError() { $("error-bar").classList.remove("show"); }
+
+// Send action (freeform text or Fight)
+async function doAction(msg, choice) {
+  if (busy) return;
+  const input = $("player-input");
+  const text  = msg || input.value.trim();
+  if (!text && !choice) return;
+  input.value = "";
+  const prevTurn = turnCount;
+  setBusy(true);
+  try {
+    const data = await api.action({message: text, choice: choice});
+    turnCount = (data.state && data.state.turn) ? data.state.turn - 1 : turnCount + 1;
+    applyData(data, prevTurn);
+  } catch(err) {
+    showError("Could not reach the dungeon master. Check that the server is running.");
+  }
+  setBusy(false);
+}
+
+// Choice with dice overlay for Sneak / Parley
+async function doChoice(type) {
+  if (busy) return;
+  _lastChoiceType = type;
+  setBusy(true);
+  const prevTurn = turnCount;
+
+  if (type === "sneak" || type === "talk" || type === "death_save" || type === "fight") {
+    startDiceAnimation(type);
+  }
+
+  try {
+    const data = await api.action({message: "", choice: type});
+    if (data.error) {
+      hideDice();
+      showError(data.error);
+      setBusy(false);
+      return;
+    }
+    // Show dice result (waits 2.2s), then narrative
+    if (data.dice) {
+      await resolveDice(data.dice);
+    } else {
+      hideDice();
+    }
+    turnCount = (data.state && data.state.turn) ? data.state.turn - 1 : turnCount + 1;
+    applyData(data, prevTurn);
+  } catch(err) {
+    hideDice();
+    showError("Could not reach the dungeon master. Check that the server is running.");
+  }
+  setBusy(false);
+}
+
+function doFree(msg) { doAction(msg, null); }
+
+function scrollToCast() {
+  var sec = $("spell-section");
+  if (sec) sec.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+
+async function resolveEnemyTurnFromServer() {
+  if (busy) return;
+
+  setBusy(true);
+  const prevTurn = turnCount;
+  startDiceAnimation("enemy_turn");
+
+  try {
+    const data = await api.enemyTurn();
+
+    if (data.error) {
+      hideDice();
+      showError(data.error);
+      setBusy(false);
+      return;
+    }
+
+    if (data.dice) {
+      await resolveDice(data.dice);
+    } else {
+      hideDice();
+    }
+
+    turnCount = (data.state && data.state.turn) ? data.state.turn - 1 : turnCount + 1;
+    applyData(data, prevTurn);
+
+  } catch(err) {
+    hideDice();
+    showError("Could not resolve enemy turn. Check that the server is running.");
+  }
+
+  setBusy(false);
+}
+
+// Ending
+function showEnding(e) {
+  var t = (e.type || '').toLowerCase();
+  if (t === 'fallen') {
+    MusicManager.setState('defeat');
+    SoundManager.play('death_sting');
+  } else {
+    MusicManager.setState('victory');
+  }
+  $("ending-title").textContent = e.title    || "";
+  $("ending-sub").textContent   = e.subtitle || "";
+  $("ending-text").textContent  = e.text     || "";
+  $("ending-screen").classList.add("active");
+}
+
+// Item picker (combat)
+async function openItemPicker() {
+  try {
+    const resp = await fetch("/api/combat_items");
+    const data = await resp.json();
+    const list = $("item-picker-list");
+    list.innerHTML = "";
+    const usable = (data.items || []).filter(function(i) { return i.quantity > 0; });
+    if (!usable.length) {
+      list.innerHTML = '<p class="item-picker-empty">Your pack has no usable items.</p>';
+    } else {
+      usable.forEach(function(item) {
+        const btn = document.createElement("button");
+        btn.className = "item-picker-btn";
+        btn.innerHTML = item.name + ' <span style="opacity:0.6">x' + item.quantity + '</span>' +
+          (item.description ? '<br><small style="font-family:serif;opacity:0.6">' + item.description + '</small>' : '');
+        btn.addEventListener("click", function() {
+          $("item-picker-overlay").classList.remove("active");
+          executeUseItem(item.id || item.name);
+        });
+        list.appendChild(btn);
+      });
+    }
+    $("item-picker-overlay").classList.add("active");
+  } catch(e) {
+    showError("Could not load items.");
+  }
+}
+
+async function executeUseItem(itemId) {
+  if (busy) return;
+  setBusy(true);
+  const prevTurn = turnCount;
+  try {
+    const data = await fetch("/api/action", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({choice: "use_item", item_id: itemId})
+    }).then(function(r) { return r.json(); });
+    if (data.error) { showError(data.error); setBusy(false); return; }
+    turnCount = (data.state && data.state.turn) ? data.state.turn - 1 : turnCount + 1;
+    applyData(data, prevTurn);
+  } catch(err) {
+    showError("Could not use item.");
+  }
+  setBusy(false);
+}
+
+// Inventory
+async function showInventory() {
+  try {
+    const data = await api.inv();
+    const list  = $("inv-list");
+    list.innerHTML = "";
+    const items = data.items || [];
+    if (!items.length) {
+      list.innerHTML = '<p class="inv-empty">Your pack is empty.</p>';
+    } else {
+      const NON_EQUIP = new Set(["consumable","utility","ammo","tool","book",""]);
+      const equipped   = items.filter(function(i){ return i.equipped; });
+      const unequipped = items.filter(function(i){ return !i.equipped; });
+
+      function makeRow(item) {
+        const d = document.createElement("div");
+        d.className = "inv-item";
+        const canEquip = !NON_EQUIP.has(item.type || "");
+        const typeBadge = item.type ? '<span class="inv-badge type">' + item.type + '</span>' : '';
+        const eqBadge   = item.equipped ? '<span class="inv-badge equipped">equipped</span>' : '';
+        const qty        = (item.quantity > 1 || NON_EQUIP.has(item.type)) ? ' <span class="inv-qty">x' + item.quantity + '</span>' : '';
+        d.innerHTML =
+          '<div class="inv-info">' +
+            '<div class="inv-name">' + item.name + qty + typeBadge + eqBadge + '</div>' +
+            '<div class="inv-desc">' + (item.description || '') + '</div>' +
+          '</div>';
+        if (canEquip) {
+          const btn = document.createElement("button");
+          btn.className = "inv-equip-btn" + (item.equipped ? " unequip" : "");
+          btn.textContent = item.equipped ? "Unequip" : "Equip";
+          btn.addEventListener("click", async function() {
+            btn.disabled = true;
+            try {
+              const r = await fetch("/api/inventory/equip", {
+                method: "POST",
+                headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({item_id: item.id, equipped: !item.equipped})
+              });
+              const res = await r.json();
+              if (res.error) { showError(res.error); btn.disabled = false; return; }
+              if (res.new_ac !== undefined) {
+                $("gold-badge") && ($("gold-badge").textContent = ($("gold-badge").textContent));
+              }
+              showInventory();
+            } catch(e) { showError("Equip failed."); btn.disabled = false; }
+          });
+          d.appendChild(btn);
+        }
+        list.appendChild(d);
+      }
+
+      if (equipped.length) {
+        const lbl = document.createElement("div");
+        lbl.className = "inv-section-label";
+        lbl.textContent = "Equipped";
+        list.appendChild(lbl);
+        equipped.forEach(makeRow);
+      }
+      if (unequipped.length) {
+        const lbl = document.createElement("div");
+        lbl.className = "inv-section-label";
+        lbl.textContent = "Pack";
+        list.appendChild(lbl);
+        unequipped.forEach(makeRow);
+      }
+    }
+    $("inv-overlay").classList.add("active");
+  } catch(e) {
+    showError("Could not load inventory.");
+  }
+}
+
+// Shop
+async function showShop() {
+  try {
+    const data = await fetch("/api/shop").then(function(r){ return r.json(); });
+    const list = $("shop-list");
+    const goldDisplay = $("shop-gold-display");
+    goldDisplay.textContent = "Your gold: " + (data.gold || 0) + " gp";
+    list.innerHTML = "";
+    if (!data.items || !data.items.length) {
+      list.innerHTML = '<p class="inv-empty">Nothing for sale here.</p>';
+    } else {
+      data.items.forEach(function(item) {
+        const d = document.createElement("div");
+        d.className = "shop-item";
+        const canAfford = (data.gold || 0) >= item.cost;
+        d.innerHTML =
+          '<div class="shop-info">' +
+            '<div class="shop-name">' + item.name + '</div>' +
+            '<div class="shop-cost">' + item.cost + ' gp</div>' +
+            '<div class="shop-desc">' + (item.description || '') + '</div>' +
+          '</div>';
+        const btn = document.createElement("button");
+        btn.className = "shop-buy-btn";
+        btn.textContent = "Buy";
+        btn.disabled = !canAfford;
+        btn.addEventListener("click", async function() {
+          btn.disabled = true;
+          try {
+            const r = await fetch("/api/shop/buy", {
+              method: "POST",
+              headers: {"Content-Type":"application/json"},
+              body: JSON.stringify({item_id: item.id})
+            });
+            const res = await r.json();
+            if (res.error) { showError(res.error); btn.disabled = !canAfford; return; }
+            $("gold-badge").textContent = (res.gold_remaining || 0) + " Gold";
+            showShop();
+          } catch(e) { showError("Purchase failed."); btn.disabled = !canAfford; }
+        });
+        d.appendChild(btn);
+        list.appendChild(d);
+      });
+    }
+    $("shop-overlay").classList.add("active");
+  } catch(e) {
+    showError("Could not load shop.");
+  }
+}
+
+// New game
+async function startFresh() {
+  $("ending-screen").classList.remove("active");
+  $("load-screen").classList.remove("gone");
+  $("load-msg").textContent = "The dungeon is being prepared...";
+  turnCount = 0;
+  _prevPlayerHp = null;
+  _prevEnemyHp  = null;
+  _narrativeHistory = [];
+  try { localStorage.removeItem('iw_hist'); } catch(e) {}
+  $("history-log").innerHTML = "";
+  renderConditionBadges("player-condition-badges", []);  // PHASE 5 — clear badges
+  renderConditionBadges("enemy-condition-badges", []);
+  updatePortrait('');
+  hideError();
+  try {
+    const data = await api.new();
+    $("load-screen").classList.add("gone");
+    if (data.error) { showError(data.error); return; }
+    turnCount = 1;
+    applyData(data, null);
+    loadAndRenderCharSheet();
+  } catch(e) {
+    $("load-screen").classList.add("gone");
+    showError("Failed to start. Is the server running with GROQ_API_KEY set?");
+  }
+}
+
+function hardReset() {
+  var m = $("reset-modal");
+  if (m) m.style.display = "flex";
+}
+function closeResetModal() {
+  var m = $("reset-modal");
+  if (m) m.style.display = "none";
+}
+function confirmReset() {
+  closeResetModal();
+  startFresh();
+}
+
+// Load messages
+function cycleLoadMsg() {
+  const msgs = [
+    "The dungeon stirs...",
+    "Summoning the dungeon master...",
+    "Ancient torches flicker...",
+    "The gate creaks open...",
+  ];
+  let i = 0;
+  return setInterval(function() {
+    i = (i + 1) % msgs.length;
+    const el = $("load-msg");
+    if (el) el.textContent = msgs[i];
+  }, 3000);
+}
+
+// Init
+//async function init() {
+//  const msgTimer = cycleLoadMsg();
+//  try {
+//    const resume = await api.resume();
+//    clearInterval(msgTimer);
+//    if (resume.active) {
+//      $("load-screen").classList.add("gone");
+//      turnCount = resume.state.turn || 1;
+//      applyData({
+//        narrative: resume.narrative,
+//        hp:        resume.hp,
+//        actions:   resume.actions || [],
+//        state:     resume.state,
+//        ending:    null,
+//      }, null);
+//    } else {
+//      await startFresh();
+//    }
+//  } catch(e) {
+//    clearInterval(msgTimer);
+//    await startFresh();
+//  }
+//}
+
+async function _initGame() {
+  $("load-screen").classList.remove("gone");
+  $("load-msg").textContent = "The dungeon stirs...";
+  const msgTimer = cycleLoadMsg();
+  try {
+    const character = await api.character();
+    if (!character.exists) {
+      clearInterval(msgTimer);
+      $("load-screen").classList.add("gone");
+      if (window.myPlayerName) $("cc-player-name").value = window.myPlayerName;
+      await showCharacterCreator();
+      return;
+    }
+    const resume = await api.resume();
+    clearInterval(msgTimer);
+    if (resume.active) {
+      $("load-screen").classList.add("gone");
+      turnCount = resume.state.turn || 1;
+      restoreHistory();
+      applyData(Object.assign({}, resume, {ending: null, actions: resume.actions || [], hub_locations: resume.hub_locations || []}), null);
+      if (window.isMultiplayer) {
+        var psec = $("party-section");
+        if (psec) psec.style.display = "block";
+        $("chat-box").style.display  = "block";
+      }
+      loadAndRenderCharSheet();
+    } else {
+      $("load-screen").classList.add("gone");
+      await startFresh();
+    }
+  } catch(e) {
+    clearInterval(msgTimer);
+    $("load-screen").classList.add("gone");
+    await showCharacterCreator();
+  }
+}
+
+async function init() {
+  $("load-screen").classList.add("gone");
+  $("character-screen").classList.add("gone");
+}
+
+// History toggle kept for backwards compat; panel version always visible
+var _histToggle = $("history-toggle");
+if (_histToggle) _histToggle.addEventListener("click", function() {
+  historyOpen = !historyOpen;
+  $("history-log").classList.toggle("open", historyOpen);
+  var arr = $("toggle-arrow");
+  if (arr) arr.classList.toggle("open", historyOpen);
+});
+
+// Events
+$("player-input").addEventListener("keydown", function(e) {
+  if (e.key === "Enter" && !busy) doAction("", null);
+});
+$("send-btn").addEventListener("click",   function() { doAction("", null); });
+$("inv-btn").addEventListener("click", function() { switchRightTab("inv"); });
+$("close-inv").addEventListener("click",  function() { $("inv-overlay").classList.remove("active"); });
+$("inv-overlay").addEventListener("click", function(e) {
+  if (e.target === $("inv-overlay")) $("inv-overlay").classList.remove("active");
+});
+$("close-item-picker").addEventListener("click", function() { $("item-picker-overlay").classList.remove("active"); });
+$("item-picker-overlay").addEventListener("click", function(e) {
+  if (e.target === $("item-picker-overlay")) $("item-picker-overlay").classList.remove("active");
+});
+$("close-shop").addEventListener("click", function() { $("shop-overlay").classList.remove("active"); });
+$("shop-overlay").addEventListener("click", function(e) {
+  if (e.target === $("shop-overlay")) $("shop-overlay").classList.remove("active");
+});
+$("new-btn").addEventListener("click", function() {
+  if (confirm("Start a new game? All progress will be lost.")) startFresh();
+});
+var _resetBtn = $("reset-btn");
+if (_resetBtn) _resetBtn.addEventListener("click", hardReset);
+$("restart-btn").addEventListener("click", startFresh);
+
+$("cc-create-btn").addEventListener("click", createCharacterFromForm); // Fix
+
+// Right panel tab switching
+function switchRightTab(tab) {
+  document.querySelectorAll(".r-tab").forEach(function(b) { b.classList.remove("active"); });
+  document.querySelectorAll(".r-tab-pane").forEach(function(p) { p.classList.add("gone"); });
+  var btn  = document.querySelector('.r-tab[data-tab="' + tab + '"]');
+  var pane = $("tab-" + tab);
+  if (btn)  btn.classList.add("active");
+  if (pane) pane.classList.remove("gone");
+  if (tab === "inv") refreshPanelInventory();
+  // Scroll right panel into view on mobile
+  var panel = document.querySelector(".panel-right");
+  if (panel && window.innerWidth <= 768) panel.scrollIntoView({behavior:"smooth"});
+}
+
+document.querySelectorAll(".r-tab").forEach(function(btn) {
+  btn.addEventListener("click", function() { switchRightTab(btn.dataset.tab); });
+});
+
+// Dice roll strip
+function showDiceStrip(rolls) {
+  var el = $("dice-roll-strip");
+  if (!el) return;
+  if (!rolls || !rolls.length) { el.style.display = "none"; return; }
+  el.style.display = "flex";
+  el.innerHTML = '<span class="dc-die" style="margin-right:.2rem">Rolls:</span>' +
+    rolls.map(function(r) {
+      var nat = r.result === 20 ? " dc-nat20" : r.result === 1 ? " dc-nat1" : "";
+      return '<div class="dice-chip"><span class="dc-die">' + (r.die || "d?") + '&nbsp;</span>' +
+        '<span class="dc-val' + nat + '">' + r.result + '</span>' +
+        (r.purpose ? '<span class="dc-die">&nbsp;(' + r.purpose + ')</span>' : '') + '</div>';
+    }).join("");
+}
+
+// Character sheet renderer
+window._lastCharacter = null;
+
+function renderCharacterSheet(char) {
+  var el = $("char-sheet-content");
+  if (!el) return;
+  if (!char || !char.identity) { el.innerHTML = '<p class="cs-empty">No character loaded.</p>'; return; }
+
+  var id    = char.identity    || {};
+  var ab    = char.ability_scores || {};
+  var cm    = char.combat       || {};
+  var st    = char.saving_throws || {};
+  var sk    = char.skills        || {};
+  var sp    = char.spellcasting  || {};
+  var feats = char.class_features || [];
+  var traits= char.racial_traits  || [];
+  var profs = char.proficiencies  || {};
+  var atks  = char.attacks        || [];
+
+  function abMod(k) {
+    var m = (ab[k] || {}).modifier || 0;
+    return m >= 0 ? "+" + m : "" + m;
+  }
+  function profDot(proficient, expertise) {
+    if (expertise)  return '<span class="cs-dot expertise">&#9679;</span>';
+    if (proficient) return '<span class="cs-dot proficient">&#9679;</span>';
+    return '<span class="cs-dot">&#9675;</span>';
+  }
+  function fmtMod(n) { return n >= 0 ? "+" + n : "" + n; }
+
+  var h = "";
+
+  // Identity
+  h += '<div class="cs-identity">';
+  h += '<div class="cs-char-name">' + (id.character_name || "—") + '</div>';
+  h += '<div class="cs-char-sub">' + (id.class || "?") + " • " + (id.race || "?") + " • Level " + (id.level || 1) + '</div>';
+  h += '<div class="cs-char-sub">' + (id.background || "") + (id.alignment ? " • " + id.alignment : "") + '</div>';
+  h += '</div>';
+
+  // Inspiration + prof bonus
+  h += '<div class="cs-row-insp">';
+  if (id.inspiration) h += '<span class="cs-badge gold">&#9733; Inspired</span>';
+  h += '<span class="cs-badge">Prof +'  + (id.prof_bonus || 2) + '</span>';
+  h += '<span class="cs-badge">XP ' + (id.xp || 0) + '</span>';
+  h += '</div>';
+
+  // Ability scores
+  h += '<div class="cs-section-label">Ability Scores</div>';
+  h += '<div class="cs-ab-row">';
+  ["STR","DEX","CON","INT","WIS","CHA"].forEach(function(k) {
+    var a = ab[k] || {}; var mod = fmtMod(a.modifier || 0);
+    h += '<div class="cs-ab">' +
+      '<div class="cs-ab-key">' + k + '</div>' +
+      '<div class="cs-ab-mod">' + mod + '</div>' +
+      '<div class="cs-ab-score">' + (a.score || 0) + '</div>' +
+    '</div>';
+  });
+  h += '</div>';
+
+  // Combat stats
+  h += '<div class="cs-section-label">Combat</div>';
+  h += '<div class="cs-combat-row">';
+  h += '<div class="cs-stat"><div class="cs-stat-val">' + (cm.armor_class || 0) + '</div><div class="cs-stat-lbl">AC</div></div>';
+  h += '<div class="cs-stat"><div class="cs-stat-val">' + fmtMod(cm.initiative || 0) + '</div><div class="cs-stat-lbl">Init</div></div>';
+  h += '<div class="cs-stat"><div class="cs-stat-val">' + (cm.speed || 30) + '</div><div class="cs-stat-lbl">Speed</div></div>';
+  h += '<div class="cs-stat"><div class="cs-stat-val" id="cs-hp-display">' + (cm.current_hp || 0) + '/' + (cm.max_hp || 0) + '</div><div class="cs-stat-lbl">HP</div></div>';
+  if (cm.temp_hp) h += '<div class="cs-stat"><div class="cs-stat-val">' + cm.temp_hp + '</div><div class="cs-stat-lbl">Temp HP</div></div>';
+  h += '<div class="cs-stat"><div class="cs-stat-val">' + (cm.passive_perception || 10) + '</div><div class="cs-stat-lbl">Pass Perc</div></div>';
+  if (cm.hit_dice_total) h += '<div class="cs-stat"><div class="cs-stat-val">' + (cm.hit_dice_remaining || 0) + '</div><div class="cs-stat-lbl">Hit Dice</div></div>';
+  h += '</div>';
+
+  // Death saves
+  if (cm.death_saves) {
+    var ds = cm.death_saves;
+    var succDots = "", failDots = "";
+    for (var i = 0; i < 3; i++) {
+      succDots += '<span style="color:' + (i < (ds.successes||0) ? "#44cc77" : "#333") + '">&#9679;</span>';
+      failDots  += '<span style="color:' + (i < (ds.failures||0)  ? "#cc4444" : "#333") + '">&#9679;</span>';
+    }
+    if ((ds.successes||0) > 0 || (ds.failures||0) > 0) {
+      h += '<div class="cs-row-insp" style="font-size:.65rem;gap:.5rem"><span style="color:#44cc77">Death Saves: ' + succDots + '</span><span style="color:#cc4444">Failures: ' + failDots + '</span></div>';
+    }
+  }
+
+  // Conditions
+  if (cm.conditions && cm.conditions.length) {
+    h += '<div class="cs-row-insp">';
+    cm.conditions.forEach(function(c) {
+      var name = c.name || c;
+      h += '<span class="cs-badge" style="color:#c07070;border-color:#4a2a2a">' + name + '</span>';
+    });
+    h += '</div>';
+  }
+
+  // Saving throws
+  h += '<div class="cs-section-label">Saving Throws</div>';
+  h += '<div class="cs-saves">';
+  ["STR","DEX","CON","INT","WIS","CHA"].forEach(function(k) {
+    var s = st[k] || {}; var mod = fmtMod(s.modifier || 0);
+    h += '<div class="cs-save-row">' + profDot(s.proficient) +
+      '<span class="cs-save-key">' + k + '</span>' +
+      '<span class="cs-save-mod">' + mod + '</span></div>';
+  });
+  h += '</div>';
+
+  // Skills
+  h += '<div class="cs-section-label">Skills</div>';
+  h += '<div class="cs-skills">';
+  Object.keys(sk).sort().forEach(function(name) {
+    var s = sk[name] || {}; var mod = fmtMod(s.modifier || 0);
+    h += '<div class="cs-skill-row">' + profDot(s.proficient, s.expertise) +
+      '<span class="cs-skill-name" title="' + name + '">' + name + '</span>' +
+      '<span class="cs-skill-ab">(' + (s.ability || "?") + ')</span>' +
+      '<span class="cs-skill-mod">' + mod + '</span></div>';
+  });
+  h += '</div>';
+
+  // Attacks
+  if (atks.length) {
+    h += '<div class="cs-section-label">Attacks</div>';
+    h += '<table class="cs-atk-table"><tr><th>Name</th><th>Atk</th><th>Damage</th></tr>';
+    atks.forEach(function(a) {
+      h += '<tr><td>' + (a.name||"?") + '</td><td>' + fmtMod(a.attack_bonus||0) + '</td><td>' + (a.damage_dice||"—") + " " + (a.damage_type||"") + '</td></tr>';
+    });
+    h += '</table>';
+  }
+
+  // Spellcasting
+  if (sp.ability) {
+    h += '<div class="cs-section-label">Spellcasting (' + sp.ability + ')</div>';
+    h += '<div class="cs-spell-row">';
+    h += '<span class="cs-badge">Save DC ' + (sp.spell_save_dc||0) + '</span>';
+    h += '<span class="cs-badge">Atk +' + (sp.spell_attack_bonus||0) + '</span>';
+    h += '</div>';
+    var slots = sp.spell_slots || {};
+    var slotRows = "";
+    ["1st","2nd","3rd","4th","5th"].forEach(function(lv) {
+      var s = slots[lv]; if (!s) return;
+      var bubs = "";
+      for (var i = 0; i < s.total; i++)
+        bubs += '<span class="slot-bubble' + (i < s.remaining ? " slot-full" : "") + '">&#9679;</span>';
+      slotRows += '<span class="slot-group">' + lv + ": " + bubs + '</span>';
+    });
+    if (slotRows) h += '<div class="slot-tracker">' + slotRows + '</div>';
+    if (sp.cantrips_known && sp.cantrips_known.length)
+      h += '<div class="cs-sub-label"><strong style="color:var(--text)">Cantrips:</strong> ' + sp.cantrips_known.join(", ") + '</div>';
+    if (sp.spells_known && sp.spells_known.length)
+      h += '<div class="cs-sub-label"><strong style="color:var(--text)">Prepared:</strong> ' + sp.spells_known.join(", ") + '</div>';
+  }
+
+  // Class features
+  if (feats.length) {
+    h += '<div class="cs-section-label">Class Features</div>';
+    feats.forEach(function(f) {
+      var uses = (f.uses_max != null) ? ' <span class="cs-badge">' + (f.uses_remaining||0) + "/" + f.uses_max + '</span>' : "";
+      h += '<div class="cs-feature"><div class="cs-feature-name">' + (f.name||"?") + uses + '</div>' +
+        '<div class="cs-feature-desc">' + (f.description||"") + '</div></div>';
+    });
+  }
+
+  // Racial traits
+  if (traits.length) {
+    h += '<div class="cs-section-label">Racial Traits</div>';
+    traits.forEach(function(t) {
+      h += '<div class="cs-feature"><div class="cs-feature-name">' + (t.name||"?") + '</div>' +
+        '<div class="cs-feature-desc">' + (t.description||"") + '</div></div>';
+    });
+  }
+
+  // Proficiencies
+  h += '<div class="cs-section-label">Proficiencies</div>';
+  h += '<div class="cs-profs">';
+  if (profs.armor    && profs.armor.length)    h += '<div><span class="cs-prof-type">Armor:</span> '     + profs.armor.join(", ")    + '</div>';
+  if (profs.weapons  && profs.weapons.length)  h += '<div><span class="cs-prof-type">Weapons:</span> '   + profs.weapons.join(", ")  + '</div>';
+  if (profs.tools    && profs.tools.length)    h += '<div><span class="cs-prof-type">Tools:</span> '     + profs.tools.join(", ")    + '</div>';
+  if (profs.languages&& profs.languages.length)h += '<div><span class="cs-prof-type">Languages:</span> ' + profs.languages.join(", ")+ '</div>';
+  h += '</div>';
+
+  // Personality
+  var hasPers = id.personality_trait || id.ideal || id.bond || id.flaw;
+  if (hasPers) {
+    h += '<div class="cs-section-label">Personality</div>';
+    h += '<div class="cs-personality">';
+    if (id.personality_trait) h += '<div class="cs-pers-row"><span class="cs-pers-key">Trait — </span>' + id.personality_trait + '</div>';
+    if (id.ideal)             h += '<div class="cs-pers-row"><span class="cs-pers-key">Ideal — </span>' + id.ideal + '</div>';
+    if (id.bond)              h += '<div class="cs-pers-row"><span class="cs-pers-key">Bond — </span>'  + id.bond  + '</div>';
+    if (id.flaw)              h += '<div class="cs-pers-row"><span class="cs-pers-key">Flaw — </span>'  + id.flaw  + '</div>';
+    h += '</div>';
+  }
+
+  // Backstory
+  if (id.backstory) {
+    h += '<div class="cs-section-label">Backstory</div>';
+    h += '<div class="cs-backstory">' + id.backstory + '</div>';
+  }
+
+  el.innerHTML = h;
+}
+
+// Inline update of HP in sheet (avoids full re-render on each turn)
+function updateSheetHP(currentHp, maxHp) {
+  if (!window._lastCharacter) return;
+  if (window._lastCharacter.combat) window._lastCharacter.combat.current_hp = currentHp;
+  var el = $("cs-hp-display");
+  if (el) el.textContent = currentHp + "/" + (maxHp || (window._lastCharacter.combat && window._lastCharacter.combat.max_hp) || 0);
+}
+
+// Panel inventory
+function renderPanelInventory(items, currency, currentWeight, carryingCapacity) {
+  var el = $("panel-inv-list");
+  if (!el) return;
+  var cu  = currency || {};
+  var wt  = currentWeight || 0;
+  var cap = carryingCapacity || 0;
+
+  var h = '<div class="cs-section-label">Currency</div>';
+  h += '<div class="cs-currency">';
+  if (cu.pp) h += '<span class="cu-badge pp">' + cu.pp + ' PP</span>';
+  h += '<span class="cu-badge gp">' + (cu.gp || 0) + ' GP</span>';
+  if (cu.sp) h += '<span class="cu-badge sp">' + cu.sp + ' SP</span>';
+  if (cu.cp) h += '<span class="cu-badge cp">' + cu.cp + ' CP</span>';
+  h += '</div>';
+
+  if (cap > 0) {
+    var wtPct = Math.min(100, wt / cap * 100);
+    // PHASE 5: color-coded carry weight bar (green < 50%, yellow 50-80%, red > 80%)
+    var wtColor = wtPct < 50 ? 'linear-gradient(90deg,#2a6a20,#6aaa40)'
+                : wtPct < 80 ? 'linear-gradient(90deg,#8a6a00,#d4a820)'
+                :               'linear-gradient(90deg,#8a1a00,#d44020)';
+    var encLabel = wtPct > 67 ? ' <span style="color:#d44020;font-size:.58rem">(Encumbered)</span>' : '';
+    h += '<div class="cs-section-label">Carry Weight</div>';
+    h += '<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.4rem">';
+    h += '<div class="bar-track" style="flex:1;height:5px"><div class="bar-fill" style="width:' + wtPct + '%;background:' + wtColor + '"></div></div>';
+    h += '<span style="font-size:.65rem;color:var(--dim)">' + wt + '/' + cap + ' lb</span>' + encLabel + '</div>';
+  }
+
+  h += '<div class="cs-section-label">Equipment</div>';
+  el.innerHTML = h;
+
+  if (!items || !items.length) {
+    el.innerHTML += '<p class="cs-empty">Pack is empty.</p>';
+    return;
+  }
+
+  var NON_EQUIP = new Set(["consumable","utility","ammo","tool","book",""]);
+  var listDiv = document.createElement("div");
+
+  items.forEach(function(item) {
+    var d = document.createElement("div");
+    d.className = "inv-item";
+    var canEquip = !NON_EQUIP.has(item.type || "");
+    var typeBadge = item.type ? '<span class="inv-badge type">' + item.type + '</span>' : "";
+    var eqBadge   = item.equipped ? '<span class="inv-badge equipped">equipped</span>' : "";
+    var qty = (item.quantity > 1 || NON_EQUIP.has(item.type)) ? ' <span class="inv-qty">x' + item.quantity + '</span>' : "";
+    d.innerHTML =
+      '<div class="inv-info">' +
+        '<div class="inv-name">' + item.name + qty + typeBadge + eqBadge + '</div>' +
+        '<div class="inv-desc">' + (item.description || "") + '</div>' +
+      '</div>';
+    if (canEquip) {
+      var btn = document.createElement("button");
+      btn.className = "inv-equip-btn" + (item.equipped ? " unequip" : "");
+      btn.textContent = item.equipped ? "Unequip" : "Equip";
+      btn.addEventListener("click", async function() {
+        btn.disabled = true;
+        try {
+          var r   = await fetch("/api/inventory/equip", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({item_id: item.id, equipped: !item.equipped})});
+          var res = await r.json();
+          if (res.error) { showError(res.error); btn.disabled = false; return; }
+          refreshPanelInventory();
+        } catch(e) { showError("Equip failed."); btn.disabled = false; }
+      });
+      d.appendChild(btn);
+    }
+    if (item.type === "consumable" && item.quantity > 0 && !inCombat) {
+      var useBtn = document.createElement("button");
+      useBtn.className = "share-btn";
+      useBtn.style.cssText = "background:#0a1a10;border-color:#1a5a20;color:#7acf7a;margin-left:2px";
+      useBtn.textContent = "Use";
+      (function(iid, ib) {
+        ib.addEventListener("click", async function() {
+          ib.disabled = true;
+          try {
+            var r = await fetch("/api/action", {
+              method: "POST", headers: {"Content-Type":"application/json"},
+              body: JSON.stringify({choice: "use_item", item_id: iid})
+            }).then(function(r){ return r.json(); });
+            if (r.error) { showError(r.error); ib.disabled = false; return; }
+            applyData(r);
+            refreshPanelInventory();
+          } catch(e) { showError("Could not use item."); ib.disabled = false; }
+        });
+      })(item.id, useBtn);
+      d.appendChild(useBtn);
+    }
+    if (window.isMultiplayer && item.type === "consumable" && item.quantity > 0) {
+      var shareBtn = document.createElement("button");
+      shareBtn.className = "share-btn";
+      shareBtn.title = "Share with party";
+      shareBtn.textContent = "Share";
+      (function(iid) {
+        shareBtn.addEventListener("click", async function() {
+          shareBtn.disabled = true;
+          await shareToChest(iid);
+          refreshPanelInventory();
+          loadPartyChest();
+          shareBtn.disabled = false;
+        });
+      })(item.id);
+      d.appendChild(shareBtn);
+    }
+    listDiv.appendChild(d);
+  });
+  el.appendChild(listDiv);
+}
+
+async function refreshPanelInventory() {
+  var el = $("panel-inv-list");
+  if (!el) return;
+  try {
+    var invData  = await api.inv();
+    var char     = window._lastCharacter || {};
+    renderPanelInventory(invData.items || [], char.currency || {}, char.current_weight || 0, char.carrying_capacity || 0);
+  } catch(e) {
+    el.innerHTML = '<p class="cs-empty">Could not load inventory.</p>';
+  }
+}
+
+// Load and render character sheet (called on init + level-up)
+async function loadAndRenderCharSheet() {
+  try {
+    var r = await api.character();
+    if (r.character) {
+      window._lastCharacter = r.character;
+      renderCharacterSheet(r.character);
+      updateInspirationBadge();  // PHASE 5 added
+      updatePortrait((r.character.identity || {}).class); // PHASE 7A
+    }
+  } catch(e) {}
+}
+
+function updatePortrait(charClass) {
+  var valid = ['fighter','rogue','wizard','cleric','ranger','barbarian','paladin','bard','druid','monk'];
+  var cls = (charClass || '').toLowerCase().trim();
+  var ok  = valid.indexOf(cls) !== -1;
+  var filename = ok ? cls.charAt(0).toUpperCase() + cls.slice(1) + '.png' : '';
+  var src = ok ? '/static/portraits/' + filename : '';
+  var lg = $('cs-portrait'), sm = $('status-portrait');
+  if (lg) { lg.src = src; lg.style.display = ok ? 'block' : 'none'; }
+  if (sm) { sm.src = src; sm.style.display = ok ? 'block' : 'none'; }
+}
+
+// NPC / QUEST INTERACTIONS
+var _currentNpcId = null;
+async function openNpc(npcId) {
+  _currentNpcId = npcId;
+  var talkData  = await fetch("/api/npc/" + npcId + "/talk", {method:"POST"}).then(function(r){return r.json();});
+  $("npc-modal-title").textContent = "◆ " + (talkData.npc_name || "NPC");
+  // Show LLM narrative if present, otherwise fall back to raw greeting
+  $("npc-greeting").textContent    = talkData.narrative || talkData.greeting || "";
+  $("npc-persuade-result").innerHTML = "";
+
+  // Shop
+  var shopSec = $("npc-shop-section");
+  shopSec.innerHTML = "";
+  if (talkData.has_shop && talkData.shop_inventory && talkData.shop_inventory.length) {
+    var lbl = document.createElement("div");
+    lbl.className = "npc-section-label";
+    lbl.textContent = "Wares for Sale";
+    shopSec.appendChild(lbl);
+    talkData.shop_inventory.forEach(function(listing) {
+      var row = document.createElement("div");
+      row.className = "npc-shop-item";
+      row.innerHTML =
+        '<div class="npc-item-info"><div class="npc-item-name">' + listing.name + '</div>' +
+        '<div class="npc-item-cost">' + listing.cost + ' gp</div></div>';
+      var btn = document.createElement("button");
+      btn.className   = "save-btn";
+      btn.textContent = "Buy";
+      btn.addEventListener("click", function() { buyFromNpc(npcId, listing.item_id, listing.name, listing.cost, btn); });
+      row.appendChild(btn);
+      shopSec.appendChild(row);
+    });
+  }
+
+  // Quest
+  var questSec = $("npc-quest-section");
+  questSec.innerHTML = "";
+  if (talkData.quest_offer) {
+    var q  = talkData.quest_offer;
+    var lbl2 = document.createElement("div");
+    lbl2.className = "npc-section-label";
+    lbl2.textContent = "Quest Available";
+    questSec.appendChild(lbl2);
+    var qd = document.createElement("div");
+    qd.className = "quest-row";
+    qd.innerHTML =
+      '<div class="quest-name">' + q.name + '</div>' +
+      '<div class="quest-desc">' + (q.dialogue || q.description) + '</div>';
+    var acceptBtn = document.createElement("button");
+    acceptBtn.className   = "save-btn";
+    acceptBtn.textContent = "Accept Quest";
+    acceptBtn.style.marginTop = ".4rem";
+    acceptBtn.addEventListener("click", async function() {
+      acceptBtn.disabled = true;
+      var r = await fetch("/api/quest/accept", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({quest_id: q.id})}).then(function(r){return r.json();});
+      if (r.error) { showError(r.error); acceptBtn.disabled = false; return; }
+      qd.innerHTML += '<span class="quest-status accepted" style="margin-top:.3rem">Accepted!</span>';
+      acceptBtn.remove();
+    });
+    qd.appendChild(acceptBtn);
+    questSec.appendChild(qd);
+  } else if (talkData.quest_status === "accepted") {
+    var lbl3 = document.createElement("div");
+    lbl3.className = "npc-section-label";
+    lbl3.textContent = "Active Quest";
+    questSec.appendChild(lbl3);
+    var qd2 = document.createElement("div");
+    qd2.className = "quest-row";
+    qd2.innerHTML =
+      '<div class="quest-desc">' + (talkData.quest_progress || "") + '</div>';
+    var complBtn = document.createElement("button");
+    complBtn.className   = "save-btn";
+    complBtn.textContent = "Turn In Quest";
+    complBtn.style.marginTop = ".4rem";
+    complBtn.addEventListener("click", async function() {
+      complBtn.disabled = true;
+      var r = await fetch("/api/quest/complete", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({quest_id: talkData.quest_id})}).then(function(r){return r.json();});
+      if (r.error) { showError(r.error); complBtn.disabled = false; return; }
+      qd2.innerHTML += '<div class="persuade-result success">Quest complete! +'  + r.xp_reward + ' XP, +' + r.gold_reward + ' gp</div>';
+      complBtn.remove();
+      $("gold-badge").textContent = (parseInt($("gold-badge").textContent) + r.gold_reward) + " Gold";
+    });
+    qd2.appendChild(complBtn);
+    questSec.appendChild(qd2);
+  }
+
+  // Action buttons
+  var btns = $("npc-action-btns");
+  btns.innerHTML = "";
+  var perBtn = document.createElement("button");
+  perBtn.className   = "save-btn";
+  perBtn.textContent = "Persuade";
+  perBtn.addEventListener("click", async function() {
+    perBtn.disabled = true;
+    var r = await fetch("/api/npc/" + npcId + "/persuade", {method:"POST"}).then(function(r){return r.json();});
+    var res = $("npc-persuade-result");
+    res.innerHTML = '<div class="persuade-result ' + (r.success ? "success" : "fail") + '">' +
+      (r.success ? "✓" : "✗") + " Roll " + r.roll + " + " + r.cha_mod + " = " + r.total +
+      " vs DC " + r.dc + " &mdash; " + (r.dialogue || "") +
+    '</div>';
+    perBtn.disabled = false;
+  });
+  btns.appendChild(perBtn);
+
+  $("npc-overlay").classList.add("active");
+}
+
+async function buyFromNpc(npcId, itemId, itemName, cost, btn) {
+  btn.disabled = true;
+  var r = await fetch("/api/npc/" + npcId + "/buy", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({item_id: itemId, quantity: 1})
+  }).then(function(r){return r.json();});
+  if (r.error) { showError(r.error); btn.disabled = false; return; }
+  showLootToast([{name: itemName, qty: 1}]);
+  $("gold-badge").textContent = (r.gold_remaining || 0) + " Gold";
+  btn.disabled = false;
+}
+
+async function openQuestLog() {
+  var data = await fetch("/api/quests").then(function(r){return r.json();});
+  var list = $("quest-list");
+  list.innerHTML = "";
+  var quests = data.quests || [];
+  if (!quests.length) { list.innerHTML = '<p class="inv-empty">No quests known yet.</p>'; }
+  quests.forEach(function(q) {
+    var row = document.createElement("div");
+    row.className = "quest-row";
+    var statusLabel = {available:"Available", accepted:"In Progress", completed:"Completed"}[q.status] || q.status;
+    row.innerHTML =
+      '<div class="quest-name">' + q.name + '</div>' +
+      '<div class="quest-desc">' + q.description + '</div>' +
+      '<span class="quest-status ' + q.status + '">' + statusLabel + '</span>' +
+      '<div class="quest-reward">' + q.xp_reward + ' XP &bull; ' + q.gold_reward + ' gp</div>';
+    if (q.status === "accepted" && q.objective_met) {
+      var complBtn = document.createElement("button");
+      complBtn.className   = "save-btn";
+      complBtn.textContent = "Turn In";
+      complBtn.style.marginTop = ".35rem";
+      complBtn.addEventListener("click", async function() {
+        complBtn.disabled = true;
+        var r = await fetch("/api/quest/complete", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({quest_id: q.id})}).then(function(r){return r.json();});
+        if (r.error) { showError(r.error); complBtn.disabled = false; return; }
+        openQuestLog();
+        $("gold-badge").textContent = (parseInt($("gold-badge").textContent) + r.gold_reward) + " Gold";
+      });
+      row.appendChild(complBtn);
+    }
+    list.appendChild(row);
+  });
+  $("quest-overlay").classList.add("active");
+}
+
+$("quest-btn").addEventListener("click", openQuestLog);
+$("close-quest").addEventListener("click", function() { $("quest-overlay").classList.remove("active"); });
+$("quest-overlay").addEventListener("click", function(e) {
+  if (e.target === $("quest-overlay")) $("quest-overlay").classList.remove("active");
+});
+$("close-npc").addEventListener("click", function() { $("npc-overlay").classList.remove("active"); });
+$("npc-overlay").addEventListener("click", function(e) {
+  if (e.target === $("npc-overlay")) $("npc-overlay").classList.remove("active");
+});
+
+//  SAVE / LOAD
+
+async function openSaveLoad() {
+  await refreshSaveList();
+  $("save-overlay").classList.add("active");
+}
+
+async function refreshSaveList() {
+  var list = $("save-list");
+  list.innerHTML = '<p class="inv-empty" style="padding:.5rem 0">Loading...</p>';
+  try {
+    var data = await fetch("/api/saves").then(function(r){ return r.json(); });
+    var savesArr = (data.saves || []).slice().sort(function(a, b){ return b.saved_at - a.saved_at; });
+    if (!savesArr.length) {
+      list.innerHTML = '<p class="inv-empty">No saves yet.</p>'; return;
+    }
+    list.innerHTML = "";
+    savesArr.forEach(function(s) {
+      var d   = new Date(s.saved_at * 1000);
+      var dt  = d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+      var lbl = s.is_auto ? "Autosave" : s.name;
+      var row = document.createElement("div");
+      row.className = "save-slot";
+      row.innerHTML =
+        '<div class="save-info">' +
+          '<div class="save-name">' + lbl + '</div>' +
+          '<div class="save-meta">' + s.char_name + ' &bull; ' + s.class + ' Lv ' + s.level +
+            ' &bull; Floor ' + s.floor + ' &bull; HP ' + s.hp + ' &bull; ' + dt + '</div>' +
+        '</div>';
+      var loadBtn = document.createElement("button");
+      loadBtn.className = "save-btn";
+      loadBtn.textContent = "Load";
+      loadBtn.addEventListener("click", function() { loadSave(s.id, lbl); });
+      var delBtn = document.createElement("button");
+      delBtn.className = "save-btn del";
+      delBtn.textContent = "Del";
+      delBtn.addEventListener("click", function() { deleteSave(s.id, row); });
+      row.appendChild(loadBtn);
+      row.appendChild(delBtn);
+      list.appendChild(row);
+    });
+  } catch(e) {
+    list.innerHTML = '<p class="inv-empty">Could not load saves.</p>';
+  }
+}
+
+async function doSave() {
+  var name = $("save-name-input").value.trim();
+  if (!name) { showError("Enter a save name."); return; }
+  var btn = $("do-save-btn");
+  btn.disabled = true; btn.textContent = "Saving...";
+  try {
+    var r = await fetch("/api/saves/save", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({name: name})
+    }).then(function(r){ return r.json(); });
+    if (r.error) { showError(r.error); }
+    else { $("save-name-input").value = ""; await refreshSaveList(); }
+  } catch(e) { showError("Save failed."); }
+  btn.disabled = false; btn.textContent = "Save";
+}
+
+async function loadSave(saveId, label) {
+  if (!confirm("Load \"" + label + "\"? Unsaved progress will be lost.")) return;
+  $("save-overlay").classList.remove("active");
+  $("load-screen").classList.remove("gone");
+  $("load-msg").textContent = "Loading save...";
+  try {
+    var data = await fetch("/api/saves/load", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({save_id: saveId})
+    }).then(function(r){ return r.json(); });
+    $("load-screen").classList.add("gone");
+    if (data.error) { showError(data.error); return; }
+    turnCount = (data.state && data.state.turn) || 1;
+    applyData(data, null);
+  } catch(e) {
+    $("load-screen").classList.add("gone");
+    showError("Load failed.");
+  }
+}
+
+async function deleteSave(saveId, row) {
+  if (!confirm("Delete this save?")) return;
+  try {
+    await fetch("/api/saves/" + saveId, {method: "DELETE"});
+    row.remove();
+    var list = $("save-list");
+    if (!list.children.length) list.innerHTML = '<p class="inv-empty">No saves yet.</p>';
+  } catch(e) { showError("Delete failed."); }
+}
+
+$("save-btn").addEventListener("click", openSaveLoad);
+$("close-save").addEventListener("click", function() { $("save-overlay").classList.remove("active"); });
+$("save-overlay").addEventListener("click", function(e) {
+  if (e.target === $("save-overlay")) $("save-overlay").classList.remove("active");
+});
+$("do-save-btn").addEventListener("click", doSave);
+$("save-name-input").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") doSave();
+});
+
+// Global MP state
+window.myPlayerName  = null;
+window.myRoomCode    = null;
+window.isHost        = false;
+window.isMultiplayer = false;
+window.myTurn        = true;
+
+// Fetch interceptor auto-inject room/player headers
+(function() {
+  var _orig = window.fetch.bind(window);
+  window.fetch = function(url, init) {
+    if (window.myRoomCode && window.myRoomCode !== "SOLO") {
+      init = init ? Object.assign({}, init) : {};
+      var h = init.headers ? Object.assign({}, init.headers) : {};
+      h["X-Room-Code"]   = window.myRoomCode;
+      if (window.myPlayerName) h["X-Player-Name"] = window.myPlayerName;
+      init.headers = h;
+    }
+    return _orig(url, init);
+  };
+})();
+
+// Socket.IO
+var socket = io();
+
+// Party bar (left panel)
+var COND_ICONS  = { Poisoned:"☠", Stunned:"💫", Blinded:"👁", Frightened:"😱", Charmed:"💝", Prone:"⬇", Paralyzed:"⚡", Exhaustion:"😫" };
+var CLASS_ICONS = { Fighter:"⚔", Rogue:"†", Wizard:"✦", Cleric:"✝", Ranger:"⚜", Paladin:"☩", Barbarian:"⚡", Bard:"♪", Druid:"☘", Monk:"☯" };
+function renderPartyBar(party) {
+  var bar     = $("party-bar");
+  var section = $("party-section");
+  if (!party || !party.length || !window.isMultiplayer) {
+    if (section) section.style.display = "none";
+    return;
+  }
+  if (section) section.style.display = "block";
+  bar.style.display = "flex";
+  bar.innerHTML = party.map(function(p) {
+    var cls    = "party-card" + (p.is_current_turn ? " active-turn" : "") + (!p.connected ? " disconnected" : "");
+    var hpPct  = p.max_hp ? Math.max(0, Math.min(100, p.hp / p.max_hp * 100)) : 0;
+    var icon   = CLASS_ICONS[p.class] || "◆";
+    var condHtml = "";
+    if (p.conditions && p.conditions.length) {
+      condHtml = '<div style="font-size:.68rem;margin-top:.15rem">' +
+        p.conditions.map(function(c){ return '<span title="' + c + '">' + (COND_ICONS[c] || "⚠") + '</span>'; }).join(" ") +
+      '</div>';
+    }
+    return '<div class="' + cls + '">' +
+      '<div class="party-card-name">' +
+        '<span style="color:var(--gold-dim);margin-right:.2rem">' + icon + '</span>' +
+        (p.character_name || p.player_name) +
+        (p.player_name === window.myPlayerName ? ' <span style="color:var(--dim);font-size:.62rem">(you)</span>' : "") +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:.3rem;margin-top:.18rem">' +
+        '<div class="bar-track" style="flex:1;height:4px"><div class="bar-fill hp-fill" style="width:' + hpPct + '%"></div></div>' +
+        '<span class="party-card-hp" style="font-size:.65rem">' + (p.hp||0) + '/' + (p.max_hp||0) + '</span>' +
+      '</div>' +
+      condHtml +
+      (p.is_current_turn ? '<div class="party-card-turn">&#9654; acting</div>' : '') +
+    '</div>';
+  }).join("");
+}
+
+// Turn banner
+function renderTurnBanner(activePlayerName) {
+  var banner = $("turn-banner");
+  if (!window.isMultiplayer) { banner.style.display = "none"; return; }
+  if (!activePlayerName) { banner.style.display = "none"; window.myTurn = true; return; }
+  banner.style.display = "block";
+  if (activePlayerName === window.myPlayerName) {
+    window.myTurn = true;
+    banner.className  = "turn-banner your-turn";
+    banner.textContent = "Your turn";
+  } else {
+    window.myTurn = false;
+    banner.className  = "turn-banner their-turn";
+    banner.textContent = activePlayerName + "'s turn";
+  }
+}
+
+// Lobby helpers
+function renderLobbyPlayers(party) {
+  var list = $("lobby-player-list");
+  if (!list) return;
+  list.innerHTML = party.map(function(p) {
+    var badge = p.is_host
+      ? '<span class="lobby-badge host">Host</span>'
+      : (p.ready ? '<span class="lobby-badge ready">Ready</span>' : '<span class="lobby-badge waiting">Waiting</span>');
+    var kick = (window.isHost && !p.is_host)
+      ? '<button class="landing-btn" style="font-size:.7rem;padding:.2rem .7rem" onclick="kickPlayer(\'' + p.player_name.replace(/'/g,"\\'") + '\')">Kick</button>'
+      : '';
+    return '<div class="lobby-player"><span class="lobby-name">' + p.player_name + '</span>' + badge + kick + '</div>';
+  }).join("");
+  var allReady = party.length > 0 && party.every(function(p) { return p.ready; });
+  if (window.isHost) $("start-game-btn").classList.toggle("gone", !allReady);
+  $("lobby-status").textContent = allReady ? "All players ready!" : "Waiting for players to choose characters...";
+}
+
+function kickPlayer(name) {
+  if (socket) socket.emit("kick_player", {room_code: window.myRoomCode, target_name: name});
+}
+
+// Socket events
+socket.on("room_created", function(data) {
+  window.myPlayerName  = data.player_name;
+  window.myRoomCode    = data.room_code;
+  window.isHost        = true;
+  window.isMultiplayer = true;
+  $("lobby-code").textContent = data.room_code;
+  renderLobbyPlayers(data.party || []);
+  $("load-screen").classList.add("gone");
+  $("landing-screen").classList.add("gone");
+  $("lobby-screen").classList.remove("gone");
+  $("start-game-btn").classList.add("gone");
+  hideError();
+});
+
+socket.on("room_joined", function(data) {
+  window.myPlayerName  = data.player_name;
+  window.myRoomCode    = data.room_code;
+  window.isHost        = data.is_host;
+  window.isMultiplayer = true;
+  $("lobby-code").textContent = data.room_code;
+  renderLobbyPlayers(data.party || []);
+  $("load-screen").classList.add("gone");
+  $("landing-screen").classList.add("gone");
+  $("lobby-screen").classList.remove("gone");
+  if (window.isHost) $("start-game-btn").classList.remove("gone");
+  else $("start-game-btn").classList.add("gone");
+  hideError();
+  if (data.rejoined && data.state === "playing") {
+    $("lobby-screen").classList.add("gone");
+    var psec2 = $("party-section"); if (psec2) psec2.style.display = "block";
+    $("chat-box").style.display  = "block";
+    api.resume().then(function(resume) {
+      if (resume.active) {
+        $("load-screen").classList.add("gone");
+        turnCount = resume.state.turn || 1;
+        applyData(Object.assign({}, resume, {ending: null, actions: resume.actions || [], hub_locations: resume.hub_locations || []}), null);
+      }
+    });
+  }
+});
+
+socket.on("player_list_update", function(data) {
+  renderLobbyPlayers(data.party || []);
+});
+
+socket.on("game_started", function(data) {
+  window.myRoomCode = data.room_code;
+  $("lobby-screen").classList.add("gone");
+  var psec = $("party-section");
+  if (psec) psec.style.display = "block";
+  $("chat-box").style.display  = "block";
+  loadPartyChest();
+  if (window.isHost) {
+    startFresh();
+  } else {
+    $("load-screen").classList.remove("gone");
+    $("load-msg").textContent = "Game starting...";
+  }
+});
+
+socket.on("game_state_update", function(data) {
+  window._lastCombatState = data.combat || {};
+  renderPartyBar(data.party);
+  renderTurnBanner(data.active_player_name);
+  if (window.isMultiplayer) loadPartyChest();
+  if (data.state) {
+    var maxHp = data.state.max_hp || 100;
+    updateHPBars(data.state.hp || 0, maxHp, data.state.enemy);
+    $("floor-badge").textContent = "Floor " + (data.state.floor || 1) + " / 4";
+    $("gold-badge").textContent  = (data.state.gold || 0) + " Gold";
+    updateXP(data.state, data);
+    renderChoices(data.state);
+  }
+  var newNarrative = data.narrative || "";
+  if (newNarrative && newNarrative !== _lastBroadcastNarrative) {
+    _lastBroadcastNarrative = newNarrative;
+    typewrite(newNarrative);
+  }
+  if (data.dungeon_map) renderMiniMap(data.dungeon_map, data.state && data.state.current_room_id);
+  _lastAvailableSpells = data.available_spells || [];
+  _lastSpellSlots      = data.spell_slots      || {};
+  renderSpells(_lastAvailableSpells, _lastSpellSlots);
+  renderInitiative(data.combat);
+  var enemyAlive = !!(data.state && data.state.enemy && data.state.enemy.hp > 0);
+  renderChips(data.actions || [], enemyAlive);
+  if (data.ending) setTimeout(function() { showEnding(data.ending); }, 2600);
+  $("load-screen").classList.add("gone");
+  if (isEnemyTurn(data.combat) && (!window.isMultiplayer || window.isHost)) {
+    var textToRead = newNarrative;
+    var readingDelay = Math.max(4500, Math.min(12000, textToRead.length * 35));
+    setTimeout(resolveEnemyTurnFromServer, readingDelay);
+  }
+});
+
+socket.on("player_disconnected", function(data) {
+  renderPartyBar(data.party || []);
+  var name = data.player_name || "A player";
+  if (data.skip_narrative) {
+    typewrite(data.skip_narrative);
+  } else {
+    showError(name + " disconnected.");
+  }
+});
+
+socket.on("player_kicked", function(data) {
+  if (data.player_name === window.myPlayerName) {
+    window.myRoomCode    = null;
+    window.myPlayerName  = null;
+    window.isMultiplayer = false;
+    $("lobby-screen").classList.add("gone");
+    $("landing-screen").classList.remove("gone");
+    showError("You have been kicked from the room.");
+  } else {
+    renderLobbyPlayers(data.party || []);
+  }
+});
+
+socket.on("chat_message", function(data) {
+  var log = $("chat-log");
+  var div = document.createElement("div");
+  div.className = "chat-entry";
+  div.innerHTML = '<span class="cn">' + (data.player_name || "?") + ':</span> ' + (data.message || "");
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+});
+
+socket.on("error", function(data) {
+  var msg = (data && data.message) || "A server error occurred.";
+  if (!$("landing-screen").classList.contains("gone")) showLandingError(msg);
+  else showError(msg);
+});
+
+socket.on("level_up_notification", function(data) {
+  var who   = data.player_name || "Someone";
+  var lvl   = data.new_level || "?";
+  var feats = (data.new_features || []).join(" | ");
+  var toast = $("levelup-toast");
+  toast.textContent = "⬆ " + who + " reached Level " + lvl + (feats ? " — " + feats : "");
+  toast.classList.add("show");
+  clearTimeout(window._lvlToastTimer);
+  window._lvlToastTimer = setTimeout(function() { toast.classList.remove("show"); }, 6000);
+  // Also show local level-up bar if it's us
+  if (who === window.myPlayerName) {
+    var bar = $("levelup-bar");
+    bar.textContent = toast.textContent;
+    bar.classList.add("show");
+    setTimeout(function() { bar.classList.remove("show"); }, 8000);
+  }
+});
+
+// Party chest helpers
+async function loadPartyChest() {
+  if (!window.isMultiplayer) return;
+  try {
+    var r    = await fetch("/api/party/inventory");
+    var data = await r.json();
+    renderPartyChest(data.items || []);
+  } catch(e) {}
+}
+
+function renderPartyChest(items) {
+  var sec  = $("party-chest-section");
+  var list = $("party-chest-list");
+  if (!window.isMultiplayer) { sec.style.display = "none"; return; }
+  sec.style.display = "block";
+  if (!items || !items.length) {
+    list.innerHTML = '<span class="party-chest-empty">Empty.</span>';
+    return;
+  }
+  list.innerHTML = items.map(function(it) {
+    return '<div class="chest-item">' +
+      '<span class="chest-item-name">' + (it.name || it.item_id) + '</span>' +
+      '<span class="chest-item-qty">×' + it.qty + '</span>' +
+      '<button class="chest-take-btn" onclick="takeFromChest(\'' + it.item_id + '\')">Take</button>' +
+    '</div>';
+  }).join("");
+}
+
+async function takeFromChest(itemId) {
+  if (busy) return;
+  setBusy(true);
+  try {
+    var r    = await fetch("/api/party/inventory/take", {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({item_id: itemId, qty: 1})
+    });
+    var data = await r.json();
+    if (data.error) { showError(data.error); } else { renderPartyChest(data.pool || []); }
+  } catch(e) { showError("Could not take item."); }
+  setBusy(false);
+}
+
+async function shareToChest(itemId) {
+  if (busy || !window.isMultiplayer) return;
+  setBusy(true);
+  try {
+    var r    = await fetch("/api/party/inventory/share", {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({item_id: itemId, qty: 1})
+    });
+    var data = await r.json();
+    if (data.error) { showError(data.error); } else { renderPartyChest(data.pool || []); }
+  } catch(e) { showError("Could not share item."); }
+  setBusy(false);
+}
+
+// Chat
+$("chat-send").addEventListener("click", function() {
+  var input = $("chat-input");
+  var msg   = input.value.trim();
+  if (!msg || !window.myRoomCode) return;
+  socket.emit("chat_message", {room_code: window.myRoomCode, player_name: window.myPlayerName, message: msg});
+  input.value = "";
+});
+$("chat-input").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") $("chat-send").click();
+});
+
+// PHASE 4 — Victory screen
+function showVictory(data) {
+  MusicManager.setState('victory');
+  var stats = $("victory-stats");
+  stats.innerHTML =
+    '<div class="victory-stat"><div class="victory-stat-val">' + (data.turns_taken || 0) + '</div><div class="victory-stat-lbl">Turns Taken</div></div>' +
+    '<div class="victory-stat"><div class="victory-stat-val">' + (data.enemies_defeated || 0) + '</div><div class="victory-stat-lbl">Foes Slain</div></div>' +
+    '<div class="victory-stat"><div class="victory-stat-val">' + (data.gold || 0) + ' gp</div><div class="victory-stat-lbl">Gold Earned</div></div>';
+  var wrap = $("confetti-wrap");
+  wrap.innerHTML = "";
+  var colors = ["#c9a84c","#e6c86e","#fff8dc","#daa520","#ffd700","#f5e6aa","#ffffff"];
+  for (var i = 0; i < 50; i++) {
+    var c = document.createElement("div");
+    c.className = "conf-piece";
+    c.style.left = (Math.random() * 100) + "%";
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.width  = (6 + Math.random() * 6) + "px";
+    c.style.height = (10 + Math.random() * 12) + "px";
+    c.style.animationDelay    = (Math.random() * 3) + "s";
+    c.style.animationDuration = (2.5 + Math.random() * 3) + "s";
+    wrap.appendChild(c);
+  }
+  $("victory-screen").classList.add("active");
+}
+
+socket.on("game_complete", function(data) {
+  setTimeout(function() { showVictory(data); }, 1500);
+});
+
+$("victory-new-btn").addEventListener("click", function() {
+  $("victory-screen").classList.remove("active");
+  $("ending-screen").classList.remove("active");
+  startFresh();
+});
+
+// Death screen
+var DEATH_FLAVOUR_LINES = {
+  1: "The torches burn on without you. The dungeon does not mourn.",
+  2: "The shadow takes you gently. Cold as a grave that was always yours.",
+  3: "Stone receives your bones. The Golem does not notice.",
+  4: "The Dragon exhales. Another name added to the count of those who tried.",
+};
+
+function showDeath(data) {
+  MusicManager.setState('defeat');
+  SoundManager.play('death_sting');
+  var fl = data.floor || 1;
+  $("death-sub").textContent   = "FLOOR " + fl;
+  $("death-flavour").textContent = DEATH_FLAVOUR_LINES[fl] || DEATH_FLAVOUR_LINES[1];
+  $("death-screen").classList.add("active");
+}
+
+socket.on("game_over", function(data) {
+  setTimeout(function() { showDeath(data); }, 2000);
+});
+
+$("death-rise-btn").addEventListener("click", function() {
+  $("death-screen").classList.remove("active");
+  $("ending-screen").classList.remove("active");
+  startFresh();
+});
+
+// Floor transition overlay
+var FLOOR_TRANSITION_TEXT = {
+  2: "The air thickens. Cold that has nothing to do with temperature presses in from every side.",
+  3: "The stone changes — older, heavier. Something has been here a very long time.",
+  4: "Heat before sight. The smell of ancient char. You have never been this deep.",
+};
+
+function showFloorTransition(floorNum) {
+  $("ft-floor-num").textContent = floorNum;
+  $("ft-label").textContent     = "FLOOR " + floorNum;
+  $("ft-text").textContent      = FLOOR_TRANSITION_TEXT[floorNum] || "A new depth opens before you.";
+  $("floor-transition").classList.add("active");
+  if (window.p6FadeAudio) window.p6FadeAudio(); /* PHASE 6 */
+  setTimeout(function() { $("floor-transition").classList.remove("active"); }, 3000);
+}
+
+// Landing buttons
+$("solo-btn").addEventListener("click", async function() {
+  window.myRoomCode    = "SOLO";
+  window.isMultiplayer = false;
+  window.myTurn        = true;
+  $("landing-screen").classList.add("gone");
+  await _initGame();
+});
+
+function showLandingError(msg) {
+  var el = $("landing-error");
+  el.textContent = msg; el.style.display = "block";
+  setTimeout(function() { el.style.display = "none"; }, 4000);
+}
+
+$("create-room-btn").addEventListener("click", function() {
+  var name = $("mp-name-input").value.trim();
+  if (!name) { showLandingError("Enter your player name first."); return; }
+  socket.emit("create_game", {player_name: name});
+});
+
+$("join-room-btn").addEventListener("click", function() {
+  var name = $("mp-name-input").value.trim();
+  var code = $("mp-code-input").value.trim().toUpperCase();
+  if (!name) { showLandingError("Enter your player name first."); return; }
+  if (code.length < 4) { showLandingError("Enter a valid 4-character room code."); return; }
+  socket.emit("join_game", {player_name: name, room_code: code});
+});
+
+$("lobby-char-btn").addEventListener("click", async function() {
+  $("lobby-screen").classList.add("gone");
+  if (window.myPlayerName) $("cc-player-name").value = window.myPlayerName;
+  await showCharacterCreator();
+});
+
+$("start-game-btn").addEventListener("click", function() {
+  if (window.isHost && window.myRoomCode) {
+    socket.emit("game_start", {room_code: window.myRoomCode});
+  }
+});
+
+$("lobby-back-btn").addEventListener("click", function() {
+  window.myRoomCode    = null;
+  window.myPlayerName  = null;
+  window.isMultiplayer = false;
+  $("lobby-screen").classList.add("gone");
+  $("landing-screen").classList.remove("gone");
+});
+
+// Short sound effects only — music is handled by MusicManager below
+const SoundManager = {
+  sounds:  {},
+  enabled: true,
+
+  load() {
+    var mp3 = ['dice_roll', 'combat_hit', 'combat_miss', 'level_up', 'death_sting', 'door_open', 'treasure'];
+    mp3.forEach(n => { this.sounds[n] = new Audio(`/static/sounds/${n}.mp3`); });
+  },
+
+  play(name, volume = 0.70) {
+    if (!this.enabled || !this.sounds[name]) return;
+    const s = this.sounds[name].cloneNode();
+    s.volume = volume;
+    s.play().catch(() => {});
+  },
+
+  startCombatMusic(isBoss) {
+    MusicManager.setState(isBoss ? 'boss' : 'combat');
+  },
+
+  stopCombatMusic() {
+    MusicManager.stopCombat();
+  }
+};
+
+SoundManager.load();
+
+// Handles all background music with crossfading between states
+const MusicManager = {
+  audio:            null,
+  muted:            false,
+  currentTrack:     null,
+  lastExploreState: 'dungeon',
+  targetVol:        0.30,
+  _fadeTimer:       null,
+
+  TRACKS: {
+    menu:    '/static/sounds/5.%20Mystical%20Menu%20Theme.mp3',
+    village: '/static/sounds/1.%20Village%20Hub%20Theme.mp3',
+    dungeon: '/static/sounds/2.%20Dungeon%20Exploration.mp3',
+    combat:  '/static/sounds/3.%20Regular%20Combat.mp3',
+    boss:    '/static/sounds/4.%20Boss%20Battle.mp3',
+    victory: '/static/sounds/6.%20Victory%20%20Ending%20Theme.mp3',
+    defeat:  '/static/sounds/7.%20Sad%20Ending%20Theme.mp3',
+  },
+
+  LOOPABLE: { menu:true, village:true, dungeon:true, combat:true, boss:true, victory:false, defeat:false },
+
+  init() {
+    this.audio = document.getElementById('music-player');
+    this.audio.volume = 0;
+    // Queue menu music so it plays on the first user gesture
+    this.currentTrack = 'menu';
+    this.audio.src    = this.TRACKS.menu;
+    this.audio.loop   = true;
+
+    var self = this;
+    document.addEventListener('click', function onFirstGesture() {
+      if (!self.muted) self.audio.play().catch(function(){});
+      document.removeEventListener('click', onFirstGesture);
+    }, { once: true });
+  },
+
+  setState(state) {
+    if (state === this.currentTrack) return;
+    var src = this.TRACKS[state];
+    if (!src) return;
+    if (state === 'village' || state === 'dungeon') this.lastExploreState = state;
+    this.currentTrack = state;
+    this.audio.loop = !!this.LOOPABLE[state];
+    this._crossfadeTo(src);
+  },
+
+  stopCombat() {
+    this.setState(this.lastExploreState);
+  },
+
+  setMuted(m) {
+    this.muted = m;
+    var self   = this;
+    if (m) {
+      this._fadeTo(0, function() { self.audio.pause(); });
+    } else {
+      this.audio.play().catch(function(){});
+      this._fadeTo(this.targetVol, function(){});
+    }
+    if (window.SoundManager) SoundManager.enabled = !m;
+    var btn = document.getElementById('p6-mute-btn');
+    if (btn) {
+      btn.innerHTML = m ? '&#128263;' : '&#128266;';
+      btn.title     = m ? 'Enable music' : 'Mute music';
+    }
+  },
+
+  _crossfadeTo(src) {
+    var self = this;
+    if (this.muted) {
+      this.audio.src = src;
+      this.audio.currentTime = 0;
+      return;
+    }
+    this._fadeTo(0, function() {
+      self.audio.src = src;
+      self.audio.currentTime = 0;
+      self.audio.volume = 0;
+      self.audio.play().catch(function(){});
+      self._fadeTo(self.targetVol, function(){});
+    });
+  },
+
+  _fadeTo(target, onDone) {
+    var self  = this;
+    var start = this.audio.volume;
+    var steps = 16;
+    var step  = 0;
+    clearInterval(this._fadeTimer);
+    this._fadeTimer = setInterval(function() {
+      step++;
+      self.audio.volume = Math.max(0, Math.min(1, start + (target - start) * (step / steps)));
+      if (step >= steps) {
+        clearInterval(self._fadeTimer);
+        self.audio.volume = target;
+        onDone();
+      }
+    }, 600 / steps);
+  },
+};
+
+MusicManager.init();
+
+init();
+
+document.getElementById('p6-mute-btn').addEventListener('click', function() {
+  MusicManager.setMuted(!MusicManager.muted);
+});
+
+(function() {
+  var slider = document.getElementById('music-vol');
+  var pct    = document.getElementById('music-vol-pct');
+  slider.addEventListener('input', function() {
+    var v = parseInt(this.value, 10);
+    MusicManager.targetVol = v / 100;
+    if (!MusicManager.muted) MusicManager.audio.volume = v / 100;
+    pct.textContent = v + '%';
+  });
+})();
+
+// Floor transition: brief dip in music volume
+window.p6FadeAudio = function() {
+  if (MusicManager.muted) return;
+  MusicManager._fadeTo(0.05, function() {
+    setTimeout(function() { MusicManager._fadeTo(MusicManager.targetVol, function(){}); }, 600);
+  });
+};
+</script>
+</body>
+</html>

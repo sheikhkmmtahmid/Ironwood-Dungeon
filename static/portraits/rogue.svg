@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="158" rx="80" ry="106" fill="#c9a227" opacity="0.05"/>
+
+  <!-- Hood (large, drooping) -->
+  <path d="M 56,172 Q 36,160 34,136 Q 32,108 44,82
+           Q 56,54 100,48 Q 144,54 156,82
+           Q 168,108 166,136 Q 164,160 144,172 Z" fill="#2a1f14"/>
+
+  <!-- Face deep shadow -->
+  <path d="M 72,150 Q 66,132 68,110 Q 72,86 100,80
+           Q 128,86 132,110 Q 134,132 128,150 Z" fill="#0a0806"/>
+
+  <!-- Body / cloak -->
+  <path d="M 4,280 L 4,230 Q 2,202 18,186
+           L 40,176 L 56,172 L 144,172
+           L 160,176 L 182,186 Q 198,202 196,230 L 196,280 Z" fill="#2a1f14"/>
+
+  <!-- Cloak fold left -->
+  <path d="M 4,280 L 4,230 Q 2,202 18,186 L 40,176
+           Q 28,200 26,240 L 26,280 Z" fill="#1e1610"/>
+
+  <!-- Dagger at right collar -->
+  <path d="M 130,160 L 148,124 L 154,130 L 136,164 Z" fill="#2a1f14"/>
+
+  <!-- Gold: hood outer edge -->
+  <path d="M 56,172 Q 36,160 34,136 Q 32,108 44,82
+           Q 56,54 100,48 Q 144,54 156,82
+           Q 168,108 166,136 Q 164,160 144,172"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: hood inner shadow line -->
+  <path d="M 70,150 Q 64,134 66,112 Q 70,90 100,84"
+        fill="none" stroke="#c9a227" stroke-width="0.8" opacity="0.5"/>
+  <!-- Gold: single eye gleam (right side, partly shadowed) -->
+  <ellipse cx="117" cy="114" rx="5" ry="3" fill="#c9a227" opacity="0.55"/>
+  <path d="M 112,114 Q 117,110 122,114 Q 117,118 112,114"
+        fill="none" stroke="#c9a227" stroke-width="1"/>
+  <!-- Gold: dagger outline -->
+  <path d="M 130,160 L 148,124 L 154,130 L 136,164 Z"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: dagger edge highlight -->
+  <line x1="148" y1="124" x2="138" y2="152" stroke="#c9a227" stroke-width="0.8"/>
+</svg>

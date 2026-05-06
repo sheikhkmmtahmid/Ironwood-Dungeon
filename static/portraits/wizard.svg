@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="165" rx="80" ry="100" fill="#c9a227" opacity="0.05"/>
+
+  <!-- Tall pointed hat -->
+  <path d="M 76,155 L 100,14 L 124,155 Z" fill="#2a1f14"/>
+
+  <!-- Hat brim -->
+  <path d="M 50,165 Q 50,150 100,148 Q 150,150 150,165
+           Q 150,174 100,174 Q 50,174 50,165 Z" fill="#2a1f14"/>
+
+  <!-- Head -->
+  <path d="M 72,174 Q 68,150 70,130
+           Q 72,102 100,96 Q 128,102 130,130
+           Q 132,150 128,174 Z" fill="#2a1f14"/>
+
+  <!-- Beard -->
+  <path d="M 76,152 Q 72,164 74,178
+           Q 78,192 100,194 Q 122,192 126,178
+           Q 128,164 124,152" fill="#2a1f14"/>
+
+  <!-- Body / robes -->
+  <path d="M 4,280 L 4,232 Q 2,204 16,188
+           L 38,178 L 70,174 L 130,174
+           L 162,178 L 184,188 Q 198,204 196,232 L 196,280 Z" fill="#2a1f14"/>
+
+  <!-- Gnarled staff (left edge) -->
+  <rect x="12" y="100" width="8" height="185" rx="3" fill="#2a1f14"/>
+  <!-- Staff crystal top -->
+  <ellipse cx="16" cy="88" rx="9" ry="11" fill="#2a1f14"/>
+
+  <!-- Gold: hat outline -->
+  <path d="M 76,155 L 100,14 L 124,155"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: hat brim edge -->
+  <path d="M 50,165 Q 50,150 100,148 Q 150,150 150,165 Q 150,174 100,174 Q 50,174 50,165"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: arcane rune on hat (8-pointed star) -->
+  <line x1="100" y1="52" x2="100" y2="76" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="88" y1="64" x2="112" y2="64" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="91" y1="55" x2="109" y2="73" stroke="#c9a227" stroke-width="0.8"/>
+  <line x1="109" y1="55" x2="91" y2="73" stroke="#c9a227" stroke-width="0.8"/>
+  <!-- Gold: staff outline -->
+  <line x1="12" y1="100" x2="12" y2="280" stroke="#c9a227" stroke-width="0.8" opacity="0.5"/>
+  <line x1="20" y1="100" x2="20" y2="280" stroke="#c9a227" stroke-width="0.8" opacity="0.5"/>
+  <!-- Gold: crystal glow -->
+  <ellipse cx="16" cy="88" rx="9" ry="11" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <ellipse cx="16" cy="88" rx="5" ry="6" fill="#c9a227" opacity="0.22"/>
+  <!-- Gold: beard line -->
+  <path d="M 78,154 Q 74,166 76,178 Q 80,190 100,192 Q 120,190 124,178 Q 126,166 122,154"
+        fill="none" stroke="#c9a227" stroke-width="0.8" opacity="0.5"/>
+</svg>

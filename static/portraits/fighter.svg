@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="158" rx="82" ry="108" fill="#c9a227" opacity="0.05"/>
+
+  <!-- Great helm (angular plate) -->
+  <path d="M 70,168 L 68,102 Q 68,48 100,44 Q 132,48 132,102 L 130,168 Z" fill="#2a1f14"/>
+
+  <!-- Body / armored torso -->
+  <path d="M 8,280 L 8,228 Q 6,202 22,186
+           L 44,176 L 70,168 L 130,168 L 156,176
+           L 178,186 Q 194,202 192,228 L 192,280 Z" fill="#2a1f14"/>
+
+  <!-- Left pauldron -->
+  <path d="M 40,178 Q 22,170 20,156 Q 20,142 36,138
+           Q 52,136 62,150 L 68,168 Q 52,164 40,178 Z" fill="#2a1f14"/>
+
+  <!-- Right pauldron -->
+  <path d="M 160,178 Q 178,170 180,156 Q 180,142 164,138
+           Q 148,136 138,150 L 132,168 Q 148,164 160,178 Z" fill="#2a1f14"/>
+
+  <!-- Sword: handle + crossguard (upper right) -->
+  <rect x="162" y="126" width="28" height="6" rx="3" fill="#2a1f14"/>
+  <rect x="171" y="104" width="7" height="26" rx="2" fill="#2a1f14"/>
+
+  <!-- Visor slot -->
+  <rect x="78" y="88" width="44" height="16" rx="3" fill="#0a0806"/>
+
+  <!-- Gold: helm ridge -->
+  <line x1="100" y1="44" x2="100" y2="88" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: helm outline -->
+  <path d="M 70,168 L 68,102 Q 68,48 100,44 Q 132,48 132,102 L 130,168"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: visor frame -->
+  <rect x="78" y="88" width="44" height="16" rx="3" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: visor slit lines -->
+  <line x1="80" y1="93" x2="120" y2="93" stroke="#c9a227" stroke-width="0.7"/>
+  <line x1="80" y1="99" x2="120" y2="99" stroke="#c9a227" stroke-width="0.7"/>
+  <line x1="80" y1="104" x2="120" y2="104" stroke="#c9a227" stroke-width="0.7"/>
+  <!-- Gold: cheek plate lines -->
+  <line x1="74" y1="104" x2="72" y2="155" stroke="#c9a227" stroke-width="1"/>
+  <line x1="126" y1="104" x2="128" y2="155" stroke="#c9a227" stroke-width="1"/>
+  <!-- Gold: left pauldron edge -->
+  <path d="M 44,180 Q 22,170 20,156 Q 20,142 36,138 Q 52,136 62,150"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: right pauldron edge -->
+  <path d="M 156,180 Q 178,170 180,156 Q 180,142 164,138 Q 148,136 138,150"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: sword crossguard -->
+  <rect x="162" y="126" width="28" height="6" rx="3" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: sword blade -->
+  <line x1="174" y1="104" x2="174" y2="126" stroke="#c9a227" stroke-width="1.5"/>
+</svg>

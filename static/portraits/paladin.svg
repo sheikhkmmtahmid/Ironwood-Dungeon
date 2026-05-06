@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="155" rx="82" ry="108" fill="#c9a227" opacity="0.07"/>
+
+  <!-- Cape behind (slightly lighter dark) -->
+  <path d="M 2,280 L 2,188 Q 0,165 18,148 L 48,138 L 78,138 L 78,280 Z" fill="#1a1410"/>
+  <path d="M 198,280 L 198,188 Q 200,165 182,148 L 152,138 L 122,138 L 122,280 Z" fill="#1a1410"/>
+
+  <!-- Great helm (ornate, tall) -->
+  <path d="M 68,170 L 66,105 Q 66,48 100,42 Q 134,48 134,105 L 132,170 Z" fill="#2a1f14"/>
+
+  <!-- Crown peaks on helm top -->
+  <path d="M 78,62 L 76,38 L 88,56 L 100,34 L 112,56 L 124,38 L 122,62 Z" fill="#2a1f14"/>
+
+  <!-- Body / breastplate -->
+  <path d="M 10,280 L 10,228 Q 8,202 24,186
+           L 48,176 L 68,170 L 132,170
+           L 152,176 L 176,186 Q 192,202 190,228 L 190,280 Z" fill="#2a1f14"/>
+
+  <!-- Left pauldron -->
+  <path d="M 40,180 Q 22,172 20,156 Q 20,142 36,138
+           Q 52,136 62,150 L 66,168 Q 50,166 40,180 Z" fill="#2a1f14"/>
+
+  <!-- Right pauldron -->
+  <path d="M 160,180 Q 178,172 180,156 Q 180,142 164,138
+           Q 148,136 138,150 L 134,168 Q 150,166 160,180 Z" fill="#2a1f14"/>
+
+  <!-- Visor slot -->
+  <rect x="78" y="94" width="44" height="14" rx="3" fill="#0a0806"/>
+
+  <!-- Gold: crown peaks -->
+  <path d="M 78,62 L 76,38 L 88,56 L 100,34 L 112,56 L 124,38 L 122,62"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: helm ridge -->
+  <line x1="100" y1="34" x2="100" y2="94" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: helm outline -->
+  <path d="M 68,170 L 66,105 Q 66,48 100,42 Q 134,48 134,105 L 132,170"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: visor frame -->
+  <rect x="78" y="94" width="44" height="14" rx="3" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <line x1="80" y1="99" x2="120" y2="99" stroke="#c9a227" stroke-width="0.7"/>
+  <line x1="80" y1="104" x2="120" y2="104" stroke="#c9a227" stroke-width="0.7"/>
+  <!-- Gold: breastplate holy cross in circle -->
+  <line x1="100" y1="188" x2="100" y2="248" stroke="#c9a227" stroke-width="2.5"/>
+  <line x1="76" y1="214" x2="124" y2="214" stroke="#c9a227" stroke-width="2.5"/>
+  <circle cx="100" cy="214" r="20" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: left pauldron edge -->
+  <path d="M 44,182 Q 22,172 20,156 Q 20,142 36,138 Q 52,136 62,150"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: right pauldron edge -->
+  <path d="M 156,182 Q 178,172 180,156 Q 180,142 164,138 Q 148,136 138,150"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: cape edge line -->
+  <line x1="6" y1="172" x2="76" y2="172" stroke="#c9a227" stroke-width="0.8" opacity="0.45"/>
+  <line x1="194" y1="172" x2="124" y2="172" stroke="#c9a227" stroke-width="0.8" opacity="0.45"/>
+</svg>

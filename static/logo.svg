@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1a1020"/>
+      <stop offset="100%" stop-color="#09090f"/>
+    </radialGradient>
+  </defs>
+  <circle cx="50" cy="50" r="50" fill="url(#bg)"/>
+  <circle cx="50" cy="50" r="47" fill="none" stroke="#c9a84c" stroke-width="1.8"/>
+  <circle cx="50" cy="50" r="43" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.35"/>
+  <path d="M22 76 L22 46 Q22 23 50 23 Q78 23 78 46 L78 76" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="32" y1="46" x2="32" y2="76" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="41" y1="32" x2="41" y2="76" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="50" y1="28" x2="50" y2="76" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="59" y1="32" x2="59" y2="76" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="68" y1="46" x2="68" y2="76" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="51" x2="78" y2="51" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="22" y1="63" x2="78" y2="63" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/>
+  <line x1="20" y1="76" x2="80" y2="76" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="50,8 54,15 50,19 46,15" fill="#c9a84c"/>
+  <circle cx="7"  cy="50" r="2.5" fill="#c9a84c" opacity="0.45"/>
+  <circle cx="93" cy="50" r="2.5" fill="#c9a84c" opacity="0.45"/>
+</svg>

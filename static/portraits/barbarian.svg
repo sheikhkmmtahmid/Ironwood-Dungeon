@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="165" rx="90" ry="108" fill="#c9a227" opacity="0.05"/>
+
+  <!-- Wild mohawk / spiked hair -->
+  <path d="M 78,104 Q 80,86 84,68 Q 88,52 92,38
+           Q 96,28 100,22 Q 104,28 108,38
+           Q 112,52 116,68 Q 120,86 122,104 Z" fill="#2a1f14"/>
+  <!-- Hair wisp left -->
+  <path d="M 80,104 Q 60,84 56,60 Q 58,50 66,56 Q 70,78 80,104 Z" fill="#2a1f14"/>
+  <!-- Hair wisp right -->
+  <path d="M 120,104 Q 140,84 144,60 Q 142,50 134,56 Q 130,78 120,104 Z" fill="#2a1f14"/>
+
+  <!-- Head (rougher, broader) -->
+  <path d="M 70,168 Q 64,148 66,126
+           Q 68,98 100,92 Q 132,98 134,126
+           Q 136,148 130,168 Z" fill="#2a1f14"/>
+
+  <!-- Bare muscular body — very wide shoulders -->
+  <path d="M 0,280 L 0,222 Q 0,194 12,178
+           L 34,168 L 70,165 L 130,165
+           L 166,168 L 188,178 Q 200,194 200,222 L 200,280 Z" fill="#2a1f14"/>
+
+  <!-- Axe head over right shoulder -->
+  <path d="M 174,78 Q 148,68 146,92 Q 144,116 174,108 Z" fill="#2a1f14"/>
+  <!-- Axe handle -->
+  <rect x="171" y="78" width="8" height="110" rx="3" fill="#2a1f14"/>
+
+  <!-- Tribal marking on left neck/collarbone -->
+  <path d="M 86,172 Q 80,180 84,190 Q 90,195 98,192" fill="none" stroke="#2a1f14" stroke-width="5"/>
+
+  <!-- Gold: hair outline -->
+  <path d="M 78,104 Q 80,86 84,68 Q 88,52 92,38
+           Q 96,28 100,22 Q 104,28 108,38
+           Q 112,52 116,68 Q 120,86 122,104"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: hair wisps -->
+  <path d="M 80,104 Q 60,84 56,60 Q 58,50 66,56"
+        fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <path d="M 120,104 Q 140,84 144,60 Q 142,50 134,56"
+        fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <!-- Gold: axe blade edge -->
+  <path d="M 174,78 Q 148,68 146,92 Q 144,116 174,108 Z"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: axe handle highlight -->
+  <line x1="173" y1="78" x2="173" y2="140" stroke="#c9a227" stroke-width="0.8" opacity="0.5"/>
+  <!-- Gold: tribal marking -->
+  <path d="M 86,172 Q 80,180 84,190 Q 90,196 98,193"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <line x1="86" y1="172" x2="82" y2="164" stroke="#c9a227" stroke-width="1"/>
+  <line x1="88" y1="175" x2="84" y2="167" stroke="#c9a227" stroke-width="0.8"/>
+  <!-- Gold: scar on left cheek -->
+  <path d="M 70,128 L 76,136 L 70,144"
+        fill="none" stroke="#c9a227" stroke-width="1" opacity="0.55"/>
+</svg>

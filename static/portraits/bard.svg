@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="158" rx="80" ry="106" fill="#c9a227" opacity="0.05"/>
+
+  <!-- Head -->
+  <path d="M 72,170 Q 66,148 68,128
+           Q 72,100 100,94 Q 128,100 132,128
+           Q 134,148 128,170 Z" fill="#2a1f14"/>
+
+  <!-- Feathered cap (tilted to right) -->
+  <path d="M 60,118 Q 58,96 68,80 Q 80,64 100,62
+           Q 124,62 138,78 Q 148,92 144,116
+           Q 140,128 128,132 L 68,128 Z" fill="#2a1f14"/>
+
+  <!-- Feather — sweeping up from cap right, multi-strand -->
+  <path d="M 136,86 Q 154,58 168,32 Q 162,52 158,72
+           Q 166,52 172,30 Q 165,54 160,76
+           Q 168,58 173,38 Q 165,62 160,84
+           Q 155,96 144,102" fill="#2a1f14"/>
+
+  <!-- Body / doublet / coat -->
+  <path d="M 4,280 L 4,230 Q 2,202 18,186
+           L 40,176 L 72,170 L 128,170
+           L 160,176 L 182,186 Q 198,202 196,230 L 196,280 Z" fill="#2a1f14"/>
+
+  <!-- Coat lapel / V-opening (right side fold) -->
+  <path d="M 112,170 L 132,186 L 120,230 L 100,250 L 100,280 Z" fill="#1e1810"/>
+
+  <!-- Lute neck over left shoulder -->
+  <rect x="20" y="72" width="11" height="105" rx="4" fill="#2a1f14"/>
+  <!-- Lute peg head -->
+  <path d="M 16,72 Q 16,60 25,57 Q 34,60 34,72 L 34,84 L 16,84 Z" fill="#2a1f14"/>
+
+  <!-- Gold: feather strands outline -->
+  <path d="M 136,86 Q 154,58 168,32 Q 162,52 156,72
+           Q 164,54 170,32 Q 163,56 158,78
+           Q 166,60 172,40 Q 164,64 158,86
+           Q 152,96 144,104"
+        fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <!-- Gold: feather quill spine -->
+  <line x1="136" y1="86" x2="162" y2="36" stroke="#c9a227" stroke-width="0.7" opacity="0.5"/>
+  <!-- Gold: cap brim/outline -->
+  <path d="M 60,118 Q 58,96 68,80 Q 80,64 100,62
+           Q 124,62 138,78 Q 148,92 144,116"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: lute neck outline -->
+  <rect x="20" y="72" width="11" height="80" rx="4" fill="none" stroke="#c9a227" stroke-width="1"/>
+  <!-- Gold: lute peg head outline -->
+  <path d="M 16,72 Q 16,60 25,57 Q 34,60 34,72"
+        fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <!-- Gold: tuning pegs -->
+  <line x1="16" y1="68" x2="10" y2="65" stroke="#c9a227" stroke-width="1.5"/>
+  <line x1="16" y1="76" x2="10" y2="76" stroke="#c9a227" stroke-width="1.5"/>
+  <line x1="34" y1="68" x2="40" y2="65" stroke="#c9a227" stroke-width="1.5"/>
+  <line x1="34" y1="76" x2="40" y2="76" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: coat lapel line -->
+  <path d="M 112,170 L 132,188 L 120,232 L 100,255"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: collar notch -->
+  <path d="M 88,170 L 100,182 L 112,170"
+        fill="none" stroke="#c9a227" stroke-width="1.2"/>
+</svg>

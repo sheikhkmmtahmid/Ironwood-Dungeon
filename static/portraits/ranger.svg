@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="158" rx="80" ry="106" fill="#c9a227" opacity="0.05"/>
+
+  <!-- Hood (pointed ranger style) -->
+  <path d="M 56,174 Q 36,162 32,136 Q 30,108 44,80
+           Q 58,52 100,46 Q 142,52 156,80
+           Q 170,108 168,136 Q 164,162 144,174 Z" fill="#2a1f14"/>
+
+  <!-- Face shadow -->
+  <path d="M 72,152 Q 66,134 68,112 Q 72,88 100,82
+           Q 128,88 132,112 Q 134,134 128,152 Z" fill="#0d0a07"/>
+
+  <!-- Body / cloak -->
+  <path d="M 4,280 L 4,230 Q 2,202 18,186
+           L 40,176 L 56,174 L 144,174
+           L 160,176 L 182,186 Q 198,202 196,230 L 196,280 Z" fill="#2a1f14"/>
+
+  <!-- Bow arc over right shoulder -->
+  <path d="M 162,72 Q 194,135 162,192" fill="none" stroke="#2a1f14" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- Quiver on left shoulder -->
+  <rect x="16" y="96" width="14" height="85" rx="5" fill="#2a1f14"/>
+  <!-- Arrow shafts protruding from quiver top -->
+  <line x1="21" y1="96" x2="20" y2="78" stroke="#2a1f14" stroke-width="2.5"/>
+  <line x1="25" y1="96" x2="25" y2="76" stroke="#2a1f14" stroke-width="2.5"/>
+  <line x1="29" y1="96" x2="30" y2="79" stroke="#2a1f14" stroke-width="2.5"/>
+
+  <!-- Leaf/feather at left collar -->
+  <path d="M 76,162 Q 64,148 70,132 Q 76,118 92,118
+           Q 84,132 76,162 Z" fill="#2a1f14"/>
+
+  <!-- Gold: hood outer edge -->
+  <path d="M 56,174 Q 36,162 32,136 Q 30,108 44,80
+           Q 58,52 100,46 Q 142,52 156,80
+           Q 170,108 168,136 Q 164,162 144,174"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: hood inner edge / face shadow line -->
+  <path d="M 70,154 Q 64,136 66,115 Q 70,92 100,86"
+        fill="none" stroke="#c9a227" stroke-width="0.8" opacity="0.5"/>
+  <!-- Gold: bow outline -->
+  <path d="M 162,72 Q 194,135 162,192"
+        fill="none" stroke="#c9a227" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Gold: bowstring -->
+  <line x1="162" y1="72" x2="162" y2="192" stroke="#c9a227" stroke-width="0.7" opacity="0.5"/>
+  <!-- Gold: quiver outline -->
+  <rect x="16" y="96" width="14" height="85" rx="5" fill="none" stroke="#c9a227" stroke-width="1"/>
+  <!-- Gold: arrow fletchings -->
+  <path d="M 18,78 L 22,82 L 26,78" fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <path d="M 23,76 L 27,80 L 31,76" fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <!-- Gold: leaf feather at collar -->
+  <path d="M 76,162 Q 64,148 70,132 Q 76,118 92,118 Q 84,132 76,162 Z"
+        fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="76" y1="162" x2="82" y2="128" stroke="#c9a227" stroke-width="0.7" opacity="0.6"/>
+</svg>

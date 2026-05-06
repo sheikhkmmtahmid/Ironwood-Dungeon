@@ -1,0 +1,26 @@
+# Local secrets
+.env
+
+# Runtime game state files
+game_state_*.json
+history_*.json
+character_*.json
+dungeon_map_*.json
+party.json
+party_inventory_*.json
+active_quests.json
+inventory.json
+npc_registry.json
+saves/
+
+# Old/unused assets
+static/portraits/Old/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Dev tools
+*.log
+.vscode/

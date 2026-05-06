@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="158" rx="82" ry="108" fill="#c9a227" opacity="0.06"/>
+
+  <!-- Round coif / skullcap helm -->
+  <ellipse cx="100" cy="90" rx="38" ry="36" fill="#2a1f14"/>
+
+  <!-- Head / face -->
+  <path d="M 70,168 Q 64,148 66,126
+           Q 68,98 100,92 Q 132,98 134,126
+           Q 136,148 130,168 Z" fill="#2a1f14"/>
+
+  <!-- Body / armored surcoat -->
+  <path d="M 8,280 L 8,228 Q 6,200 22,184
+           L 46,174 L 70,168 L 130,168
+           L 154,174 L 178,184 Q 194,200 192,228 L 192,280 Z" fill="#2a1f14"/>
+
+  <!-- Left chainmail shoulder -->
+  <path d="M 22,186 Q 12,176 16,160 Q 20,144 38,140
+           Q 56,138 64,152 L 68,168 Q 48,166 22,186 Z" fill="#2a1f14"/>
+
+  <!-- Right chainmail shoulder -->
+  <path d="M 178,186 Q 188,176 184,160 Q 180,144 162,140
+           Q 144,138 136,152 L 132,168 Q 152,166 178,186 Z" fill="#2a1f14"/>
+
+  <!-- Gold: helm rim (circle at base of skull cap) -->
+  <ellipse cx="100" cy="108" rx="38" ry="10" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: helm outline -->
+  <ellipse cx="100" cy="90" rx="38" ry="36" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: holy sun-cross on chest -->
+  <line x1="100" y1="192" x2="100" y2="248" stroke="#c9a227" stroke-width="2.2"/>
+  <line x1="76" y1="218" x2="124" y2="218" stroke="#c9a227" stroke-width="2.2"/>
+  <circle cx="100" cy="218" r="20" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Sun rays -->
+  <line x1="100" y1="194" x2="100" y2="198" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="100" y1="238" x2="100" y2="242" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="76" y1="218" x2="72" y2="218" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="124" y1="218" x2="128" y2="218" stroke="#c9a227" stroke-width="1.2"/>
+  <line x1="83" y1="201" x2="80" y2="198" stroke="#c9a227" stroke-width="1"/>
+  <line x1="117" y1="201" x2="120" y2="198" stroke="#c9a227" stroke-width="1"/>
+  <line x1="83" y1="235" x2="80" y2="238" stroke="#c9a227" stroke-width="1"/>
+  <line x1="117" y1="235" x2="120" y2="238" stroke="#c9a227" stroke-width="1"/>
+  <!-- Gold: chainmail texture (left shoulder) -->
+  <path d="M 28,180 L 42,168 M 22,188 L 36,176 M 34,182 L 48,170"
+        fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.45"/>
+  <!-- Gold: chainmail texture (right shoulder) -->
+  <path d="M 172,180 L 158,168 M 178,188 L 164,176 M 166,182 L 152,170"
+        fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.45"/>
+</svg>

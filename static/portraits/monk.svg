@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="75%" r="65%">
+      <stop offset="0%" stop-color="#1a1208"/>
+      <stop offset="100%" stop-color="#0d0a07"/>
+    </radialGradient>
+  </defs>
+  <rect width="200" height="280" fill="url(#glow)"/>
+  <ellipse cx="100" cy="158" rx="80" ry="106" fill="#c9a227" opacity="0.05"/>
+
+  <!-- Head (clean, smooth) -->
+  <path d="M 74,165 Q 68,144 70,122
+           Q 72,94 100,88 Q 128,94 130,122
+           Q 132,144 126,165 Z" fill="#2a1f14"/>
+
+  <!-- Topknot bun -->
+  <ellipse cx="100" cy="90" rx="13" ry="11" fill="#2a1f14"/>
+  <rect x="95" y="76" width="10" height="16" rx="4" fill="#2a1f14"/>
+  <!-- Topknot tie band -->
+  <rect x="93" y="72" width="14" height="6" rx="3" fill="#2a1f14"/>
+
+  <!-- Body / simple robes -->
+  <path d="M 8,280 L 8,230 Q 6,202 20,186
+           L 42,176 L 74,165 L 126,165
+           L 158,176 L 180,186 Q 194,202 192,230 L 192,280 Z" fill="#2a1f14"/>
+
+  <!-- Left arm raised (guard position) -->
+  <path d="M 42,178 L 20,150 Q 14,142 22,136 L 36,138
+           Q 48,144 54,158 L 60,172 Z" fill="#2a1f14"/>
+
+  <!-- Right arm raised -->
+  <path d="M 158,178 L 180,150 Q 186,142 178,136 L 164,138
+           Q 152,144 146,158 L 140,172 Z" fill="#2a1f14"/>
+
+  <!-- Left fist -->
+  <ellipse cx="24" cy="138" rx="11" ry="10" fill="#2a1f14"/>
+
+  <!-- Right fist -->
+  <ellipse cx="176" cy="138" rx="11" ry="10" fill="#2a1f14"/>
+
+  <!-- Gold: topknot outline -->
+  <ellipse cx="100" cy="90" rx="13" ry="11" fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: topknot tie -->
+  <rect x="93" y="72" width="14" height="6" rx="3" fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <!-- Gold: topknot wisps -->
+  <line x1="94" y1="72" x2="90" y2="65" stroke="#c9a227" stroke-width="0.9"/>
+  <line x1="106" y1="72" x2="110" y2="65" stroke="#c9a227" stroke-width="0.9"/>
+  <!-- Gold: robe V-collar line -->
+  <path d="M 80,165 L 100,188 L 120,165"
+        fill="none" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Gold: sash across chest -->
+  <path d="M 58,198 Q 100,192 142,198"
+        fill="none" stroke="#c9a227" stroke-width="1.2"/>
+  <!-- Gold: left arm outline -->
+  <path d="M 44,178 L 22,150 Q 16,142 24,136"
+        fill="none" stroke="#c9a227" stroke-width="1"/>
+  <!-- Gold: right arm outline -->
+  <path d="M 156,178 L 178,150 Q 184,142 176,136"
+        fill="none" stroke="#c9a227" stroke-width="1"/>
+  <!-- Gold: knuckle wraps left fist -->
+  <line x1="14" y1="137" x2="34" y2="138" stroke="#c9a227" stroke-width="0.9" opacity="0.65"/>
+  <line x1="14" y1="132" x2="34" y2="133" stroke="#c9a227" stroke-width="0.7" opacity="0.45"/>
+  <line x1="14" y1="143" x2="34" y2="144" stroke="#c9a227" stroke-width="0.7" opacity="0.45"/>
+  <!-- Gold: knuckle wraps right fist -->
+  <line x1="166" y1="137" x2="186" y2="138" stroke="#c9a227" stroke-width="0.9" opacity="0.65"/>
+  <line x1="166" y1="132" x2="186" y2="133" stroke="#c9a227" stroke-width="0.7" opacity="0.45"/>
+  <line x1="166" y1="143" x2="186" y2="144" stroke="#c9a227" stroke-width="0.7" opacity="0.45"/>
+</svg>

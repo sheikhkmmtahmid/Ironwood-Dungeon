@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ironwood Dungeon - About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold:      #c9a227;
+      --parchment: #f4e4c1;
+      --ink:       #1a1008;
+      --stone:     #4a4035;
+      --bg:        #0d0a07;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse 120% 40% at 50% 0%, #6b320e55, transparent),
+        radial-gradient(ellipse 80% 30% at 50% 100%, #1e0d0444, transparent);
+      color: var(--parchment);
+      font-family: 'Crimson Text', Georgia, serif;
+      font-size: 17px;
+      min-height: 100vh;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .site-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      border-bottom: 1px solid #6b5d4f44;
+      padding-bottom: 2rem;
+    }
+
+    .site-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2.2rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
+
+    .site-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      color: #c9a96e;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 2.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      color: #c9a96e;
+      text-decoration: none;
+      text-transform: uppercase;
+      border: 1px solid #4a403588;
+      padding: 0.45rem 1.1rem;
+      border-radius: 3px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .back-link:hover { border-color: var(--gold); color: var(--gold); }
+
+    section { margin-bottom: 3rem; }
+
+    h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.0rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      border-bottom: 1px solid #4a403566;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.4rem;
+    }
+
+    p {
+      font-family: 'Crimson Text', serif;
+      line-height: 1.85;
+      color: #d8c9a8;
+      margin-bottom: 1rem;
+    }
+
+    .task-card {
+      background: rgba(26, 20, 10, 0.7);
+      border: 1px solid #4a403566;
+      border-radius: 4px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .task-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 0.7rem;
+    }
+
+    .task-card p { margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+    code {
+      font-family: 'Courier New', monospace;
+      background: rgba(201, 162, 39, 0.12);
+      color: #e8c96a;
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      font-size: 0.88em;
+    }
+
+    .file-ref {
+      font-family: 'Courier New', monospace;
+      font-size: 0.82rem;
+      color: #a09070;
+      display: block;
+      margin-top: 0.3rem;
+    }
+
+    .credit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 580px) { .credit-grid { grid-template-columns: 1fr; } }
+
+    .credit-item {
+      background: rgba(26, 20, 10, 0.5);
+      border: 1px solid #4a403544;
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+    }
+
+    .credit-item .role {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: #c9a96e;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .credit-item .name {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      color: var(--parchment);
+    }
+
+    .music-list { list-style: none; }
+    .music-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #4a403522;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      font-family: 'Crimson Text', serif;
+      color: #d8c9a8;
+      font-size: 0.95rem;
+    }
+    .music-list li:last-child { border-bottom: none; }
+    .music-list .track-name { font-style: italic; }
+    .music-list .track-file { font-family: 'Courier New', monospace; font-size: 0.78rem; color: #a09070; }
+
+    /* Floating music volume widget */
+    .music-widget {
+      position: fixed; bottom: 1.2rem; right: 1.2rem; z-index: 500;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .music-vol-panel {
+      background: rgba(13, 10, 7, 0.92);
+      border: 1px solid #4a4035;
+      border-radius: 20px;
+      padding: 0.8rem 0.55rem 0.6rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.45rem;
+      opacity: 0; pointer-events: none;
+      transform: translateY(6px);
+      transition: opacity 0.18s, transform 0.18s;
+    }
+    .music-widget:hover .music-vol-panel {
+      opacity: 1; pointer-events: auto; transform: translateY(0);
+    }
+    .music-vol-pct {
+      font-family: 'Courier New', monospace; font-size: 0.68rem; color: #a09070;
+    }
+    #music-vol {
+      -webkit-appearance: none; appearance: none;
+      writing-mode: vertical-lr; direction: rtl;
+      width: 4px; height: 76px;
+      background: #4a4035; border-radius: 2px; outline: none; cursor: pointer;
+    }
+    #music-vol::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px;
+      border-radius: 50%; background: var(--gold); cursor: pointer; border: none;
+    }
+    #music-vol::-moz-range-thumb {
+      width: 14px; height: 14px;
+      border-radius: 50%; background: var(--gold); cursor: pointer; border: none;
+    }
+    #credits-mute-btn {
+      background: rgba(13, 10, 7, 0.88);
+      border: 1px solid #6b5d4f;
+      color: #c9a96e;
+      width: 40px; height: 40px; border-radius: 50%;
+      cursor: pointer; font-size: 1.0rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s;
+    }
+    #credits-mute-btn:hover { border-color: var(--gold); }
+
+    /* Creator footer */
+    .creator-bar {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #4a403544;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.15em;
+      color: #a09070;
+      text-transform: uppercase;
+    }
+
+    .creator-bar a {
+      color: var(--gold);
+      text-decoration: none;
+      border-bottom: 1px solid #c9a22766;
+      padding-bottom: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .creator-bar a:hover { color: #f0c040; border-color: #f0c040; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="site-header">
+    <div class="site-title">Ironwood Dungeon</div>
+    <div class="site-sub">About This Game</div>
+  </div>
+
+  <a href="/" class="back-link">Return to Game</a>
+
+  <audio id="credits-audio" loop preload="auto"
+         src="/static/sounds/0.%20Credit%20Page.mp3"></audio>
+
+  <!-- HOW IT WAS BUILT -->
+  <section>
+    <h2>How This Was Built</h2>
+
+    <p>
+      Ironwood Dungeon is a browser-based role-playing game where an AI acts as your Game Master.
+      The AI is a large language model from NVIDIA (nemotron-3-super-120b) accessed through their API.
+      It reads a description of your situation, decides what to say, and calls server-side tools
+      to check the actual game state before it speaks. It cannot make things up because every item,
+      HP value, and room detail has to come from a real file on the server.
+    </p>
+
+    <p>
+      The backend is written in Python using Flask for the web server and Flask-SocketIO for real-time
+      communication between the browser and server. Game state is stored in plain JSON files:
+      <code>game_state.json</code> tracks your floor, gold, and health. <code>character.json</code>
+      holds your character sheet. <code>inventory.json</code> holds every item you are carrying.
+      The dungeon itself is generated fresh each run by <code>dungeon_generator.py</code>, which
+      creates four floors of rooms with their own themes, enemies, traps, and puzzles.
+    </p>
+
+    <p>
+      The frontend is a single HTML page with vanilla JavaScript. No React, no Vue, no build step.
+      All the panels, combat UI, minimap, character sheet, and history log are built directly in the DOM.
+      Music and sound effects play through the HTML audio element with a state machine that switches
+      tracks depending on whether you are in the village, exploring a dungeon floor, fighting a
+      regular enemy, or facing a boss.
+    </p>
+
+    <p>
+      Combat follows D and D 5th Edition rules. Saving throws, conditions, spell slots, proficiency bonus,
+      advantage and disadvantage - all resolved by the server before the AI narrates the result.
+      The AI is only allowed to describe what already happened. It cannot invent outcomes.
+    </p>
+  </section>
+
+  <!-- TASK 1 BREAKDOWN -->
+  <section>
+    <h2>Task 1 - Grounded AI Responses</h2>
+    <p>
+      The central engineering challenge was making the AI Game Master impossible to fool.
+      It cannot describe an item the player does not have, cannot invent HP values,
+      and cannot narrate a spell it has not verified exists in the player's spell slots.
+      Here is exactly how each requirement from Task 1 is satisfied in the code.
+    </p>
+
+    <div class="task-card">
+      <h3>Requirement - get_inventory() tool</h3>
+      <p>
+        The tool is registered in the AI's tool list so the model knows it exists and can call it.
+        When called, it reads <code>inventory.json</code> from disk and returns the real item list.
+        The AI cannot describe any item without calling this first because the system prompt
+        forbids it (see Rule 1 below).
+      </p>
+      <span class="file-ref">rpg_engine.py line 259 - tool definition name field</span>
+      <span class="file-ref">rpg_engine.py line 415 - dispatch: <code>if name == "get_inventory": return json.dumps(get_inventory())</code></span>
+      <span class="file-ref">rpg_engine.py line 6 - <code>INVENTORY_FILE = BASE / "inventory.json"</code></span>
+    </div>
+
+    <div class="task-card">
+      <h3>Requirement - use_item(item_id, target) tool</h3>
+      <p>
+        When the AI decides to use an item, it calls this tool with the item ID and the target.
+        The server removes or modifies the item in <code>inventory.json</code> and returns the result.
+        The AI then narrates only what the tool result says happened.
+        If the item does not exist, the tool returns an error and the AI must narrate the failure.
+      </p>
+      <span class="file-ref">rpg_engine.py line 264 - tool definition name field</span>
+      <span class="file-ref">rpg_engine.py line 416 - dispatch: <code>if name == "use_item": return json.dumps(use_item(...))</code></span>
+    </div>
+
+    <div class="task-card">
+      <h3>Requirement - Structured output with narrative_text, current_hp, available_actions</h3>
+      <p>
+        Every response the AI sends ends with a call to the <code>game_response()</code> tool.
+        This tool has a strict JSON schema the model must follow. The schema marks all three fields
+        as required, so the AI cannot skip them. The server extracts these values and sends them
+        to the frontend. The player's HP shown on screen comes from <code>current_hp</code> in this
+        response, not from anything the AI wrote in prose.
+      </p>
+      <span class="file-ref">rpg_engine.py line 346 - game_response tool name</span>
+      <span class="file-ref">rpg_engine.py line 349 - narrative_text field definition</span>
+      <span class="file-ref">rpg_engine.py line 350 - current_hp field definition</span>
+      <span class="file-ref">rpg_engine.py line 352 - available_actions field definition</span>
+      <span class="file-ref">rpg_engine.py line 357 - required: ["narrative_text", "current_hp", "available_actions"]</span>
+    </div>
+
+    <div class="task-card">
+      <h3>Requirement - LLM must verify items via tool call before describing them</h3>
+      <p>
+        This is enforced by the system prompt. The very first ironclad rule the AI sees when a session
+        starts tells it to call <code>get_inventory()</code> before mentioning any item at all.
+        If the AI skips this and invents an item, it has violated the grounding contract written
+        into its instructions. The rule is written as a critical failure condition so the model
+        treats it as a hard constraint, not a suggestion.
+      </p>
+      <span class="file-ref">app.py line 65 - IRONCLAD RULES section header</span>
+      <span class="file-ref">app.py line 66 - Rule 1: "Call get_inventory() before referencing, describing, or using ANY item"</span>
+    </div>
+
+    <div class="task-card">
+      <h3>Conversation Memory</h3>
+      <p>
+        The AI Game Master remembers everything that happened in your session. Every time you take
+        an action, the game sends the full conversation history to the AI, not just your latest message.
+        This means the AI knows which rooms you visited, which enemies you fought, what you said to
+        the innkeeper, and how close to death you came three floors ago. It does not reset between turns.
+      </p>
+      <p>
+        After every turn, the complete history is written to a file on the server. When the next turn
+        starts, that file is read back in and passed to the AI alongside the new message. The history
+        grows throughout the session and the AI always has the full picture of what came before.
+        In multiplayer, all players share one history file per room, so the AI remembers the actions
+        of every player in the party, not just whoever is acting right now.
+      </p>
+      <span class="file-ref">app.py line 155 - <code>get_or_init_history()</code> loads the saved history at the start of every turn, or starts fresh if it is the first turn</span>
+      <span class="file-ref">app.py line 620 - history is loaded before every player action and passed to the AI</span>
+      <span class="file-ref">rpg_engine.py line 262 - <code>save_history()</code> writes the updated conversation to disk after each turn</span>
+      <span class="file-ref">rpg_engine.py line 266 - <code>load_history()</code> reads it back at the start of the next turn</span>
+      <span class="file-ref">rpg_engine.py line 19 - <code>_hist_file()</code> returns the correct history file for the current room, so each multiplayer room keeps its own separate memory</span>
+      <span class="file-ref">rpg_engine.py line 381 - <code>run_turn()</code> receives the full history list as a parameter and sends it to the AI model unchanged</span>
+      <p style="margin-top:0.8rem;">
+        One known limitation: there is no truncation or summarization. The history file grows with
+        every turn and is always sent in full to the AI. Every language model has a maximum amount
+        of text it can read at once, called the context window. If a session runs long enough, the
+        history will eventually exceed that limit and the API will return an error. For a normal run
+        through all four floors, which takes roughly 50 to 100 turns, this is very unlikely to
+        happen. A very long session or a session with unusually verbose narration could hit it.
+        The proper fix is a sliding window that drops the oldest turns, or a summarization step
+        that compresses them into a short paragraph before they are discarded. Neither is
+        implemented yet.
+      </p>
+    </div>
+
+    <div class="task-card">
+      <h3>Persistent world state</h3>
+      <p>
+        The world state is never held only in memory. Every meaningful change is written to disk
+        immediately. This means the server can restart and the game continues exactly where it left off.
+        The frontend reads these files on resume and restores the full UI state including the map,
+        character sheet, and conversation history.
+      </p>
+      <span class="file-ref">rpg_engine.py line 6 - <code>INVENTORY_FILE = BASE / "inventory.json"</code></span>
+      <span class="file-ref">rpg_engine.py line 7 - <code>GAME_STATE_FILE = BASE / "game_state.json"</code></span>
+      <span class="file-ref">character_manager.py line 670 - character.json read in load_character()</span>
+    </div>
+  </section>
+
+  <!-- CHARACTER PORTRAITS -->
+  <section>
+    <h2>Character Portraits</h2>
+    <p>
+      All portraits were generated using ChatGPT image generation. Each prompt described the
+      character or creature with a dark dungeon atmosphere, fantasy oil painting style, and
+      portrait orientation. Files are stored in <code>static/portraits/</code> and named exactly
+      after the class or enemy they represent.
+    </p>
+
+    <h3 style="margin-top:1rem">Character Classes (10)</h3>
+    <p>
+      The portrait appears in the character sheet panel on the right and in the status bar at the
+      top of the screen. The <code>updatePortrait(charClass)</code> function in
+      <code>templates/index.html</code> loads the file by converting the class name to title case
+      and appending <code>.png</code>.
+    </p>
+    <ul>
+      <li>Barbarian</li>
+      <li>Bard</li>
+      <li>Cleric</li>
+      <li>Druid</li>
+      <li>Fighter</li>
+      <li>Monk</li>
+      <li>Paladin</li>
+      <li>Ranger</li>
+      <li>Rogue</li>
+      <li>Wizard</li>
+    </ul>
+
+    <h3 style="margin-top:1rem">Enemy Portraits (16)</h3>
+    <p>
+      When combat starts, the <code>updateEnemyPortrait(name)</code> function in
+      <code>templates/index.html</code> looks the enemy name up in <code>ENEMY_PORTRAIT_NAMES</code>,
+      builds a URL like <code>/static/portraits/Dungeon%20Troll.png</code>, and shows the portrait
+      in the center panel above the dice strip. It disappears when the enemy is defeated.
+      Filenames match the enemy name exactly, spaces included.
+    </p>
+    <ul>
+      <li>Cave Rat Swarm (minor, floor 1)</li>
+      <li>Goblin Scout (minor, floor 1)</li>
+      <li>Skeleton Warrior (minor, floor 1)</li>
+      <li>Shadow Creeper (minor, floor 2)</li>
+      <li>Zombie Brute (minor, floor 2)</li>
+      <li>Mimic (minor, floor 2)</li>
+      <li>Stone Sentinel (minor, floor 3)</li>
+      <li>Berserker Cultist (minor, floor 3)</li>
+      <li>Wight Soldier (minor, floor 3)</li>
+      <li>Vampire Spawn (minor, floor 4)</li>
+      <li>Bone Wyvern (minor, floor 4)</li>
+      <li>Hell Cultist (minor, floor 4)</li>
+      <li>Dungeon Troll (boss, floor 1)</li>
+      <li>Shadow Wraith (boss, floor 2)</li>
+      <li>Stone Golem (boss, floor 3)</li>
+      <li>Bone Dragon (boss, floor 4)</li>
+    </ul>
+  </section>
+
+  <!-- MUSIC -->
+  <section>
+    <h2>Music</h2>
+    <p>All eight background music tracks were generated using Suno.com based on written prompts.
+    Each track was designed for a specific game state and loops seamlessly except for the two ending themes.</p>
+    <ul class="music-list">
+      <li>
+        <span class="track-name">About Page Theme</span>
+        <span class="track-file">0. Credit Page.mp3</span>
+      </li>
+      <li>
+        <span class="track-name">Village Hub Theme</span>
+        <span class="track-file">1. Village Hub Theme.mp3</span>
+      </li>
+      <li>
+        <span class="track-name">Dungeon Exploration</span>
+        <span class="track-file">2. Dungeon Exploration.mp3</span>
+      </li>
+      <li>
+        <span class="track-name">Regular Combat</span>
+        <span class="track-file">3. Regular Combat.mp3</span>
+      </li>
+      <li>
+        <span class="track-name">Boss Battle</span>
+        <span class="track-file">4. Boss Battle.mp3</span>
+      </li>
+      <li>
+        <span class="track-name">Mystical Menu Theme</span>
+        <span class="track-file">5. Mystical Menu Theme.mp3</span>
+      </li>
+      <li>
+        <span class="track-name">Victory Ending Theme</span>
+        <span class="track-file">6. Victory  Ending Theme.mp3</span>
+      </li>
+      <li>
+        <span class="track-name">Sad Ending Theme</span>
+        <span class="track-file">7. Sad Ending Theme.mp3</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- SOUND EFFECTS -->
+  <section>
+    <h2>Sound Effects</h2>
+    <p>
+      All short sound effects were generated using ElevenLabs based on written prompts describing
+      each sound in detail.
+    </p>
+    <ul class="music-list">
+      <li><span class="track-name">Dice Roll</span><span class="track-file">dice_roll.mp3</span></li>
+      <li><span class="track-name">Combat Hit</span><span class="track-file">combat_hit.mp3</span></li>
+      <li><span class="track-name">Combat Miss</span><span class="track-file">combat_miss.mp3</span></li>
+      <li><span class="track-name">Death Sting</span><span class="track-file">death_sting.mp3</span></li>
+      <li><span class="track-name">Door Open</span><span class="track-file">door_open.mp3</span></li>
+      <li><span class="track-name">Level Up</span><span class="track-file">level_up.mp3</span></li>
+      <li><span class="track-name">Treasure Found</span><span class="track-file">treasure.mp3</span></li>
+    </ul>
+  </section>
+
+  <!-- TECH STACK -->
+  <section>
+    <h2>Technology</h2>
+    <div class="credit-grid">
+      <div class="credit-item">
+        <div class="role">Backend</div>
+        <div class="name">Python, Flask, Flask-SocketIO</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">AI Game Master</div>
+        <div class="name">NVIDIA nemotron-3-super-120b via OpenAI SDK</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">Frontend</div>
+        <div class="name">Vanilla JavaScript, HTML, CSS</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">Game Rules</div>
+        <div class="name">D and D 5th Edition (server-authoritative)</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">Fonts</div>
+        <div class="name">Cinzel Decorative, IM Fell English, Crimson Text</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">Portraits</div>
+        <div class="name">ChatGPT image generation</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">Background Music</div>
+        <div class="name">Suno.com</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">Sound Effects</div>
+        <div class="name">ElevenLabs</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="creator-bar">
+    Created by <a href="https://skmmt.rootexception.com/" target="_blank" rel="noopener">SKMMT</a>
+  </div>
+
+</div>
+
+<div class="music-widget">
+  <div class="music-vol-panel">
+    <span class="music-vol-pct" id="music-vol-pct">30%</span>
+    <input id="music-vol" type="range" min="0" max="100" value="30">
+  </div>
+  <button id="credits-mute-btn" title="Mute music">&#128266;</button>
+</div>
+
+<script>
+  var audio  = document.getElementById('credits-audio');
+  var btn    = document.getElementById('credits-mute-btn');
+  var slider = document.getElementById('music-vol');
+  var pct    = document.getElementById('music-vol-pct');
+  var muted  = false;
+
+  audio.volume = 0.30;
+
+  function setMuted(m) {
+    muted = m;
+    btn.innerHTML = m ? '&#128263;' : '&#128266;';
+    btn.title = m ? 'Enable music' : 'Mute music';
+    if (!m) {
+      audio.play().catch(function(){});
+    } else {
+      audio.pause();
+    }
+  }
+
+  btn.addEventListener('click', function() { setMuted(!muted); });
+
+  slider.addEventListener('input', function() {
+    var v = parseInt(this.value, 10);
+    audio.volume = v / 100;
+    pct.textContent = v + '%';
+  });
+
+  document.addEventListener('click', function onFirst() {
+    if (!muted) audio.play().catch(function(){});
+    document.removeEventListener('click', onFirst);
+  }, { once: true });
+</script>
+</body>
+</html>
