@@ -534,7 +534,7 @@
       </div>
       <div class="credit-item">
         <div class="role">AI Game Master</div>
-        <div class="name">NVIDIA nemotron-3-super-120b via OpenAI SDK</div>
+        <div class="name">NVIDIA nemotron-super-120b via OpenAI-compatible SDK</div>
       </div>
       <div class="credit-item">
         <div class="role">Frontend</div>
@@ -560,7 +560,36 @@
         <div class="role">Sound Effects</div>
         <div class="name">ElevenLabs</div>
       </div>
+      <div class="credit-item">
+        <div class="role">Deployment</div>
+        <div class="name">Docker, HuggingFace Spaces</div>
+      </div>
+      <div class="credit-item">
+        <div class="role">Large File Storage</div>
+        <div class="name">Git LFS (audio and image assets)</div>
+      </div>
     </div>
+
+    <p style="margin-top: 1.6rem;">
+      During local development the server ran on <code>localhost:5000</code> using Flask-SocketIO's
+      built-in Werkzeug dev server with debug mode on. That configuration is intentionally minimal
+      and only accepts connections from the same machine.
+    </p>
+    <p>
+      For the HuggingFace Spaces deployment three things changed. The host was switched to
+      <code>0.0.0.0</code> so the container accepts external traffic. The port was changed to
+      <code>7860</code>, which is the port HuggingFace exposes by default for Docker Spaces.
+      And <code>allow_unsafe_werkzeug=True</code> was added to the <code>socketio.run()</code>
+      call because newer versions of Flask-SocketIO block the Werkzeug server in any environment
+      that does not explicitly opt in. Without that flag the app crashes on startup in production.
+    </p>
+    <p>
+      The audio tracks and portrait images total over 100 MB. GitHub and HuggingFace both reject
+      pushes containing files larger than 10 MB unless Git LFS is used. All <code>.mp3</code>,
+      <code>.wav</code>, <code>.png</code>, and <code>.jpg</code> files are tracked through
+      Git LFS so only lightweight pointer files live in the repository history while the actual
+      binaries are stored separately.
+    </p>
   </section>
 
   <div class="creator-bar">
