@@ -12,7 +12,7 @@ pinned: false
 
 Ironwood Dungeon is a browser-based role-playing game where an AI acts as your Game Master. You explore a four-floor dungeon, fight enemies, solve puzzles, manage your inventory, and talk to NPCs. All of it is narrated in real time by a large language model that is strictly grounded in the actual game state on the server.
 
-**Live demo:** [HuggingFace Space](https://huggingface.co/spaces) *(replace with your Space URL)*
+**Live demo:** [HuggingFace Space](https://sheikhkmmtahmid-ironwood-dungeon.hf.space/)
 
 ---
 
